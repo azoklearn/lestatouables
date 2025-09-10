@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merci - Les Tatouables</title>
+    <meta name="description" content="Merci pour votre message - Les Tatouables">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .thankyou {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .thankyou .card {
+            max-width: 720px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            padding: 2rem;
+        }
+        .thankyou h1 { margin-bottom: .5rem; }
+        .thankyou p { margin: .25rem 0; }
+        .thankyou .actions { margin-top: 1.25rem; }
+        .btn { display: inline-block; padding: .75rem 1.25rem; border-radius: 8px; text-decoration: none; }
+        .btn-primary { background: #111; color: #fff; }
+        .btn-secondary { background: #f1f1f1; color: #111; }
+    </style>
+    <script>
+        // Si arrivé depuis FormSubmit, empêcher un retour avec resoumission
+        if (window.history && history.replaceState) {
+            history.replaceState(null, document.title, location.pathname + location.search);
+        }
+    </script>
+    <script>
+        // Redirection douce vers l'accueil après quelques secondes (optionnel)
+        setTimeout(function(){
+            // Commenter la ligne ci-dessous si vous ne souhaitez pas de redirection auto
+            // window.location.href = 'index.html#accueil';
+        }, 6000);
+    </script>
+</head>
+<body>
+    <section class="thankyou">
+        <div class="card">
+            <div style="font-size:2.25rem; margin-bottom:.5rem;">
+                <i class="fas fa-check-circle" style="color:#16a34a;"></i>
+            </div>
+            <h1>Merci pour votre message</h1>
+            <p>Votre demande a bien été envoyée. Nous revenons vers vous au plus vite.</p>
+            <p style="opacity:.8">Si besoin urgent, contactez-nous au <a href="tel:0602120638">0602120638</a>.</p>
+            <div class="actions">
+                <a href="index.html#accueil" class="btn btn-primary">Retour à l'accueil</a>
+                <a href="index.html#portfolio" class="btn btn-secondary" style="margin-left:.5rem;">Voir le portfolio</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+
+
