@@ -144,17 +144,11 @@
             <h2 class="section-title">Tattoos Flash</h2>
             <p class="section-subtitle">Disponibles dès maintenant.</p>
             <div class="flash-controls" id="flashControls" style="display:flex; justify-content:flex-end;">
-                <button id="toggleEditFlash" class="btn btn-secondary" type="button">Éditer</button>
+                <button id="toggleEditFlash" class="btn btn-secondary" type="button">Gérer</button>
                 <button id="addFlash" class="btn btn-primary" type="button" style="display:none;">Ajouter</button>
-                <button id="exportFlash" class="btn btn-secondary" type="button" style="display:none;">Exporter</button>
-                <label for="importFlashInput" class="btn btn-secondary" id="importLabel" style="display:none; cursor:pointer;">Importer</label>
-                <input id="importFlashInput" type="file" accept="application/json" style="display:none;" />
             </div>
             <div class="flash-grid" id="flashGrid"></div>
             <div class="flash-empty" id="flashEmpty" style="display:none;">Aucun flash disponible.</div>
-            <div id="flashDropzone" class="flash-dropzone" style="display:none;">
-                Glissez-déposez vos images ici pour les ajouter
-            </div>
         </div>
     </section>
 
@@ -465,33 +459,96 @@
         </div>
     </footer>
 
+    <!-- Modal: Ajouter des flashs -->
+    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
+            <div class="modal-header">
+                <h3 id="flashModalTitle">Ajouter des flashs</h3>
+                <button id="flashModalClose" class="modal-close" type="button" aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="flashModalDropzone" class="flash-dropzone">
+                    Glissez-déposez des images ici, ou cliquez pour choisir
+                </div>
+                <input id="flashFileInput" type="file" accept="image/*" multiple style="display:none;">
+                <div class="modal-hint">Formats pris en charge: JPG, PNG, WEBP. Déposez plusieurs fichiers si besoin.</div>
+            </div>
+            <div class="modal-footer">
+                <button id="flashModalBrowse" class="btn btn-secondary" type="button">Choisir des fichiers</button>
+                <button id="flashModalDone" class="btn btn-primary" type="button">Terminer</button>
+            </div>
+        </div>
+    </div>
+
     <script>
     (function(){
+        // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
+        const ADMIN_PASSWORD = 'tattoo';
         const STORAGE_KEY = 'flashData.v1';
         const grid = document.getElementById('flashGrid');
         const emptyEl = document.getElementById('flashEmpty');
         const toggleBtn = document.getElementById('toggleEditFlash');
         const addBtn = document.getElementById('addFlash');
-        const exportBtn = document.getElementById('exportFlash');
-        const importInput = document.getElementById('importFlashInput');
-        const importLabel = document.getElementById('importLabel');
-        const dropzone = document.getElementById('flashDropzone');
+        // Removed export/import controls
+        // Modal elements
+        const modal = document.getElementById('flashModal');
+        const modalDialog = modal.querySelector('.modal-dialog');
+        const modalClose = document.getElementById('flashModalClose');
+        const modalDone = document.getElementById('flashModalDone');
+        const modalBrowse = document.getElementById('flashModalBrowse');
+        const modalDropzone = document.getElementById('flashModalDropzone');
+        const fileInput = document.getElementById('flashFileInput');
 
         let editMode = false;
+        let isAuthorized = false;
+
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('flashAuth') === '1'; } catch(e) { return false; }
+        }
+
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('flashAuth','1');
+                else sessionStorage.removeItem('flashAuth');
+            } catch(e) {}
+        }
+
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les flashs :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
 
         function loadData(){
-            try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) return parsed;
-                }
-            } catch(e) {}
-            return [
+            const seed = [
                 { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
                 { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
                 { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
             ];
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        if (parsed.length === 0) {
+                            // Seed defaults if empty, so users always see something sans "Éditer"
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+                            return seed;
+                        }
+                        return parsed;
+                    }
+                }
+            } catch(e) {}
+            // No valid data in storage: seed with defaults
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(seed)); } catch(e) {}
+            return seed;
         }
 
         function saveData(data){
@@ -568,20 +625,23 @@
         function setEditMode(on){
             editMode = !!on;
             addBtn.style.display = on ? '' : 'none';
-            exportBtn.style.display = on ? '' : 'none';
-            importLabel.style.display = on ? '' : 'none';
-            dropzone.style.display = on ? '' : 'none';
-            toggleBtn.textContent = on ? 'Terminer' : 'Éditer';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer';
             render();
         }
 
-        function addItem(){
-            const src = prompt('URL de l\'image (ex: images/monflash.jpeg) :');
-            if (!src) return;
-            const caption = prompt('Titre / légende :') || '';
-            data.unshift({ id: cryptoRandomId(), src, caption });
-            saveData(data);
-            render();
+        function openModal(){
+            modal.style.display = '';
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => modal.classList.add('is-open'));
+        }
+
+        function closeModal(){
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // small timeout to allow transition if any
+            setTimeout(() => { modal.style.display = 'none'; }, 150);
         }
 
         function editItem(id){
@@ -660,31 +720,56 @@
             });
         }
 
-        toggleBtn.addEventListener('click', () => setEditMode(!editMode));
-        addBtn.addEventListener('click', addItem);
-        exportBtn.addEventListener('click', exportData);
-        importInput.addEventListener('change', (e) => {
-            const file = e.target.files && e.target.files[0];
-            if (file) importData(file);
-            importInput.value = '';
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
         });
+        addBtn.addEventListener('click', () => {
+            if (!requestAuth()) return;
+            openModal();
+        });
+        // export/import listeners removed
 
-        // Drag & drop
-        ;['dragenter','dragover'].forEach(evt => dropzone.addEventListener(evt, (e) => {
+        // Modal events
+        modalClose.addEventListener('click', closeModal);
+        modalDone.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display !== 'none') closeModal();
+        });
+        modalBrowse.addEventListener('click', () => fileInput.click());
+        modalDropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length){ handleFiles(files); }
+            fileInput.value = '';
+            closeModal();
+        });
+        ;['dragenter','dragover'].forEach(evt => modalDropzone.addEventListener(evt, (e) => {
             e.preventDefault(); e.stopPropagation();
-            dropzone.classList.add('is-dragover');
+            modalDropzone.classList.add('is-dragover');
         }));
-        ;['dragleave','drop'].forEach(evt => dropzone.addEventListener(evt, (e) => {
+        ;['dragleave','drop'].forEach(evt => modalDropzone.addEventListener(evt, (e) => {
             e.preventDefault(); e.stopPropagation();
-            dropzone.classList.remove('is-dragover');
+            modalDropzone.classList.remove('is-dragover');
         }));
-        dropzone.addEventListener('drop', (e) => {
+        modalDropzone.addEventListener('drop', (e) => {
             const dt = e.dataTransfer;
-            if (dt && dt.files) handleFiles(dt.files);
+            if (dt && dt.files){ handleFiles(dt.files); closeModal(); }
         });
 
-        // Expose for inline handlers if needed
-        window.__flashAdmin = { addItem, editItem, deleteItem };
+        // Protéger aussi les actions Modifier/Supprimer au cas où
+        const _editItem = editItem;
+        const _deleteItem = deleteItem;
+        editItem = function(id){ if (!requestAuth()) return; _editItem(id); };
+        deleteItem = function(id){ if (!requestAuth()) return; _deleteItem(id); };
+
+        // Expose for inline handlers si besoin (protégées)
+        window.__flashAdmin = { addItem: openModal, editItem, deleteItem };
 
         render();
     })();
