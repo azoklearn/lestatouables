@@ -648,9 +648,8 @@
             const idx = data.findIndex(x => x.id === id);
             if (idx === -1) return;
             const current = data[idx];
-            const newSrc = prompt('Nouvelle URL de l\'image :', current.src) || current.src;
-            const newCaption = prompt('Nouvelle légende :', current.caption || '') || '';
-            data[idx] = { ...current, src: newSrc, caption: newCaption };
+            const newCaption = prompt('Nouvelle légende :', current.caption || '') || (current.caption || '');
+            data[idx] = { ...current, caption: newCaption };
             saveData(data);
             render();
         }
