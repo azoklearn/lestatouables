@@ -143,22 +143,17 @@
         <div class="container">
             <h2 class="section-title">Tattoos Flash</h2>
             <p class="section-subtitle">Disponibles dès maintenant.</p>
-            <div class="flash-grid">
-                <figure class="flash-item">
-                    <img class="flash-img" src="images/flash1.jpeg" alt="Tatouage flash 1">
-                    <figcaption class="flash-caption">Flash 1</figcaption>
-                    <a class="btn btn-primary flash-cta" href="#contact">Réserver</a>
-                </figure>
-                <figure class="flash-item">
-                    <img class="flash-img" src="images/flash2.jpeg" alt="Tatouage flash 2">
-                    <figcaption class="flash-caption">Flash 2</figcaption>
-                    <a class="btn btn-primary flash-cta" href="#contact">Réserver</a>
-                </figure>
-                <figure class="flash-item">
-                    <img class="flash-img" src="images/flash3.jpeg" alt="Tatouage flash 3">
-                    <figcaption class="flash-caption">Flash 3</figcaption>
-                    <a class="btn btn-primary flash-cta" href="#contact">Réserver</a>
-                </figure>
+            <div class="flash-controls" id="flashControls" style="display:flex; justify-content:flex-end;">
+                <button id="toggleEditFlash" class="btn btn-secondary" type="button">Éditer</button>
+                <button id="addFlash" class="btn btn-primary" type="button" style="display:none;">Ajouter</button>
+                <button id="exportFlash" class="btn btn-secondary" type="button" style="display:none;">Exporter</button>
+                <label for="importFlashInput" class="btn btn-secondary" id="importLabel" style="display:none; cursor:pointer;">Importer</label>
+                <input id="importFlashInput" type="file" accept="application/json" style="display:none;" />
+            </div>
+            <div class="flash-grid" id="flashGrid"></div>
+            <div class="flash-empty" id="flashEmpty" style="display:none;">Aucun flash disponible.</div>
+            <div id="flashDropzone" class="flash-dropzone" style="display:none;">
+                Glissez-déposez vos images ici pour les ajouter
             </div>
         </div>
     </section>
@@ -470,6 +465,229 @@
         </div>
     </footer>
 
-    
+    <script>
+    (function(){
+        const STORAGE_KEY = 'flashData.v1';
+        const grid = document.getElementById('flashGrid');
+        const emptyEl = document.getElementById('flashEmpty');
+        const toggleBtn = document.getElementById('toggleEditFlash');
+        const addBtn = document.getElementById('addFlash');
+        const exportBtn = document.getElementById('exportFlash');
+        const importInput = document.getElementById('importFlashInput');
+        const importLabel = document.getElementById('importLabel');
+        const dropzone = document.getElementById('flashDropzone');
+
+        let editMode = false;
+
+        function loadData(){
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch(e) {}
+            return [
+                { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
+                { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
+                { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
+            ];
+        }
+
+        function saveData(data){
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        }
+
+        function cryptoRandomId(){
+            if (window.crypto && crypto.getRandomValues) {
+                const buf = new Uint32Array(4);
+                crypto.getRandomValues(buf);
+                return Array.from(buf).map(x => x.toString(16).padStart(8,'0')).join('');
+            }
+            return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        }
+
+        let data = loadData();
+
+        function render(){
+            grid.innerHTML = '';
+            if (!data.length){
+                emptyEl.style.display = 'block';
+                return;
+            }
+            emptyEl.style.display = 'none';
+            for (const item of data){
+                const fig = document.createElement('figure');
+                fig.className = 'flash-item';
+
+                const img = document.createElement('img');
+                img.className = 'flash-img';
+                img.src = item.src;
+                img.alt = item.caption || 'Tatouage flash';
+
+                const caption = document.createElement('figcaption');
+                caption.className = 'flash-caption';
+                caption.textContent = item.caption || '';
+
+                const cta = document.createElement('a');
+                cta.className = 'btn btn-primary flash-cta';
+                cta.href = '#contact';
+                cta.textContent = 'Réserver';
+
+                fig.appendChild(img);
+                fig.appendChild(caption);
+                fig.appendChild(cta);
+
+                if (editMode){
+                    const controls = document.createElement('div');
+                    controls.style.display = 'flex';
+                    controls.style.gap = '8px';
+                    controls.style.padding = '0 1rem 1rem';
+
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.addEventListener('click', () => editItem(item.id));
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.addEventListener('click', () => deleteItem(item.id));
+
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    fig.appendChild(controls);
+                }
+
+                grid.appendChild(fig);
+            }
+        }
+
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            exportBtn.style.display = on ? '' : 'none';
+            importLabel.style.display = on ? '' : 'none';
+            dropzone.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Éditer';
+            render();
+        }
+
+        function addItem(){
+            const src = prompt('URL de l\'image (ex: images/monflash.jpeg) :');
+            if (!src) return;
+            const caption = prompt('Titre / légende :') || '';
+            data.unshift({ id: cryptoRandomId(), src, caption });
+            saveData(data);
+            render();
+        }
+
+        function editItem(id){
+            const idx = data.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            const current = data[idx];
+            const newSrc = prompt('Nouvelle URL de l\'image :', current.src) || current.src;
+            const newCaption = prompt('Nouvelle légende :', current.caption || '') || '';
+            data[idx] = { ...current, src: newSrc, caption: newCaption };
+            saveData(data);
+            render();
+        }
+
+        function deleteItem(id){
+            if (!confirm('Supprimer ce flash ?')) return;
+            data = data.filter(x => x.id !== id);
+            saveData(data);
+            render();
+        }
+
+        function exportData(){
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'flash.json';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(file){
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const next = JSON.parse(String(reader.result || ''));
+                    if (Array.isArray(next)){
+                        data = next.map(item => ({ id: item.id || cryptoRandomId(), src: item.src, caption: item.caption || '' }))
+                                   .filter(item => typeof item.src === 'string' && item.src);
+                        saveData(data);
+                        render();
+                    } else {
+                        alert('Fichier invalide');
+                    }
+                } catch(e){
+                    alert('Échec de l\'import');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function handleFiles(files){
+            const fileArray = Array.from(files || []);
+            if (!fileArray.length) return;
+            let addedCount = 0;
+            let processed = 0;
+            fileArray.forEach(file => {
+                if (!file.type || !file.type.startsWith('image/')) { processed++; return; }
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const src = String(reader.result || '');
+                    if (src) {
+                        const baseName = (file.name || '').split('\\').pop().split('/').pop();
+                        const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
+                        data.unshift({ id: cryptoRandomId(), src, caption: nameNoExt || 'Flash' });
+                        addedCount++;
+                    }
+                    processed++;
+                    if (processed === fileArray.length){
+                        if (addedCount){ saveData(data); render(); }
+                    }
+                };
+                reader.onerror = () => { processed++; if (processed === fileArray.length){ if (addedCount){ saveData(data); render(); } } };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        toggleBtn.addEventListener('click', () => setEditMode(!editMode));
+        addBtn.addEventListener('click', addItem);
+        exportBtn.addEventListener('click', exportData);
+        importInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (file) importData(file);
+            importInput.value = '';
+        });
+
+        // Drag & drop
+        ;['dragenter','dragover'].forEach(evt => dropzone.addEventListener(evt, (e) => {
+            e.preventDefault(); e.stopPropagation();
+            dropzone.classList.add('is-dragover');
+        }));
+        ;['dragleave','drop'].forEach(evt => dropzone.addEventListener(evt, (e) => {
+            e.preventDefault(); e.stopPropagation();
+            dropzone.classList.remove('is-dragover');
+        }));
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            if (dt && dt.files) handleFiles(dt.files);
+        });
+
+        // Expose for inline handlers if needed
+        window.__flashAdmin = { addItem, editItem, deleteItem };
+
+        render();
+    })();
+    </script>
 </body>
 </html>
