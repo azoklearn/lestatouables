@@ -134,11 +134,12 @@
                 top: auto;
                 transform: none;
                 text-align: center;
-                margin: 20px 0;
+                margin: 40px 0 20px 0;
+                order: -1;
             }
             
             .hero-logo-right img {
-                max-width: 150px !important;
+                max-width: 120px !important;
                 height: auto !important;
             }
             
@@ -205,11 +206,7 @@
         
         /* Positionnement du logo circulaire */
         .hero-logo-right {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
+            text-align: center;
         }
     </style>
 </head>
@@ -253,6 +250,9 @@
     <!-- Hero Section -->
     <section id="accueil" class="hero">
         <div class="hero-info">
+            <div class="hero-logo-right">
+                <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 20px auto;">
+            </div>
             <img src="images/logoo-removebg-preview.png" alt="Les Tatouables - Logo" style="max-width: 1200px; height: auto; display: block; margin-bottom: -160px;">
             <div class="hero-address">
                 <h3></h3>
@@ -264,9 +264,6 @@
                     <i class="fas fa-phone"></i> 0602120638
                 </a>
             </div>
-        </div>
-        <div class="hero-logo-right">
-            <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto;">
         </div>
     </section>
 
