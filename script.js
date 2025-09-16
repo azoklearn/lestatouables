@@ -2,16 +2,45 @@
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
+hamburger.setAttribute('aria-label', 'Ouvrir le menu');
+hamburger.setAttribute('aria-expanded', 'false');
+hamburger.setAttribute('aria-controls', 'menu');
+
 hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
+    const isActive = hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    hamburger.setAttribute('aria-label', isActive ? 'Fermer le menu' : 'Ouvrir le menu');
 });
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    navMenu.classList.remove('active');
-}));
+// Close menu only when clicking on a leaf link (sans sous-menu) ou un lien de sous-menu
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const li = link.parentElement;
+        const hasDirectSubmenu = li && li.querySelector(':scope > .nav-submenu');
+        if (hasDirectSubmenu) {
+            // Parent avec sous-menu: ne pas fermer ici (le toggle gère l'ouverture)
+            return;
+        }
+        // Lien de sous-menu ou lien simple: fermer le panneau
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'Ouvrir le menu');
+    });
+});
+
+// Toggle sous-menus dans le panneau hamburger (tous écrans)
+document.querySelectorAll('.nav-menu > li > a').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+        const parent = anchor.parentElement;
+        const submenu = parent.querySelector('.nav-submenu');
+        if (submenu) {
+            e.preventDefault();
+            parent.classList.toggle('is-open');
+        }
+    });
+});
 
 // Portfolio Filter Functionality
 const filterButtons = document.querySelectorAll('.filter-btn');
@@ -55,10 +84,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(26, 26, 26, 0.98)';
+        navbar.style.background = 'rgba(15, 15, 15, 0.98)';
         navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.5)';
     } else {
-        navbar.style.background = 'rgba(26, 26, 26, 0.95)';
+        navbar.style.background = 'rgba(15, 15, 15, 0.95)';
         navbar.style.boxShadow = 'none';
     }
 });
@@ -262,14 +291,20 @@ serviceCards.forEach(card => {
 function addLoadingAnimation() {
     const images = document.querySelectorAll('img');
     images.forEach(img => {
-        img.addEventListener('load', () => {
+        const show = () => {
             img.style.opacity = '1';
             img.style.transform = 'scale(1)';
-        });
-        
+        };
+        // Si l'image est déjà chargée (cache), afficher directement
+        if (img.complete && img.naturalWidth > 0) {
+            show();
+            return;
+        }
+        // Sinon, appliquer l'animation de fade-in à la fin du chargement
+        img.addEventListener('load', show, { once: true });
         img.style.opacity = '0';
-        img.style.transform = 'scale(0.8)';
-        img.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        img.style.transform = 'scale(0.98)';
+        img.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     });
 }
 
