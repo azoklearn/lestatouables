@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Tatouables - Artiste Tatoueur Professionnel</title>
-    <meta name="description" content="Les Tatouables - Salon de tatouage professionnel. Découvrez nos créations uniques et réservez votre séance de tatouage.">
+    <title>Les Tatouables - Salon de tatouage</title>
+    <meta name="description" content="Les Tatouables – Salon de tatouage à Toul. Présentations, tarifs LDermo, flash disponibles et contacts.">
+    <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -35,24 +36,135 @@
             font-weight: 700;
             text-shadow: 0 2px 6px rgba(0,0,0,0.55);
         }
+        
+        /* Styles pour les informations du salon dans la section hero */
+        .hero-info {
+            text-align: left;
+            margin-top: 2rem;
+            color: #333;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding-left: 10px;
+        }
+        .hero-address h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .hero-address p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+        .hero-distance {
+            font-style: italic;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .hero-phone {
+            margin-top: 1rem;
+        }
+        .phone-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #2c3e50;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .phone-link:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .phone-link i {
+            font-size: 1.2rem;
+        }
+        
+        /* Styles pour les menus de contact */
+        .contact-menu-item {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        .contact-menu-item:hover {
+            background-color: #f5f5f5;
+            color: #2c3e50;
+        }
+        .contact-menu-item:last-child {
+            border-bottom: none;
+        }
+        .contact-menu-item i {
+            margin-right: 8px;
+            width: 16px;
+        }
+        
+        /* Personnalisation de la barre de défilement */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2c3e50;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #34495e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2c3e50;
+        }
+        
+        /* Positionnement du logo circulaire */
+        .hero-logo-right {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>Les Tatouables</h2>
+        <div class="nav-container" style="position:relative;">
+            <div class="nav-left">
+                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="nav-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="nav-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:0602120638" class="nav-link" aria-label="Téléphone"><i class="fas fa-phone"></i></a>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#accueil" class="nav-link">Accueil</a></li>
-                <li><a href="#s'inkolor" class="nav-link">À propos de S'inkolor</a></li>
-                <li><a href="#ldermo" class="nav-link">À propos de LDermo</a></li>
-                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-                <li><a href="#flash" class="nav-link">Flash</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+            <div class="nav-center">
+                <img src="images/logo.png" alt="Les Tatouables - Logo" style="height: 40px; width: auto;">
+            </div>
+            <ul id="menu" class="nav-menu">
+                <li><a href="#accueil" class="nav-link">Retour à la page d’accueil</a></li>
+                <li>
+                    <a href="#ldermo-presentation" class="nav-link">LDermo</a>
+                    <ul class="nav-submenu">
+                        <li><a href="#ldermo-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="#ldermo-tarifs" class="nav-link">Tarification</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#sinkolor-presentation" class="nav-link">Sinkolor</a>
+                    <ul class="nav-submenu">
+                        <li><a href="#sinkolor-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="#sinkolor-flash" class="nav-link">Flash disponibles</a></li>
+                    </ul>
+                </li>
             </ul>
-            <div class="hamburger">
+            <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -62,86 +174,148 @@
 
     <!-- Hero Section -->
     <section id="accueil" class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Les Tatouables</h1>
-            <p class="hero-subtitle">Salon De Tatouage Professionnel</p>
-            <div class="hero-buttons">
-                <a href="#portfolio" class="btn btn-primary">Voir nos créations</a>
-                <a href="#contact" class="btn btn-secondary">Prendre rendez-vous</a>
+        <div class="hero-info">
+            <img src="images/logoo-removebg-preview.png" alt="Les Tatouables - Logo" style="max-width: 900px; height: auto; display: block; margin-bottom: -160px;">
+            <div class="hero-address">
+                <h3></h3>
+                <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul</p>
+                <p class="hero-distance">(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
+            </div>
+            <div class="hero-phone">
+                <a href="tel:0602120638" class="phone-link">
+                    <i class="fas fa-phone"></i> 0602120638
+                </a>
             </div>
         </div>
-        <div class="hero-image">
-            <div class="tattoo-preview">
-                <img src="images/logo.png" alt="Les Tatouables - Logo">
-            </div>
+        <div class="hero-logo-right">
+            <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto;">
         </div>
     </section>
 
-    <!-- Artists Section -->
+    <!-- Vignettes À propos -->
     <section id="tatoueurs" class="artists">
         <div class="container">
-            <h2 class="section-title">Nos tatoueurs</h2>
+            <h2 class="section-title">À propos</h2>
             <p class="section-subtitle">Deux expertises complémentaires</p>
             <div class="artists-grid">
                 <article class="artist-card">
                     <div class="artist-info">
                         <h3>S'inkolor</h3>
-                        <p>Spécialiste manga, anime et pop culture. Lignes précises, couleurs vibrantes et compositions dynamiques.</p>
+                        <p>Spécialisé dans le domaine du manga, de la pop culture et de l’univers Disney, Sinkolor saura répondre à toutes vos demandes de projet grâce à son œil expert.</p>
+                        <p><a class="btn btn-secondary" href="#sinkolor-presentation">Voir la présentation</a></p>
                     </div>
                 </article>
                 <article class="artist-card">
                     <div class="artist-info">
                         <h3>LDermo</h3>
-                        <p>Dermopigmentation réparatrice et correctrice. Approche douce, résultats naturels et techniques avancées.</p>
+                        <p>Spécialisée dans le tatouage reconstructif, LDermo saura vous guider, comprendre et satisfaire vos attentes grâce à son professionnalisme, sa douceur et son empathie.</p>
+                        <p><a class="btn btn-secondary" href="#ldermo-presentation">Voir la présentation</a></p>
                     </div>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- À propos de LDermo -->
-    <section id="ldermo" class="about">
+    <!-- LDermo Présentation -->
+    <section id="ldermo-presentation" class="about">
         <div class="container">
             <div class="about-content">
                 <div class="about-image">
                     <img src="images/ldermo.jpeg" alt="LDermo - Dermopigmentation" class="about-photo">
                 </div>
                 <div class="about-text">
-                    <h2>À propos de LDermo</h2>
-                    <p>Spécialisée en <strong>dermopigmentation réparatrice et correctrice</strong> (aréoles mammaires, cicatrices, vitiligo, densification capillaire), LDermo accompagne chaque personne avec une approche douce et personnalisée.</p>
-                    <p>Objectif: des <strong>résultats naturels et harmonieux</strong>, grâce à des techniques avancées, un protocole d’hygiène irréprochable et une écoute attentive.</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>100%</h3>
-                            <p>Satisfaction client</p>
+                    <h2>LDermo</h2>
+                    <p>Riche de plusieurs mois de formation sous le tutorat d’Anna Dermo, numéro 1 en France du tatouage réparateur et créatrice de la méthode Skin correct, Ldermo a pu recevoir les meilleurs outils et conseils visant à garantir des résultats époustouflants à sa clientèle.</p>
+                    <p>Que votre projet concerne des vergetures, une cicatrice, une peau brûlée ou greffée ou encore une reconstruction de l’aréole mammaire, Ldermo prendra le temps, lors d’une première consultation, de définir avec vous la méthode la plus adaptée à vos besoins pour que votre séance de tatouage et son résultat soient à la hauteur de vos attentes.</p>
+                    <p>Grâce à sa douceur, son empathie, sa bienveillance et ses explications, LDermo saura répondre à toutes vos questions et vous rassurer afin de chasser toute anxiété avant votre séance.</p>
+                    <div class="contact-buttons" style="margin-top:1rem;">
+                        <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
+                            <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('ldermo')">
+                                <i class="fas fa-envelope"></i> Contact
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div id="ldermo-contact-menu" class="contact-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
+                                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </a>
+                                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-instagram"></i> Instagram
+                                </a>
+                                <a href="tel:0602120638" class="contact-menu-item">
+                                    <i class="fas fa-phone"></i> Appeler
+                                </a>
+                            </div>
                         </div>
+                        <a href="#ldermo-tarifs" class="btn btn-secondary" style="display:inline-block;">Tarification</a>
                     </div>
-                    <a href="#contact" class="btn btn-primary" style="margin-top:1rem; display:inline-block;">Prendre contact</a>
-                    <a href="#portfolio-ldermo" class="btn btn-secondary" style="margin-top:1rem; display:inline-block; margin-left:0.5rem;">Voir le portfolio</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="s'inkolor"class="about">
+    <!-- LDermo Tarification -->
+    <section id="ldermo-tarifs" class="ldermo">
+        <div class="container">
+            <h2 class="section-title">Tarification</h2>
+            <p class="section-subtitle">Grille tarifaire modifiable par l'artiste</p>
+            
+            <div class="tarifs-controls" id="tarifsControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
+                <button id="toggleEditTarifs" class="btn btn-secondary" type="button">Gérer les tarifs</button>
+                <button id="addTarif" class="btn btn-primary" type="button" style="display:none;">Ajouter un tarif</button>
+            </div>
+            
+            <div class="ldermo-grid">
+                <div class="ldermo-text">
+                    <div id="tarifsList">
+                        <p>Exemples (à ajuster) :</p>
+                        <ul id="tarifsItems">
+                            <li>Consultation: 0€ - 30€</li>
+                            <li>Reconstruction aréolaire: Sur devis</li>
+                            <li>Cicatrices/vergetures: Sur devis</li>
+                        </ul>
+                    </div>
+                    <a href="#contact" class="btn btn-primary" style="margin-top:1rem;">Contact</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sinkolor Présentation -->
+    <section id="sinkolor-presentation"class="about">
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2>À propos de S'inkolor</h2>
-                    <p>Passionné par l'art du tatouage et spécialisé dans les univers <strong>Manga, Disney et Pop Culture</strong>, je crée des œuvres uniques qui reflètent votre personnalité. Chaque projet est une collaboration artistique où vos idées prennent vie sous forme de tatouages durables et esthétiques.</p>
-                    <p>Basé à <strong>Toul</strong>, je m'adapte à vos envies pour créer des pièces qui vous ressemblent et vous accompagnent tout au long de votre vie. Mon agenda est ouvert pour <strong>Décembre et Janvier</strong> !</p>
+                    <h2>Sinkolor</h2>
+                    <p>Passionné par l’art du tatouage et spécialisé dans les univers Manga, Disney et Pop culture, Sinkolor sera en capacité de répondre à toutes vos demandes!</p>
+                    <p>Son aptitude à utiliser de nombreuses techniques de tatouage et dans sa volonté de rendre ses œuvres toujours plus exceptionnelles, Sinkolor est en mesure de travailler avec un grand choix de couleurs et avec un large panel d’aiguilles qui vous permettra d’obtenir des tatouages aux tracés des plus fins au plus épais.</p>
+                    <p>Très à l’écoute du client, professionnel et délicat, Sinkolor saura se montrer des plus réactif pour que votre projet soit à la hauteur de vos exigences et pour que votre séance se passe dans les meilleures conditions.</p>
+                    <p>Que votre tatouage soit en noir et blanc, en couleurs, fin, épais, dans ses spécialités ou non, Sinkolor saura vous satisfaire à tous les coups!</p>
                     <div class="about-stats">
                         <div class="stat">
                             <h3>100%</h3>
                             <p>Satisfaction client</p>
                         </div>
                     </div>
-                    <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="btn btn-instagram" style="margin-top:1rem; display:inline-block;">
-                        <i class="fab fa-instagram"></i> @sinkolor.tattoo
-                    </a>
-                    <a href="#portfolio-sinkolor" class="btn btn-secondary" style="margin-top:1rem; display:inline-block; margin-left:0.5rem;">Voir le portfolio</a>
-                    <a href="#contact" class="btn btn-primary" style="margin-top:1rem; display:inline-block; margin-left:0.5rem;">Prendre contact</a>
+                    <div class="contact-buttons" style="margin-top:1rem;">
+                        <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
+                            <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('sinkolor')">
+                                <i class="fas fa-envelope"></i> Contact
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div id="sinkolor-contact-menu" class="contact-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
+                                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </a>
+                                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-instagram"></i> Instagram
+                                </a>
+                                <a href="tel:0602120638" class="contact-menu-item">
+                                    <i class="fas fa-phone"></i> Appeler
+                                </a>
+                            </div>
+                        </div>
+                        <a href="#sinkolor-flash" class="btn btn-secondary" style="display:inline-block;">Flash disponibles</a>
+                    </div>
                 </div>
                 <div class="about-image">
                     <img src="images/sinkolor.jpeg" alt="S'inkolor - Artiste Tatoueur" class="about-photo">
@@ -151,7 +325,7 @@
     </section>
 
     <!-- Flash Section -->
-    <section id="flash" class="flash">
+    <section id="sinkolor-flash" class="flash">
         <div class="container">
             <h2 class="section-title">Tattoos Flash</h2>
             <p class="section-subtitle">Disponibles dès maintenant.</p>
@@ -346,36 +520,29 @@
     <section id="services" class="services">
         <div class="container">
             <h2 class="section-title">Services</h2>
-            <p class="section-subtitle">Ce que je peux faire pour vous</p>
+            <p class="section-subtitle">Notre accompagnement</p>
             
             <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-pencil-ruler"></i>
-                    </div>
-                    <h3>Conception personnalisée</h3>
-                    <p>Je crée des designs uniques adaptés à vos envies et à votre personnalité. Chaque tatouage est une œuvre originale.</p>
-                </div>
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-palette"></i>
                     </div>
                     <h3>Spécialités</h3>
-                    <p>Manga, Disney, Pop Culture... Je me spécialise dans vos univers favoris pour créer des tatouages qui vous ressemblent.</p>
+                    <p>tatouage artistique et tatouage réparateur</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Hygiène & Sécurité</h3>
-                    <p>Respect strict des normes d'hygiène et de sécurité. Matériel stérilisé et environnement professionnel.</p>
+                    <h3>Hygiène</h3>
+                    <p>Respect strict des normes d’hygiène</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-comments"></i>
                     </div>
-                    <h3>Conseil personnalisé</h3>
-                    <p>Je vous accompagne dans le choix du design, de la taille et de l'emplacement pour un résultat optimal.</p>
+                    <h3>Accompagnement personnalisé</h3>
+                    <p>Nous vous accompagnons dans tout le processus de votre tatouage, que ce soit avant, pendant et après.</p>
                 </div>
             </div>
         </div>
@@ -412,8 +579,8 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="contact-details">
-                            <h3>Localisation</h3>
-                            <p>Toul, France<br>📍</p>
+                            <h3>Adresse du salon</h3>
+                            <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul<br>(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -461,6 +628,9 @@
                     <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="social-link">
                         <i class="fab fa-instagram"></i>
                     </a>
+                    <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -491,6 +661,7 @@
         </div>
     </div>
 
+    <script src="script.js"></script>
     <script>
     (function(){
         // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
@@ -782,6 +953,183 @@
 
         render();
     })();
+    
+    // Système de gestion des tarifs
+    (function(){
+        const ADMIN_PASSWORD = 'tattoo';
+        const TARIFS_STORAGE_KEY = 'tarifsData.v1';
+        const tarifsItems = document.getElementById('tarifsItems');
+        const toggleBtn = document.getElementById('toggleEditTarifs');
+        const addBtn = document.getElementById('addTarif');
+        
+        let editMode = false;
+        let isAuthorized = false;
+        
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('tarifsAuth') === '1'; } catch(e) { return false; }
+        }
+        
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('tarifsAuth','1');
+                else sessionStorage.removeItem('tarifsAuth');
+            } catch(e) {}
+        }
+        
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les tarifs :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
+        
+        function loadTarifs(){
+            const defaultTarifs = [
+                'Consultation: 0€ - 30€',
+                'Reconstruction aréolaire: Sur devis',
+                'Cicatrices/vergetures: Sur devis'
+            ];
+            try {
+                const raw = localStorage.getItem(TARIFS_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        return parsed.length === 0 ? defaultTarifs : parsed;
+                    }
+                }
+            } catch(e) {}
+            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(defaultTarifs)); } catch(e) {}
+            return defaultTarifs;
+        }
+        
+        function saveTarifs(tarifs){
+            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
+        }
+        
+        let tarifs = loadTarifs();
+        
+        function renderTarifs(){
+            tarifsItems.innerHTML = '';
+            tarifs.forEach((tarif, index) => {
+                const li = document.createElement('li');
+                li.textContent = tarif;
+                
+                if (editMode) {
+                    const controls = document.createElement('div');
+                    controls.style.display = 'flex';
+                    controls.style.gap = '8px';
+                    controls.style.marginTop = '4px';
+                    
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.style.fontSize = '0.8rem';
+                    editButton.style.padding = '4px 8px';
+                    editButton.addEventListener('click', () => editTarif(index));
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.style.fontSize = '0.8rem';
+                    deleteButton.style.padding = '4px 8px';
+                    deleteButton.addEventListener('click', () => deleteTarif(index));
+                    
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    li.appendChild(controls);
+                }
+                
+                tarifsItems.appendChild(li);
+            });
+        }
+        
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les tarifs';
+            renderTarifs();
+        }
+        
+        function editTarif(index){
+            if (!requestAuth()) return;
+            const newTarif = prompt('Nouveau tarif :', tarifs[index]) || tarifs[index];
+            tarifs[index] = newTarif;
+            saveTarifs(tarifs);
+            renderTarifs();
+        }
+        
+        function deleteTarif(index){
+            if (!requestAuth()) return;
+            if (!confirm('Supprimer ce tarif ?')) return;
+            tarifs.splice(index, 1);
+            saveTarifs(tarifs);
+            renderTarifs();
+        }
+        
+        function addNewTarif(){
+            if (!requestAuth()) return;
+            const newTarif = prompt('Nouveau tarif (ex: "Tatouage simple: 50€") :');
+            if (newTarif && newTarif.trim()) {
+                tarifs.push(newTarif.trim());
+                saveTarifs(tarifs);
+                renderTarifs();
+            }
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
+        });
+        
+        addBtn.addEventListener('click', addNewTarif);
+        
+        // Protection des actions
+        const _editTarif = editTarif;
+        const _deleteTarif = deleteTarif;
+        editTarif = function(index){ if (!requestAuth()) return; _editTarif(index); };
+        deleteTarif = function(index){ if (!requestAuth()) return; _deleteTarif(index); };
+        
+        renderTarifs();
+    })();
+    
+    // Fonction pour gérer les menus de contact
+    function toggleContactMenu(artist) {
+        const menu = document.getElementById(artist + '-contact-menu');
+        const allMenus = document.querySelectorAll('.contact-menu');
+        
+        // Fermer tous les autres menus
+        allMenus.forEach(m => {
+            if (m.id !== artist + '-contact-menu') {
+                m.style.display = 'none';
+            }
+        });
+        
+        // Toggle le menu actuel
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+    
+    // Fermer les menus quand on clique ailleurs
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.contact-dropdown')) {
+            const allMenus = document.querySelectorAll('.contact-menu');
+            allMenus.forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+    });
     </script>
 </body>
 </html>
