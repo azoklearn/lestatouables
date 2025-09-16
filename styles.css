@@ -112,6 +112,14 @@ h1, h2, h3, h4, h5, h6 {
 .nav-left { display:flex; align-items:center; gap: 14px; }
 .nav-left .nav-link { font-size: 1.1rem; }
 
+.nav-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
 .nav-menu {
     position: absolute;
     top: 100%;
