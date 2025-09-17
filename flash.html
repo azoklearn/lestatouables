@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash - Les Tatouables</title>
+    <meta name="description" content="Découvrez nos tatouages flash disponibles chez Les Tatouables - Salon de tatouage à Toul">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Styles spécifiques pour la page flash */
+        .flash-page-header {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .flash-page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .flash-page-header p {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+            margin-bottom: 2rem;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #ffffff;
+            color: #000;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+        }
+        
+        .flash-section {
+            padding: 4rem 0;
+            background: #2d2d2d;
+        }
+        
+        .flash-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .flash-search {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 2px solid #444;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+        
+        .flash-search:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+        
+        .flash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .flash-item {
+            position: relative;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .flash-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .flash-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+        }
+        
+        .flash-caption {
+            padding: 1rem;
+            color: #b8b8b8;
+            font-weight: 500;
+        }
+        
+        .flash-cta {
+            margin: 0 1rem 1rem;
+        }
+        
+        .flash-empty {
+            color: #b8b8b8;
+            text-align: center;
+            padding: 3rem;
+            border: 1px dashed #444;
+            border-radius: 12px;
+            background: #1a1a1a;
+            font-size: 1.1rem;
+        }
+        
+        .flash-dropzone {
+            margin-top: 1rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed #555;
+            border-radius: 12px;
+            color: #b8b8b8;
+            background: #1a1a1a;
+            transition: border-color 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .flash-dropzone.is-dragover {
+            border-color: #ffffff;
+            background: #222;
+        }
+        
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+        }
+        
+        .modal .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        
+        .modal.is-open .modal-backdrop {
+            opacity: 1;
+        }
+        
+        .modal .modal-dialog {
+            position: relative;
+            max-width: 640px;
+            margin: 10vh auto;
+            background: #2d2d2d;
+            border: 1px solid #333;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+        
+        .modal.is-open .modal-dialog {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.25rem;
+        }
+        
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.25rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid #333;
+        }
+        
+        .modal-hint {
+            color: #b8b8b8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .flash-page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .flash-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .flash-search {
+                min-width: auto;
+            }
+            
+            .flash-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container" style="position:relative;">
+            <div class="nav-left">
+                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="nav-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="nav-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:0602120638" class="nav-link" aria-label="Téléphone"><i class="fas fa-phone"></i></a>
+            </div>
+            <div class="nav-center">
+                <img src="images/logo.png" alt="Les Tatouables - Logo" style="height: 40px; width: auto; margin-top: -5px;">
+            </div>
+            <ul id="menu" class="nav-menu">
+                <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
+                <li>
+                    <a href="index.html#ldermo-presentation" class="nav-link">LDermo</a>
+                    <ul class="nav-submenu">
+                        <li><a href="index.html#ldermo-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="index.html#ldermo-tarifs" class="nav-link">Tarification</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="index.html#sinkolor-presentation" class="nav-link">Sinkolor</a>
+                    <ul class="nav-submenu">
+                        <li><a href="index.html#sinkolor-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Page Header -->
+    <section class="flash-page-header">
+        <div class="container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+            <h1>Tattoos Flash</h1>
+            <p>Découvrez nos créations disponibles dès maintenant</p>
+        </div>
+    </section>
+
+    <!-- Flash Section -->
+    <section class="flash-section">
+        <div class="container">
+            <div class="flash-controls" id="flashControls">
+                <input type="search" id="flashSearch" class="flash-search" placeholder="Rechercher un flash...">
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                    <button id="toggleEditFlash" class="btn btn-secondary" type="button">Gérer</button>
+                    <button id="addFlash" class="btn btn-primary" type="button" style="display:none;">Ajouter</button>
+                </div>
+            </div>
+            <div class="flash-grid" id="flashGrid"></div>
+            <div class="flash-empty" id="flashEmpty" style="display:none;">Aucun flash disponible.</div>
+        </div>
+    </section>
+
+    <!-- Modal: Ajouter des flashs -->
+    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
+            <div class="modal-header">
+                <h3 id="flashModalTitle">Ajouter des flashs</h3>
+                <button id="flashModalClose" class="modal-close" type="button" aria-label="Fermer">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="flashModalDropzone" class="flash-dropzone">
+                    Glissez-déposez des images ici, ou cliquez pour choisir
+                </div>
+                <input id="flashFileInput" type="file" accept="image/*" multiple style="display:none;">
+                <div class="modal-hint">Formats pris en charge: JPG, PNG, WEBP. Déposez plusieurs fichiers si besoin.</div>
+            </div>
+            <div class="modal-footer">
+                <button id="flashModalBrowse" class="btn btn-secondary" type="button">Choisir des fichiers</button>
+                <button id="flashModalDone" class="btn btn-primary" type="button">Terminer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+    (function(){
+        // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
+        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
+        const STORAGE_KEY = 'flashData.v1';
+        const grid = document.getElementById('flashGrid');
+        const emptyEl = document.getElementById('flashEmpty');
+        const searchInput = document.getElementById('flashSearch');
+        const toggleBtn = document.getElementById('toggleEditFlash');
+        const addBtn = document.getElementById('addFlash');
+        
+        // Modal elements
+        const modal = document.getElementById('flashModal');
+        const modalDialog = modal.querySelector('.modal-dialog');
+        const modalClose = document.getElementById('flashModalClose');
+        const modalDone = document.getElementById('flashModalDone');
+        const modalBrowse = document.getElementById('flashModalBrowse');
+        const modalDropzone = document.getElementById('flashModalDropzone');
+        const fileInput = document.getElementById('flashFileInput');
+
+        let editMode = false;
+        let isAuthorized = false;
+        let allFlashData = [];
+        let filteredData = [];
+
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('flashAuth') === '1'; } catch(e) { return false; }
+        }
+
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('flashAuth','1');
+                else sessionStorage.removeItem('flashAuth');
+            } catch(e) {}
+        }
+
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les flashs :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
+
+        function loadData(){
+            const seed = [
+                { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
+                { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
+                { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
+            ];
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        if (parsed.length === 0) {
+                            // Seed defaults if empty, so users always see something sans "Éditer"
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+                            return seed;
+                        }
+                        return parsed;
+                    }
+                }
+            } catch(e) {}
+            // No valid data in storage: seed with defaults
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(seed)); } catch(e) {}
+            return seed;
+        }
+
+        function saveData(data){
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        }
+
+        function cryptoRandomId(){
+            if (window.crypto && crypto.getRandomValues) {
+                const buf = new Uint32Array(4);
+                crypto.getRandomValues(buf);
+                return Array.from(buf).map(x => x.toString(16).padStart(8,'0')).join('');
+            }
+            return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        }
+
+        allFlashData = loadData();
+        filteredData = [...allFlashData];
+
+        function filterData(searchTerm) {
+            if (!searchTerm.trim()) {
+                filteredData = [...allFlashData];
+            } else {
+                filteredData = allFlashData.filter(item => 
+                    item.caption.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+            render();
+        }
+
+        function render(){
+            grid.innerHTML = '';
+            if (!filteredData.length){
+                emptyEl.style.display = 'block';
+                return;
+            }
+            emptyEl.style.display = 'none';
+            for (const item of filteredData){
+                const fig = document.createElement('figure');
+                fig.className = 'flash-item';
+
+                const img = document.createElement('img');
+                img.className = 'flash-img';
+                img.src = item.src;
+                img.alt = item.caption || 'Tatouage flash';
+
+                const caption = document.createElement('figcaption');
+                caption.className = 'flash-caption';
+                caption.textContent = item.caption || '';
+
+                const cta = document.createElement('a');
+                cta.className = 'btn btn-primary flash-cta';
+                cta.href = 'index.html#contact';
+                cta.textContent = 'Réserver';
+
+                fig.appendChild(img);
+                fig.appendChild(caption);
+                fig.appendChild(cta);
+
+                if (editMode){
+                    const controls = document.createElement('div');
+                    controls.style.display = 'flex';
+                    controls.style.gap = '8px';
+                    controls.style.padding = '0 1rem 1rem';
+
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.addEventListener('click', () => editItem(item.id));
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.addEventListener('click', () => deleteItem(item.id));
+
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    fig.appendChild(controls);
+                }
+
+                grid.appendChild(fig);
+            }
+        }
+
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer';
+            render();
+        }
+
+        function openModal(){
+            modal.style.display = '';
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => modal.classList.add('is-open'));
+        }
+
+        function closeModal(){
+            modal.classList.remove('is-open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // small timeout to allow transition if any
+            setTimeout(() => { modal.style.display = 'none'; }, 150);
+        }
+
+        function editItem(id){
+            const idx = allFlashData.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            const current = allFlashData[idx];
+            const newCaption = prompt('Nouvelle légende :', current.caption || '') || (current.caption || '');
+            allFlashData[idx] = { ...current, caption: newCaption };
+            saveData(allFlashData);
+            filterData(searchInput.value);
+        }
+
+        function deleteItem(id){
+            if (!confirm('Supprimer ce flash ?')) return;
+            allFlashData = allFlashData.filter(x => x.id !== id);
+            saveData(allFlashData);
+            filterData(searchInput.value);
+        }
+
+        function handleFiles(files){
+            const fileArray = Array.from(files || []);
+            if (!fileArray.length) return;
+            let addedCount = 0;
+            let processed = 0;
+            fileArray.forEach(file => {
+                if (!file.type || !file.type.startsWith('image/')) { processed++; return; }
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const src = String(reader.result || '');
+                    if (src) {
+                        const baseName = (file.name || '').split('\\').pop().split('/').pop();
+                        const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
+                        allFlashData.unshift({ id: cryptoRandomId(), src, caption: nameNoExt || 'Flash' });
+                        addedCount++;
+                    }
+                    processed++;
+                    if (processed === fileArray.length){
+                        if (addedCount){ saveData(allFlashData); filterData(searchInput.value); }
+                    }
+                };
+                reader.onerror = () => { processed++; if (processed === fileArray.length){ if (addedCount){ saveData(allFlashData); filterData(searchInput.value); } } };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            filterData(e.target.value);
+        });
+
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
+        });
+        
+        addBtn.addEventListener('click', () => {
+            if (!requestAuth()) return;
+            openModal();
+        });
+
+        // Modal events
+        modalClose.addEventListener('click', closeModal);
+        modalDone.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display !== 'none') closeModal();
+        });
+        modalBrowse.addEventListener('click', () => fileInput.click());
+        modalDropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files && files.length){ handleFiles(files); }
+            fileInput.value = '';
+            closeModal();
+        });
+        ;['dragenter','dragover'].forEach(evt => modalDropzone.addEventListener(evt, (e) => {
+            e.preventDefault(); e.stopPropagation();
+            modalDropzone.classList.add('is-dragover');
+        }));
+        ;['dragleave','drop'].forEach(evt => modalDropzone.addEventListener(evt, (e) => {
+            e.preventDefault(); e.stopPropagation();
+            modalDropzone.classList.remove('is-dragover');
+        }));
+        modalDropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            if (dt && dt.files){ handleFiles(dt.files); closeModal(); }
+        });
+
+        // Protection des actions
+        const _editItem = editItem;
+        const _deleteItem = deleteItem;
+        editItem = function(id){ if (!requestAuth()) return; _editItem(id); };
+        deleteItem = function(id){ if (!requestAuth()) return; _deleteItem(id); };
+
+        // Expose for inline handlers si besoin (protégées)
+        window.__flashAdmin = { addItem: openModal, editItem, deleteItem };
+
+        render();
+    })();
+    </script>
+</body>
+</html>
