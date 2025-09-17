@@ -56,13 +56,17 @@
         }
         .hero-address p {
             font-size: 1.1rem;
-            color: #555;
+            color: #ffffff;
             margin-bottom: 0.3rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.7);
         }
         .hero-distance {
             font-style: italic;
-            color: #666;
+            color: #ffffff;
             font-size: 0.95rem;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.7);
         }
         .hero-phone {
             margin-top: 1rem;
@@ -235,7 +239,7 @@
                     <a href="#sinkolor-presentation" class="nav-link">Sinkolor</a>
                     <ul class="nav-submenu">
                         <li><a href="#sinkolor-presentation" class="nav-link">Présentation</a></li>
-                        <li><a href="#sinkolor-flash" class="nav-link">Flash disponibles</a></li>
+                        <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
                     </ul>
                 </li>
             </ul>
@@ -364,12 +368,6 @@
                     <p>Son aptitude à utiliser de nombreuses techniques de tatouage et dans sa volonté de rendre ses œuvres toujours plus exceptionnelles, Sinkolor est en mesure de travailler avec un grand choix de couleurs et avec un large panel d’aiguilles qui vous permettra d’obtenir des tatouages aux tracés des plus fins au plus épais.</p>
                     <p>Très à l’écoute du client, professionnel et délicat, Sinkolor saura se montrer des plus réactif pour que votre projet soit à la hauteur de vos exigences et pour que votre séance se passe dans les meilleures conditions.</p>
                     <p>Que votre tatouage soit en noir et blanc, en couleurs, fin, épais, dans ses spécialités ou non, Sinkolor saura vous satisfaire à tous les coups!</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>100%</h3>
-                            <p>Satisfaction client</p>
-                        </div>
-                    </div>
                     <div class="contact-buttons" style="margin-top:1rem;">
                         <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
                             <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('sinkolor')">
@@ -388,7 +386,7 @@
                                 </a>
                             </div>
                         </div>
-                        <a href="#sinkolor-flash" class="btn btn-secondary" style="display:inline-block;">Flash disponibles</a>
+                        <a href="flash.html" class="btn btn-secondary" style="display:inline-block;">Flash disponibles</a>
                     </div>
                 </div>
                 <div class="about-image">
@@ -398,19 +396,6 @@
         </div>
     </section>
 
-    <!-- Flash Section -->
-    <section id="sinkolor-flash" class="flash">
-        <div class="container">
-            <h2 class="section-title">Tattoos Flash</h2>
-            <p class="section-subtitle">Disponibles dès maintenant.</p>
-            <div class="flash-controls" id="flashControls" style="display:flex; justify-content:flex-end;">
-                <button id="toggleEditFlash" class="btn btn-secondary" type="button">Gérer</button>
-                <button id="addFlash" class="btn btn-primary" type="button" style="display:none;">Ajouter</button>
-            </div>
-            <div class="flash-grid" id="flashGrid"></div>
-            <div class="flash-empty" id="flashEmpty" style="display:none;">Aucun flash disponible.</div>
-        </div>
-    </section>
 
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio">
@@ -713,321 +698,9 @@
         </div>
     </footer>
 
-    <!-- Modal: Ajouter des flashs -->
-    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
-            <div class="modal-header">
-                <h3 id="flashModalTitle">Ajouter des flashs</h3>
-                <button id="flashModalClose" class="modal-close" type="button" aria-label="Fermer">×</button>
-            </div>
-            <div class="modal-body">
-                <div id="flashModalDropzone" class="flash-dropzone">
-                    Glissez-déposez des images ici, ou cliquez pour choisir
-                </div>
-                <input id="flashFileInput" type="file" accept="image/*" multiple style="display:none;">
-                <div class="modal-hint">Formats pris en charge: JPG, PNG, WEBP. Déposez plusieurs fichiers si besoin.</div>
-            </div>
-            <div class="modal-footer">
-                <button id="flashModalBrowse" class="btn btn-secondary" type="button">Choisir des fichiers</button>
-                <button id="flashModalDone" class="btn btn-primary" type="button">Terminer</button>
-            </div>
-        </div>
-    </div>
 
     <script src="script.js"></script>
     <script>
-    (function(){
-        // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
-        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const STORAGE_KEY = 'flashData.v1';
-        const grid = document.getElementById('flashGrid');
-        const emptyEl = document.getElementById('flashEmpty');
-        const toggleBtn = document.getElementById('toggleEditFlash');
-        const addBtn = document.getElementById('addFlash');
-        // Removed export/import controls
-        // Modal elements
-        const modal = document.getElementById('flashModal');
-        const modalDialog = modal.querySelector('.modal-dialog');
-        const modalClose = document.getElementById('flashModalClose');
-        const modalDone = document.getElementById('flashModalDone');
-        const modalBrowse = document.getElementById('flashModalBrowse');
-        const modalDropzone = document.getElementById('flashModalDropzone');
-        const fileInput = document.getElementById('flashFileInput');
-
-        let editMode = false;
-        let isAuthorized = false;
-
-        function hasSessionAuth(){
-            try { return sessionStorage.getItem('flashAuth') === '1'; } catch(e) { return false; }
-        }
-
-        function setSessionAuth(on){
-            try {
-                if (on) sessionStorage.setItem('flashAuth','1');
-                else sessionStorage.removeItem('flashAuth');
-            } catch(e) {}
-        }
-
-        function requestAuth(){
-            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
-            const pwd = prompt('Entrez le mot de passe pour éditer les flashs :');
-            if (pwd === ADMIN_PASSWORD){
-                isAuthorized = true;
-                setSessionAuth(true);
-                return true;
-            }
-            alert('Mot de passe incorrect');
-            return false;
-        }
-
-        function loadData(){
-            const seed = [
-                { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
-                { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
-                { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
-            ];
-            try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        if (parsed.length === 0) {
-                            // Seed defaults if empty, so users always see something sans "Éditer"
-                            localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
-                            return seed;
-                        }
-                        return parsed;
-                    }
-                }
-            } catch(e) {}
-            // No valid data in storage: seed with defaults
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(seed)); } catch(e) {}
-            return seed;
-        }
-
-        function saveData(data){
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
-        }
-
-        function cryptoRandomId(){
-            if (window.crypto && crypto.getRandomValues) {
-                const buf = new Uint32Array(4);
-                crypto.getRandomValues(buf);
-                return Array.from(buf).map(x => x.toString(16).padStart(8,'0')).join('');
-            }
-            return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-        }
-
-        let data = loadData();
-
-        function render(){
-            grid.innerHTML = '';
-            if (!data.length){
-                emptyEl.style.display = 'block';
-                return;
-            }
-            emptyEl.style.display = 'none';
-            for (const item of data){
-                const fig = document.createElement('figure');
-                fig.className = 'flash-item';
-
-                const img = document.createElement('img');
-                img.className = 'flash-img';
-                img.src = item.src;
-                img.alt = item.caption || 'Tatouage flash';
-
-                const caption = document.createElement('figcaption');
-                caption.className = 'flash-caption';
-                caption.textContent = item.caption || '';
-
-                const cta = document.createElement('a');
-                cta.className = 'btn btn-primary flash-cta';
-                cta.href = '#contact';
-                cta.textContent = 'Réserver';
-
-                fig.appendChild(img);
-                fig.appendChild(caption);
-                fig.appendChild(cta);
-
-                if (editMode){
-                    const controls = document.createElement('div');
-                    controls.style.display = 'flex';
-                    controls.style.gap = '8px';
-                    controls.style.padding = '0 1rem 1rem';
-
-                    const editButton = document.createElement('button');
-                    editButton.className = 'btn btn-secondary';
-                    editButton.type = 'button';
-                    editButton.textContent = 'Modifier';
-                    editButton.addEventListener('click', () => editItem(item.id));
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.className = 'btn btn-secondary';
-                    deleteButton.type = 'button';
-                    deleteButton.textContent = 'Supprimer';
-                    deleteButton.addEventListener('click', () => deleteItem(item.id));
-
-                    controls.appendChild(editButton);
-                    controls.appendChild(deleteButton);
-                    fig.appendChild(controls);
-                }
-
-                grid.appendChild(fig);
-            }
-        }
-
-        function setEditMode(on){
-            editMode = !!on;
-            addBtn.style.display = on ? '' : 'none';
-            toggleBtn.textContent = on ? 'Terminer' : 'Gérer';
-            render();
-        }
-
-        function openModal(){
-            modal.style.display = '';
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => modal.classList.add('is-open'));
-        }
-
-        function closeModal(){
-            modal.classList.remove('is-open');
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-            // small timeout to allow transition if any
-            setTimeout(() => { modal.style.display = 'none'; }, 150);
-        }
-
-        function editItem(id){
-            const idx = data.findIndex(x => x.id === id);
-            if (idx === -1) return;
-            const current = data[idx];
-            const newCaption = prompt('Nouvelle légende :', current.caption || '') || (current.caption || '');
-            data[idx] = { ...current, caption: newCaption };
-            saveData(data);
-            render();
-        }
-
-        function deleteItem(id){
-            if (!confirm('Supprimer ce flash ?')) return;
-            data = data.filter(x => x.id !== id);
-            saveData(data);
-            render();
-        }
-
-        function exportData(){
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'flash.json';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-        }
-
-        function importData(file){
-            const reader = new FileReader();
-            reader.onload = () => {
-                try {
-                    const next = JSON.parse(String(reader.result || ''));
-                    if (Array.isArray(next)){
-                        data = next.map(item => ({ id: item.id || cryptoRandomId(), src: item.src, caption: item.caption || '' }))
-                                   .filter(item => typeof item.src === 'string' && item.src);
-                        saveData(data);
-                        render();
-                    } else {
-                        alert('Fichier invalide');
-                    }
-                } catch(e){
-                    alert('Échec de l\'import');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function handleFiles(files){
-            const fileArray = Array.from(files || []);
-            if (!fileArray.length) return;
-            let addedCount = 0;
-            let processed = 0;
-            fileArray.forEach(file => {
-                if (!file.type || !file.type.startsWith('image/')) { processed++; return; }
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const src = String(reader.result || '');
-                    if (src) {
-                        const baseName = (file.name || '').split('\\').pop().split('/').pop();
-                        const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
-                        data.unshift({ id: cryptoRandomId(), src, caption: nameNoExt || 'Flash' });
-                        addedCount++;
-                    }
-                    processed++;
-                    if (processed === fileArray.length){
-                        if (addedCount){ saveData(data); render(); }
-                    }
-                };
-                reader.onerror = () => { processed++; if (processed === fileArray.length){ if (addedCount){ saveData(data); render(); } } };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            if (!editMode) {
-                if (!requestAuth()) return;
-            }
-            setEditMode(!editMode);
-        });
-        addBtn.addEventListener('click', () => {
-            if (!requestAuth()) return;
-            openModal();
-        });
-        // export/import listeners removed
-
-        // Modal events
-        modalClose.addEventListener('click', closeModal);
-        modalDone.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display !== 'none') closeModal();
-        });
-        modalBrowse.addEventListener('click', () => fileInput.click());
-        modalDropzone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => {
-            const files = e.target.files;
-            if (files && files.length){ handleFiles(files); }
-            fileInput.value = '';
-            closeModal();
-        });
-        ;['dragenter','dragover'].forEach(evt => modalDropzone.addEventListener(evt, (e) => {
-            e.preventDefault(); e.stopPropagation();
-            modalDropzone.classList.add('is-dragover');
-        }));
-        ;['dragleave','drop'].forEach(evt => modalDropzone.addEventListener(evt, (e) => {
-            e.preventDefault(); e.stopPropagation();
-            modalDropzone.classList.remove('is-dragover');
-        }));
-        modalDropzone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            if (dt && dt.files){ handleFiles(dt.files); closeModal(); }
-        });
-
-        // Protéger aussi les actions Modifier/Supprimer au cas où
-        const _editItem = editItem;
-        const _deleteItem = deleteItem;
-        editItem = function(id){ if (!requestAuth()) return; _editItem(id); };
-        deleteItem = function(id){ if (!requestAuth()) return; _deleteItem(id); };
-
-        // Expose for inline handlers si besoin (protégées)
-        window.__flashAdmin = { addItem: openModal, editItem, deleteItem };
-
-        render();
-    })();
-    
     // Système de gestion des tarifs
     (function(){
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
