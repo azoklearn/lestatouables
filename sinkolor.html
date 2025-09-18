@@ -115,6 +115,23 @@
                 box-shadow: none !important;
             }
             
+            /* Supprimer complètement les conteneurs gris */
+            .portfolio .portfolio-item,
+            .portfolio .portfolio-image,
+            .portfolio .portfolio-overlay {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            /* Forcer les images à être directement visibles */
+            .portfolio .portfolio-image {
+                display: block !important;
+                background: transparent !important;
+            }
+            
             .portfolio-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
