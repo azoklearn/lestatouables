@@ -87,7 +87,7 @@
             }
             
             /* Images des créations plus petites sur mobile */
-            .portfolio-image img {
+            .portfolio .portfolio-image img {
                 max-width: 120px !important;
                 height: auto !important;
                 border: none !important;
@@ -95,7 +95,7 @@
                 border-radius: 0 !important;
             }
             
-            .portfolio-item {
+            .portfolio .portfolio-item {
                 margin-bottom: 10px !important;
                 border: none !important;
                 box-shadow: none !important;
@@ -103,10 +103,16 @@
                 border-radius: 0 !important;
             }
             
-            .portfolio-image {
+            .portfolio .portfolio-image {
                 border: none !important;
                 border-radius: 0 !important;
                 overflow: visible !important;
+            }
+            
+            /* Forcer la suppression des bordures sur tous les éléments portfolio */
+            .portfolio * {
+                border: none !important;
+                box-shadow: none !important;
             }
             
             .portfolio-grid {
