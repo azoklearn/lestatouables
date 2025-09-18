@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarification LDermo - Les Tatouables</title>
+    <meta name="description" content="Découvrez les tarifs de LDermo pour la dermopigmentation et le tatouage réparateur - Les Tatouables">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Styles spécifiques pour la page tarification */
+        .tarifs-page-header {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .tarifs-page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tarifs-page-header p {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+            margin-bottom: 2rem;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #ffffff;
+            color: #000;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+        }
+        
+        .tarifs-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tarifs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .tarif-item {
+            background: #2d2d2d;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tarif-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .tarif-item h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .tarif-item p {
+            color: #b8b8b8;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .tarif-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 1rem;
+        }
+        
+        .tarif-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tarif-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #b8b8b8;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            .tarifs-page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tarifs-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .tarifs-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container" style="position:relative;">
+            <div class="nav-left">
+                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="nav-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="nav-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:0602120638" class="nav-link" aria-label="Téléphone"><i class="fas fa-phone"></i></a>
+            </div>
+            <div class="nav-center">
+            </div>
+            <ul id="menu" class="nav-menu">
+                <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
+                <li><a href="ldermo.html" class="nav-link">LDermo</a></li>
+                <li><a href="sinkolor.html" class="nav-link">Sinkolor</a></li>
+                <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="tarifs-page-header">
+        <div class="container">
+            <a href="ldermo.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Retour à LDermo
+            </a>
+            <h1>Tarification LDermo</h1>
+            <p>Découvrez nos tarifs pour la dermopigmentation et le tatouage réparateur</p>
+        </div>
+    </section>
+
+    <!-- Tarification Section -->
+    <section class="ldermo">
+        <div class="container">
+            <div class="tarifs-controls" id="tarifsControls">
+                <button id="toggleEditTarifs" class="btn btn-primary" type="button" style="background: linear-gradient(135deg, #2c3e50, #34495e); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-edit" style="margin-right: 8px;"></i>Gérer les tarifs
+                </button>
+                <button id="addTarif" class="btn btn-secondary" type="button" style="display:none; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-plus" style="margin-right: 8px;"></i>Ajouter un tarif
+                </button>
+            </div>
+            
+            <div class="tarifs-grid" id="tarifsGrid">
+                <!-- Les tarifs seront générés dynamiquement -->
+            </div>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-euro-sign"></i>
+                <h3>Aucun tarif disponible</h3>
+                <p>Les tarifs seront bientôt disponibles</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <p class="section-subtitle">Parlons de votre projet</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Téléphone</h3>
+                            <p><a href="tel:0602120638">0602120638</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Adresse du salon</h3>
+                            <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul<br>(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Demander un devis</h3>
+                    <form id="contactForm" method="POST" action="https://formsubmit.co/lestatouables@gmail.com">
+                        <input type="hidden" name="_subject" value="Nouvelle demande de devis - LDermo">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Votre email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Décrivez votre projet de tatouage réparateur" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Les Tatouables</h3>
+                    <p>Salon de Tatoueurs Professionnels</p>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Les Tatouables . Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // Système de gestion des tarifs
+    (function(){
+        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
+        const TARIFS_STORAGE_KEY = 'ldermoTarifs.v1';
+        const tarifsGrid = document.getElementById('tarifsGrid');
+        const emptyState = document.getElementById('emptyState');
+        const toggleBtn = document.getElementById('toggleEditTarifs');
+        const addBtn = document.getElementById('addTarif');
+        
+        let editMode = false;
+        let isAuthorized = false;
+        
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('tarifsAuth') === '1'; } catch(e) { return false; }
+        }
+        
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('tarifsAuth','1');
+                else sessionStorage.removeItem('tarifsAuth');
+            } catch(e) {}
+        }
+        
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les tarifs :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
+        
+        function loadTarifs(){
+            const defaultTarifs = [
+                { 
+                    id: '1',
+                    title: 'Consultation',
+                    description: 'Première consultation pour évaluer votre projet et définir la méthode adaptée',
+                    price: '0€ - 30€'
+                },
+                { 
+                    id: '2',
+                    title: 'Reconstruction aréolaire',
+                    description: 'Reconstruction complète de l\'aréole mammaire après chirurgie',
+                    price: 'Sur devis'
+                },
+                { 
+                    id: '3',
+                    title: 'Cicatrices et vergetures',
+                    description: 'Camouflage et amélioration de l\'apparence des cicatrices et vergetures',
+                    price: 'Sur devis'
+                }
+            ];
+            try {
+                const raw = localStorage.getItem(TARIFS_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        return parsed.length === 0 ? defaultTarifs : parsed;
+                    }
+                }
+            } catch(e) {}
+            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(defaultTarifs)); } catch(e) {}
+            return defaultTarifs;
+        }
+        
+        function saveTarifs(tarifs){
+            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
+        }
+        
+        let tarifs = loadTarifs();
+        
+        function renderTarifs(){
+            tarifsGrid.innerHTML = '';
+            if (tarifs.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+            
+            tarifs.forEach((tarif, index) => {
+                const div = document.createElement('div');
+                div.className = 'tarif-item';
+                
+                const title = document.createElement('h3');
+                title.textContent = tarif.title;
+                
+                const description = document.createElement('p');
+                description.textContent = tarif.description;
+                
+                const price = document.createElement('div');
+                price.className = 'tarif-price';
+                price.textContent = tarif.price;
+                
+                const cta = document.createElement('a');
+                cta.className = 'tarif-cta';
+                cta.href = '#contact';
+                cta.textContent = 'Demander un devis';
+                
+                div.appendChild(title);
+                div.appendChild(description);
+                div.appendChild(price);
+                div.appendChild(cta);
+                
+                if (editMode) {
+                    const controls = document.createElement('div');
+                    controls.style.cssText = 'position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 10;';
+                    
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.style.fontSize = '0.7rem';
+                    editButton.style.padding = '4px 8px';
+                    editButton.addEventListener('click', () => editTarif(index));
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.style.fontSize = '0.7rem';
+                    deleteButton.style.padding = '4px 8px';
+                    deleteButton.addEventListener('click', () => deleteTarif(index));
+                    
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    div.style.position = 'relative';
+                    div.appendChild(controls);
+                }
+                
+                tarifsGrid.appendChild(div);
+            });
+        }
+        
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les tarifs';
+            renderTarifs();
+        }
+        
+        function editTarif(index){
+            if (!requestAuth()) return;
+            const newTitle = prompt('Nouveau titre :', tarifs[index].title) || tarifs[index].title;
+            const newDescription = prompt('Nouvelle description :', tarifs[index].description) || tarifs[index].description;
+            const newPrice = prompt('Nouveau prix :', tarifs[index].price) || tarifs[index].price;
+            tarifs[index] = { ...tarifs[index], title: newTitle, description: newDescription, price: newPrice };
+            saveTarifs(tarifs);
+            renderTarifs();
+        }
+        
+        function deleteTarif(index){
+            if (!requestAuth()) return;
+            if (!confirm('Supprimer ce tarif ?')) return;
+            tarifs.splice(index, 1);
+            saveTarifs(tarifs);
+            renderTarifs();
+        }
+        
+        function addNewTarif(){
+            if (!requestAuth()) return;
+            const newTitle = prompt('Titre du nouveau tarif :');
+            const newDescription = prompt('Description :');
+            const newPrice = prompt('Prix :');
+            if (newTitle && newTitle.trim() && newDescription && newDescription.trim() && newPrice && newPrice.trim()) {
+                const newId = Date.now().toString();
+                tarifs.push({ 
+                    id: newId, 
+                    title: newTitle.trim(), 
+                    description: newDescription.trim(), 
+                    price: newPrice.trim() 
+                });
+                saveTarifs(tarifs);
+                renderTarifs();
+            }
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
+        });
+        
+        addBtn.addEventListener('click', addNewTarif);
+        
+        renderTarifs();
+    })();
+    </script>
+</body>
+</html>

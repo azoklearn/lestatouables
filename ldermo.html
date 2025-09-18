@@ -234,6 +234,48 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #2c3e50;
         }
+        
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            cursor: pointer;
+        }
+        
+        .lightbox-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .lightbox img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .lightbox-close:hover {
+            color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -246,13 +288,11 @@
                 <a href="tel:0602120638" class="nav-link" aria-label="Téléphone"><i class="fas fa-phone"></i></a>
             </div>
             <div class="nav-center">
-                <a href="index.html">
-                    <img src="images/logo.png" alt="Les Tatouables - Logo" style="height: 40px; width: auto; margin-top: -5px;">
-                </a>
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
                 <li><a href="sinkolor.html" class="nav-link">Sinkolor</a></li>
+                <li><a href="ldermo-tarifs.html" class="nav-link">Tarification</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
@@ -266,9 +306,6 @@
     <!-- Hero Section -->
     <section id="accueil" class="hero">
         <div class="hero-info">
-            <div class="hero-logo-right">
-                <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 20px auto;">
-            </div>
             <h1 style="text-align: center; color: #2c3e50; font-size: 3rem; margin-bottom: 2rem;">LDermo</h1>
             <p style="text-align: center; color: #2c3e50; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Spécialiste en tatouage réparateur et dermopigmentation</p>
         </div>
@@ -304,42 +341,17 @@
                                 </a>
                             </div>
                         </div>
-                        <a href="#ldermo-tarifs" class="btn btn-secondary" style="display:inline-block;">Tarification</a>
+                        <a href="ldermo-tarifs.html" class="btn btn-secondary" style="display:inline-block;">Tarification</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- LDermo Tarification -->
-    <section id="ldermo-tarifs" class="ldermo">
-        <div class="container">
-            <h2 class="section-title">Tarification</h2>
-            
-            <div class="tarifs-controls" id="tarifsControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
-                <button id="toggleEditTarifs" class="btn btn-secondary" type="button">Gérer les tarifs</button>
-                <button id="addTarif" class="btn btn-primary" type="button" style="display:none;">Ajouter un tarif</button>
-            </div>
-            
-            <div class="ldermo-grid">
-                <div class="ldermo-text">
-                    <div id="tarifsList">
-                        <ul id="tarifsItems">
-                            <li>Consultation: 0€ - 30€</li>
-                            <li>Reconstruction aréolaire: Sur devis</li>
-                            <li>Cicatrices/vergetures: Sur devis</li>
-                        </ul>
-                    </div>
-                    <a href="#contact" class="btn btn-primary" style="margin-top:1rem;">Contact</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Portfolio Section -->
     <section id="portfolio" class="portfolio">
         <div class="container">
-            <h2 class="section-title">Créations</h2>
             <p class="section-subtitle">Découvrez les réalisations de LDermo</p>
             
             <div class="portfolio-controls" id="portfolioControls" style="display:flex; justify-content:center; margin-bottom: 3rem; margin-top: 2rem; gap: 1.5rem; padding: 1.5rem 0;">
@@ -463,155 +475,16 @@
         </div>
     </footer>
 
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
-    // Système de gestion des tarifs
-    (function(){
-        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const TARIFS_STORAGE_KEY = 'tarifsData.v1';
-        const tarifsItems = document.getElementById('tarifsItems');
-        const toggleBtn = document.getElementById('toggleEditTarifs');
-        const addBtn = document.getElementById('addTarif');
-        
-        let editMode = false;
-        let isAuthorized = false;
-        
-        function hasSessionAuth(){
-            try { return sessionStorage.getItem('tarifsAuth') === '1'; } catch(e) { return false; }
-        }
-        
-        function setSessionAuth(on){
-            try {
-                if (on) sessionStorage.setItem('tarifsAuth','1');
-                else sessionStorage.removeItem('tarifsAuth');
-            } catch(e) {}
-        }
-        
-        function requestAuth(){
-            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
-            const pwd = prompt('Entrez le mot de passe pour éditer les tarifs :');
-            if (pwd === ADMIN_PASSWORD){
-                isAuthorized = true;
-                setSessionAuth(true);
-                return true;
-            }
-            alert('Mot de passe incorrect');
-            return false;
-        }
-        
-        function loadTarifs(){
-            const defaultTarifs = [
-                'Consultation: 0€ - 30€',
-                'Reconstruction aréolaire: Sur devis',
-                'Cicatrices/vergetures: Sur devis'
-            ];
-            try {
-                const raw = localStorage.getItem(TARIFS_STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        return parsed.length === 0 ? defaultTarifs : parsed;
-                    }
-                }
-            } catch(e) {}
-            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(defaultTarifs)); } catch(e) {}
-            return defaultTarifs;
-        }
-        
-        function saveTarifs(tarifs){
-            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
-        }
-        
-        let tarifs = loadTarifs();
-        
-        function renderTarifs(){
-            tarifsItems.innerHTML = '';
-            tarifs.forEach((tarif, index) => {
-                const li = document.createElement('li');
-                li.textContent = tarif;
-                
-                if (editMode) {
-                    const controls = document.createElement('div');
-                    controls.style.display = 'flex';
-                    controls.style.gap = '8px';
-                    controls.style.marginTop = '4px';
-                    
-                    const editButton = document.createElement('button');
-                    editButton.className = 'btn btn-secondary';
-                    editButton.type = 'button';
-                    editButton.textContent = 'Modifier';
-                    editButton.style.fontSize = '0.8rem';
-                    editButton.style.padding = '4px 8px';
-                    editButton.addEventListener('click', () => editTarif(index));
-                    
-                    const deleteButton = document.createElement('button');
-                    deleteButton.className = 'btn btn-secondary';
-                    deleteButton.type = 'button';
-                    deleteButton.textContent = 'Supprimer';
-                    deleteButton.style.fontSize = '0.8rem';
-                    deleteButton.style.padding = '4px 8px';
-                    deleteButton.addEventListener('click', () => deleteTarif(index));
-                    
-                    controls.appendChild(editButton);
-                    controls.appendChild(deleteButton);
-                    li.appendChild(controls);
-                }
-                
-                tarifsItems.appendChild(li);
-            });
-        }
-        
-        function setEditMode(on){
-            editMode = !!on;
-            addBtn.style.display = on ? '' : 'none';
-            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les tarifs';
-            renderTarifs();
-        }
-        
-        function editTarif(index){
-            if (!requestAuth()) return;
-            const newTarif = prompt('Nouveau tarif :', tarifs[index]) || tarifs[index];
-            tarifs[index] = newTarif;
-            saveTarifs(tarifs);
-            renderTarifs();
-        }
-        
-        function deleteTarif(index){
-            if (!requestAuth()) return;
-            if (!confirm('Supprimer ce tarif ?')) return;
-            tarifs.splice(index, 1);
-            saveTarifs(tarifs);
-            renderTarifs();
-        }
-        
-        function addNewTarif(){
-            if (!requestAuth()) return;
-            const newTarif = prompt('Nouveau tarif (ex: "Tatouage simple: 50€") :');
-            if (newTarif && newTarif.trim()) {
-                tarifs.push(newTarif.trim());
-                saveTarifs(tarifs);
-                renderTarifs();
-            }
-        }
-        
-        toggleBtn.addEventListener('click', () => {
-            if (!editMode) {
-                if (!requestAuth()) return;
-            }
-            setEditMode(!editMode);
-        });
-        
-        addBtn.addEventListener('click', addNewTarif);
-        
-        // Protection des actions
-        const _editTarif = editTarif;
-        const _deleteTarif = deleteTarif;
-        editTarif = function(index){ if (!requestAuth()) return; _editTarif(index); };
-        deleteTarif = function(index){ if (!requestAuth()) return; _deleteTarif(index); };
-        
-        renderTarifs();
-    })();
-    
     // Système de gestion des créations
     (function(){
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
@@ -698,6 +571,8 @@
                 img.src = creation.src;
                 img.alt = creation.alt;
                 img.loading = 'lazy';
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', () => openLightbox(creation.src, creation.alt));
                 
                 portfolioImage.appendChild(img);
                 
@@ -781,6 +656,31 @@
         
         renderCreations();
     })();
+    
+    // Fonctions pour la lightbox
+    function openLightbox(src, alt) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
+        lightbox.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Event listeners pour la lightbox
+    document.getElementById('lightbox').addEventListener('click', closeLightbox);
+    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
     
     // Fonction pour gérer les menus de contact
     function toggleContactMenu(artist) {
