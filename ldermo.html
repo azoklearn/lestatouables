@@ -96,11 +96,21 @@
             }
             
             .portfolio .portfolio-item {
-                margin-bottom: 10px !important;
+                margin-bottom: 2px !important;
                 border: none !important;
                 box-shadow: none !important;
                 background: transparent !important;
                 border-radius: 0 !important;
+            }
+            
+            /* Forcer l'espacement réduit sur tous les éléments portfolio */
+            .portfolio .portfolio-grid {
+                gap: 8px !important;
+                row-gap: 8px !important;
+            }
+            
+            .portfolio .portfolio-item * {
+                margin-bottom: 0 !important;
             }
             
             .portfolio .portfolio-image {
@@ -134,7 +144,9 @@
             
             .portfolio-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
+                gap: 8px !important;
+                row-gap: 8px !important;
+                display: grid !important;
             }
         }
         
@@ -148,6 +160,64 @@
             color: #ffffff !important;
             text-shadow: 0 2px 8px rgba(0,0,0,0.7);
             font-weight: 500;
+        }
+        
+        /* Forcer l'espacement réduit globalement */
+        .portfolio .portfolio-item {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .portfolio .portfolio-image {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .portfolio .portfolio-overlay {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .portfolio .portfolio-overlay h3,
+        .portfolio .portfolio-overlay p {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* Styles globaux pour forcer l'espacement réduit */
+        .portfolio * {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .portfolio .portfolio-grid {
+            gap: 8px !important;
+            row-gap: 8px !important;
+        }
+        
+        .portfolio .portfolio-item {
+            margin-bottom: 8px !important;
+        }
+        
+        /* Supprimer complètement les overlays */
+        .portfolio .portfolio-overlay {
+            display: none !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* Forcer les images à prendre tout l'espace */
+        .portfolio .portfolio-image {
+            height: auto !important;
+            min-height: 0 !important;
+        }
+        
+        .portfolio .portfolio-image img {
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
         }
         
         /* Personnalisation de la barre de défilement */
@@ -272,9 +342,13 @@
             <h2 class="section-title">Créations</h2>
             <p class="section-subtitle">Découvrez les réalisations de LDermo</p>
             
-            <div class="portfolio-controls" id="portfolioControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
-                <button id="toggleEditPortfolio" class="btn btn-secondary" type="button">Gérer les créations</button>
-                <button id="addCreation" class="btn btn-primary" type="button" style="display:none;">Ajouter une création</button>
+            <div class="portfolio-controls" id="portfolioControls" style="display:flex; justify-content:center; margin-bottom: 3rem; margin-top: 2rem; gap: 1.5rem; padding: 1.5rem 0;">
+                <button id="toggleEditPortfolio" class="btn btn-primary" type="button" style="background: linear-gradient(135deg, #2c3e50, #34495e); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-edit" style="margin-right: 8px;"></i>Gérer les créations
+                </button>
+                <button id="addCreation" class="btn btn-secondary" type="button" style="display:none; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-plus" style="margin-right: 8px;"></i>Ajouter une création
+                </button>
             </div>
             
             <!-- LDermo -->
@@ -602,6 +676,7 @@
                 const div = document.createElement('div');
                 div.className = 'portfolio-item';
                 div.setAttribute('data-category', 'dermo');
+                div.style.marginBottom = '8px';
                 
                 if (creation.type) {
                     const labelDiv = document.createElement('div');
@@ -617,6 +692,7 @@
                 
                 const portfolioImage = document.createElement('div');
                 portfolioImage.className = 'portfolio-image';
+                portfolioImage.style.marginBottom = '0';
                 
                 const img = document.createElement('img');
                 img.src = creation.src;
@@ -625,16 +701,7 @@
                 
                 portfolioImage.appendChild(img);
                 
-                const portfolioOverlay = document.createElement('div');
-                portfolioOverlay.className = 'portfolio-overlay';
-                portfolioOverlay.innerHTML = `
-                    <h3>${creation.type ? creation.type.charAt(0).toUpperCase() + creation.type.slice(1) : 'LDermo'}</h3>
-                    <p>${creation.type ? 'Reconstruction mammaire' : 'Création'}</p>
-                    <a href="#contact" class="portfolio-link"><i class="fas fa-envelope"></i> Demander infos</a>
-                `;
-                
                 div.appendChild(portfolioImage);
-                div.appendChild(portfolioOverlay);
                 
                 if (editMode) {
                     const controls = document.createElement('div');
