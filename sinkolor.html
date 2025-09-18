@@ -249,9 +249,14 @@
             <h2 class="section-title">Créations</h2>
             <p class="section-subtitle">Découvrez les œuvres de Sinkolor</p>
             
+            <div class="portfolio-controls" id="portfolioControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
+                <button id="toggleEditPortfolio" class="btn btn-secondary" type="button">Gérer les créations</button>
+                <button id="addCreation" class="btn btn-primary" type="button" style="display:none;">Ajouter une création</button>
+            </div>
+            
             <!-- S'inkolor -->
             <div id="portfolio-sinkolor" class="portfolio-section">
-                <div class="portfolio-grid">
+                <div class="portfolio-grid" id="portfolioGrid">
                     <!-- Ajouts S'inkolor images 5 à 17 -->
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
@@ -453,6 +458,179 @@
 
     <script src="script.js"></script>
     <script>
+    // Système de gestion des créations
+    (function(){
+        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
+        const CREATIONS_STORAGE_KEY = 'sinkolorCreations.v1';
+        const portfolioGrid = document.getElementById('portfolioGrid');
+        const toggleBtn = document.getElementById('toggleEditPortfolio');
+        const addBtn = document.getElementById('addCreation');
+        
+        let editMode = false;
+        let isAuthorized = false;
+        
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('portfolioAuth') === '1'; } catch(e) { return false; }
+        }
+        
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('portfolioAuth','1');
+                else sessionStorage.removeItem('portfolioAuth');
+            } catch(e) {}
+        }
+        
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les créations :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
+        
+        function loadCreations(){
+            const defaultCreations = [
+                { src: 'images/image5.jpeg', alt: 'Tatouage S\'inkolor 5' },
+                { src: 'images/image6.jpeg', alt: 'Tatouage S\'inkolor 6' },
+                { src: 'images/image7.jpeg', alt: 'Tatouage S\'inkolor 7' },
+                { src: 'images/image8.jpeg', alt: 'Tatouage S\'inkolor 8' },
+                { src: 'images/image9.jpeg', alt: 'Tatouage S\'inkolor 9' },
+                { src: 'images/image10.jpeg', alt: 'Tatouage S\'inkolor 10' },
+                { src: 'images/image12.jpeg', alt: 'Tatouage S\'inkolor 12' },
+                { src: 'images/image13.jpeg', alt: 'Tatouage S\'inkolor 13' },
+                { src: 'images/image14.jpeg', alt: 'Tatouage S\'inkolor 14' },
+                { src: 'images/image15.jpeg', alt: 'Tatouage S\'inkolor 15' },
+                { src: 'images/image16.jpeg', alt: 'Tatouage S\'inkolor 16' },
+                { src: 'images/image17.jpeg', alt: 'Tatouage S\'inkolor 17' }
+            ];
+            try {
+                const raw = localStorage.getItem(CREATIONS_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        return parsed.length === 0 ? defaultCreations : parsed;
+                    }
+                }
+            } catch(e) {}
+            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(defaultCreations)); } catch(e) {}
+            return defaultCreations;
+        }
+        
+        function saveCreations(creations){
+            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
+        }
+        
+        let creations = loadCreations();
+        
+        function renderCreations(){
+            portfolioGrid.innerHTML = '';
+            creations.forEach((creation, index) => {
+                const div = document.createElement('div');
+                div.className = 'portfolio-item';
+                div.setAttribute('data-category', 'all');
+                
+                const portfolioImage = document.createElement('div');
+                portfolioImage.className = 'portfolio-image';
+                
+                const img = document.createElement('img');
+                img.src = creation.src;
+                img.alt = creation.alt;
+                img.loading = 'lazy';
+                
+                portfolioImage.appendChild(img);
+                
+                const portfolioOverlay = document.createElement('div');
+                portfolioOverlay.className = 'portfolio-overlay';
+                portfolioOverlay.innerHTML = `
+                    <h3>S'inkolor</h3>
+                    <p>Création</p>
+                    <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                `;
+                
+                div.appendChild(portfolioImage);
+                div.appendChild(portfolioOverlay);
+                
+                if (editMode) {
+                    const controls = document.createElement('div');
+                    controls.style.cssText = 'position: absolute; top: 5px; right: 5px; display: flex; gap: 5px; z-index: 10;';
+                    
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.style.fontSize = '0.7rem';
+                    editButton.style.padding = '2px 6px';
+                    editButton.addEventListener('click', () => editCreation(index));
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.style.fontSize = '0.7rem';
+                    deleteButton.style.padding = '2px 6px';
+                    deleteButton.addEventListener('click', () => deleteCreation(index));
+                    
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    div.style.position = 'relative';
+                    div.appendChild(controls);
+                }
+                
+                portfolioGrid.appendChild(div);
+            });
+        }
+        
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les créations';
+            renderCreations();
+        }
+        
+        function editCreation(index){
+            if (!requestAuth()) return;
+            const newSrc = prompt('Nouvelle URL de l\'image :', creations[index].src) || creations[index].src;
+            const newAlt = prompt('Nouvelle description :', creations[index].alt) || creations[index].alt;
+            creations[index] = { src: newSrc, alt: newAlt };
+            saveCreations(creations);
+            renderCreations();
+        }
+        
+        function deleteCreation(index){
+            if (!requestAuth()) return;
+            if (!confirm('Supprimer cette création ?')) return;
+            creations.splice(index, 1);
+            saveCreations(creations);
+            renderCreations();
+        }
+        
+        function addNewCreation(){
+            if (!requestAuth()) return;
+            const newSrc = prompt('URL de la nouvelle image :');
+            const newAlt = prompt('Description de la création :');
+            if (newSrc && newSrc.trim() && newAlt && newAlt.trim()) {
+                creations.push({ src: newSrc.trim(), alt: newAlt.trim() });
+                saveCreations(creations);
+                renderCreations();
+            }
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
+        });
+        
+        addBtn.addEventListener('click', addNewCreation);
+        
+        renderCreations();
+    })();
+    
     // Fonction pour gérer les menus de contact
     function toggleContactMenu(artist) {
         const menu = document.getElementById(artist + '-contact-menu');

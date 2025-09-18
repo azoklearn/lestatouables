@@ -272,9 +272,14 @@
             <h2 class="section-title">Créations</h2>
             <p class="section-subtitle">Découvrez les réalisations de LDermo</p>
             
+            <div class="portfolio-controls" id="portfolioControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
+                <button id="toggleEditPortfolio" class="btn btn-secondary" type="button">Gérer les créations</button>
+                <button id="addCreation" class="btn btn-primary" type="button" style="display:none;">Ajouter une création</button>
+            </div>
+            
             <!-- LDermo -->
             <div id="portfolio-ldermo" class="portfolio-section">
-                <div class="portfolio-grid">
+                <div class="portfolio-grid" id="portfolioGrid">
                     <div class="portfolio-item" data-category="dermo">
                         <div style="text-align:center; font-weight:600; margin-bottom:8px;">
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Avant</span>
@@ -531,6 +536,183 @@
         deleteTarif = function(index){ if (!requestAuth()) return; _deleteTarif(index); };
         
         renderTarifs();
+    })();
+    
+    // Système de gestion des créations
+    (function(){
+        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
+        const CREATIONS_STORAGE_KEY = 'ldermoCreations.v1';
+        const portfolioGrid = document.getElementById('portfolioGrid');
+        const toggleBtn = document.getElementById('toggleEditPortfolio');
+        const addBtn = document.getElementById('addCreation');
+        
+        let editMode = false;
+        let isAuthorized = false;
+        
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('ldermoPortfolioAuth') === '1'; } catch(e) { return false; }
+        }
+        
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('ldermoPortfolioAuth','1');
+                else sessionStorage.removeItem('ldermoPortfolioAuth');
+            } catch(e) {}
+        }
+        
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les créations :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
+        
+        function loadCreations(){
+            const defaultCreations = [
+                { src: 'images/image19.jpeg', alt: 'Avant - Reconstruction mammaire', type: 'avant' },
+                { src: 'images/image20.jpeg', alt: 'Après - Reconstruction mammaire', type: 'après' }
+            ];
+            try {
+                const raw = localStorage.getItem(CREATIONS_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        return parsed.length === 0 ? defaultCreations : parsed;
+                    }
+                }
+            } catch(e) {}
+            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(defaultCreations)); } catch(e) {}
+            return defaultCreations;
+        }
+        
+        function saveCreations(creations){
+            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
+        }
+        
+        let creations = loadCreations();
+        
+        function renderCreations(){
+            portfolioGrid.innerHTML = '';
+            creations.forEach((creation, index) => {
+                const div = document.createElement('div');
+                div.className = 'portfolio-item';
+                div.setAttribute('data-category', 'dermo');
+                
+                if (creation.type) {
+                    const labelDiv = document.createElement('div');
+                    labelDiv.style.cssText = 'text-align:center; font-weight:600; margin-bottom:8px;';
+                    
+                    const span = document.createElement('span');
+                    span.style.cssText = 'display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;';
+                    span.textContent = creation.type.charAt(0).toUpperCase() + creation.type.slice(1);
+                    
+                    labelDiv.appendChild(span);
+                    div.appendChild(labelDiv);
+                }
+                
+                const portfolioImage = document.createElement('div');
+                portfolioImage.className = 'portfolio-image';
+                
+                const img = document.createElement('img');
+                img.src = creation.src;
+                img.alt = creation.alt;
+                img.loading = 'lazy';
+                
+                portfolioImage.appendChild(img);
+                
+                const portfolioOverlay = document.createElement('div');
+                portfolioOverlay.className = 'portfolio-overlay';
+                portfolioOverlay.innerHTML = `
+                    <h3>${creation.type ? creation.type.charAt(0).toUpperCase() + creation.type.slice(1) : 'LDermo'}</h3>
+                    <p>${creation.type ? 'Reconstruction mammaire' : 'Création'}</p>
+                    <a href="#contact" class="portfolio-link"><i class="fas fa-envelope"></i> Demander infos</a>
+                `;
+                
+                div.appendChild(portfolioImage);
+                div.appendChild(portfolioOverlay);
+                
+                if (editMode) {
+                    const controls = document.createElement('div');
+                    controls.style.cssText = 'position: absolute; top: 5px; right: 5px; display: flex; gap: 5px; z-index: 10;';
+                    
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.style.fontSize = '0.7rem';
+                    editButton.style.padding = '2px 6px';
+                    editButton.addEventListener('click', () => editCreation(index));
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.style.fontSize = '0.7rem';
+                    deleteButton.style.padding = '2px 6px';
+                    deleteButton.addEventListener('click', () => deleteCreation(index));
+                    
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    div.style.position = 'relative';
+                    div.appendChild(controls);
+                }
+                
+                portfolioGrid.appendChild(div);
+            });
+        }
+        
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les créations';
+            renderCreations();
+        }
+        
+        function editCreation(index){
+            if (!requestAuth()) return;
+            const newSrc = prompt('Nouvelle URL de l\'image :', creations[index].src) || creations[index].src;
+            const newAlt = prompt('Nouvelle description :', creations[index].alt) || creations[index].alt;
+            const newType = prompt('Type (avant/après ou laisser vide) :', creations[index].type || '') || '';
+            creations[index] = { src: newSrc, alt: newAlt, type: newType };
+            saveCreations(creations);
+            renderCreations();
+        }
+        
+        function deleteCreation(index){
+            if (!requestAuth()) return;
+            if (!confirm('Supprimer cette création ?')) return;
+            creations.splice(index, 1);
+            saveCreations(creations);
+            renderCreations();
+        }
+        
+        function addNewCreation(){
+            if (!requestAuth()) return;
+            const newSrc = prompt('URL de la nouvelle image :');
+            const newAlt = prompt('Description de la création :');
+            const newType = prompt('Type (avant/après ou laisser vide) :', '');
+            if (newSrc && newSrc.trim() && newAlt && newAlt.trim()) {
+                creations.push({ src: newSrc.trim(), alt: newAlt.trim(), type: newType.trim() });
+                saveCreations(creations);
+                renderCreations();
+            }
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
+        });
+        
+        addBtn.addEventListener('click', addNewCreation);
+        
+        renderCreations();
     })();
     
     // Fonction pour gérer les menus de contact
