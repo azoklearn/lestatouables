@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDermo - Les Tatouables</title>
+    <meta name="description" content="LDermo - Spécialiste en tatouage réparateur et dermopigmentation. Reconstruction aréolaire, cicatrices, vergetures.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Amélioration de la lisibilité des titres et libellés du portfolio */
+        #portfolio .section-subtitle {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #f5f5f5;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        #portfolio .portfolio-overlay h3 {
+            font-size: 1.5rem;
+            line-height: 1.2;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.65);
+        }
+        #portfolio .portfolio-overlay p {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        #portfolio .portfolio-link {
+            font-size: 0.98rem;
+            font-weight: 700;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+        }
+        
+        /* Styles pour les menus de contact */
+        .contact-menu-item {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        .contact-menu-item:hover {
+            background-color: #f5f5f5;
+            color: #2c3e50;
+        }
+        .contact-menu-item:last-child {
+            border-bottom: none;
+        }
+        .contact-menu-item i {
+            margin-right: 8px;
+            width: 16px;
+        }
+        
+        /* Responsive pour mobile */
+        @media (max-width: 768px) {
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-dropdown {
+                margin-bottom: 10px;
+                margin-right: 0 !important;
+            }
+            
+            .contact-menu {
+                position: relative !important;
+                display: none;
+                margin-top: 10px;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+            
+            .contact-menu-item {
+                background: #2c3e50;
+                color: white;
+                margin: 5px 0;
+                border-radius: 4px;
+                text-align: center;
+            }
+            
+            /* Images des créations plus petites sur mobile */
+            .portfolio-image img {
+                max-width: 120px !important;
+                height: auto !important;
+            }
+            
+            .portfolio-item {
+                margin-bottom: 10px !important;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+        }
+        
+        /* Styles pour les titres de la section hero */
+        .hero h1 {
+            color: #ffffff !important;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            font-weight: 700;
+        }
+        .hero p {
+            color: #ffffff !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+            font-weight: 500;
+        }
+        
+        /* Personnalisation de la barre de défilement */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2c3e50;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #34495e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container" style="position:relative;">
+            <div class="nav-left">
+                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="nav-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="nav-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:0602120638" class="nav-link" aria-label="Téléphone"><i class="fas fa-phone"></i></a>
+            </div>
+            <div class="nav-center">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Les Tatouables - Logo" style="height: 40px; width: auto; margin-top: -5px;">
+                </a>
+            </div>
+            <ul id="menu" class="nav-menu">
+                <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
+                <li><a href="sinkolor.html" class="nav-link">Sinkolor</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero">
+        <div class="hero-info">
+            <div class="hero-logo-right">
+                <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 20px auto;">
+            </div>
+            <h1 style="text-align: center; color: #2c3e50; font-size: 3rem; margin-bottom: 2rem;">LDermo</h1>
+            <p style="text-align: center; color: #2c3e50; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Spécialiste en tatouage réparateur et dermopigmentation</p>
+        </div>
+    </section>
+
+    <!-- LDermo Présentation -->
+    <section id="ldermo-presentation" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="images/ldermo.jpeg" alt="LDermo - Dermopigmentation" class="about-photo">
+                </div>
+                <div class="about-text">
+                    <h2>LDermo</h2>
+                    <p>Riche de plusieurs mois de formation sous le tutorat d'Anna Dermo, numéro 1 en France du tatouage réparateur et créatrice de la méthode Skin correct, Ldermo a pu recevoir les meilleurs outils et conseils visant à garantir des résultats époustouflants à sa clientèle.</p>
+                    <p>Que votre projet concerne des vergetures, une cicatrice, une peau brûlée ou greffée ou encore une reconstruction de l'aréole mammaire, Ldermo prendra le temps, lors d'une première consultation, de définir avec vous la méthode la plus adaptée à vos besoins pour que votre séance de tatouage et son résultat soient à la hauteur de vos attentes.</p>
+                    <p>Grâce à sa douceur, son empathie, sa bienveillance et ses explications, LDermo saura répondre à toutes vos questions et vous rassurer afin de chasser toute anxiété avant votre séance.</p>
+                    <div class="contact-buttons" style="margin-top:1rem;">
+                        <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
+                            <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('ldermo')">
+                                <i class="fas fa-envelope"></i> Contact
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div id="ldermo-contact-menu" class="contact-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
+                                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </a>
+                                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-instagram"></i> Instagram
+                                </a>
+                                <a href="tel:0602120638" class="contact-menu-item">
+                                    <i class="fas fa-phone"></i> Appeler
+                                </a>
+                            </div>
+                        </div>
+                        <a href="#ldermo-tarifs" class="btn btn-secondary" style="display:inline-block;">Tarification</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LDermo Tarification -->
+    <section id="ldermo-tarifs" class="ldermo">
+        <div class="container">
+            <h2 class="section-title">Tarification</h2>
+            
+            <div class="tarifs-controls" id="tarifsControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
+                <button id="toggleEditTarifs" class="btn btn-secondary" type="button">Gérer les tarifs</button>
+                <button id="addTarif" class="btn btn-primary" type="button" style="display:none;">Ajouter un tarif</button>
+            </div>
+            
+            <div class="ldermo-grid">
+                <div class="ldermo-text">
+                    <div id="tarifsList">
+                        <ul id="tarifsItems">
+                            <li>Consultation: 0€ - 30€</li>
+                            <li>Reconstruction aréolaire: Sur devis</li>
+                            <li>Cicatrices/vergetures: Sur devis</li>
+                        </ul>
+                    </div>
+                    <a href="#contact" class="btn btn-primary" style="margin-top:1rem;">Contact</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title">Créations</h2>
+            <p class="section-subtitle">Découvrez les réalisations de LDermo</p>
+            
+            <!-- LDermo -->
+            <div id="portfolio-ldermo" class="portfolio-section">
+                <div class="portfolio-grid">
+                    <div class="portfolio-item" data-category="dermo">
+                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
+                            <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Avant</span>
+                        </div>
+                        <div class="portfolio-image">
+                            <img src="images/image19.jpeg" alt="Avant - Reconstruction mammaire" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>Avant</h3>
+                            <p>Reconstruction mammaire</p>
+                            <a href="#contact" class="portfolio-link"><i class="fas fa-envelope"></i> Demander infos</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="dermo">
+                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
+                            <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Après</span>
+                        </div>
+                        <div class="portfolio-image">
+                            <img src="images/image20.jpeg" alt="Après - Reconstruction mammaire" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>Après</h3>
+                            <p>Reconstruction mammaire</p>
+                            <a href="#contact" class="portfolio-link"><i class="fas fa-envelope"></i> Demander infos</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-cta">
+                    <p>Pour une prise en charge, contactez-nous</p>
+                    <a href="#contact" class="btn btn-primary">Prendre contact</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <p class="section-subtitle">Parlons de votre projet</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Téléphone</h3>
+                            <p><a href="tel:0602120638">0602120638</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Adresse du salon</h3>
+                            <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul<br>(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Demander un devis</h3>
+                    <form id="contactForm" method="POST" action="https://formsubmit.co/lestatouables@gmail.com">
+                        <input type="hidden" name="_subject" value="Nouvelle demande de rendez-vous - LDermo">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Votre email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Décrivez votre projet de tatouage réparateur" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Les Tatouables</h3>
+                    <p>Salon de Tatoueurs Professionnels</p>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Les Tatouables . Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // Système de gestion des tarifs
+    (function(){
+        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
+        const TARIFS_STORAGE_KEY = 'tarifsData.v1';
+        const tarifsItems = document.getElementById('tarifsItems');
+        const toggleBtn = document.getElementById('toggleEditTarifs');
+        const addBtn = document.getElementById('addTarif');
+        
+        let editMode = false;
+        let isAuthorized = false;
+        
+        function hasSessionAuth(){
+            try { return sessionStorage.getItem('tarifsAuth') === '1'; } catch(e) { return false; }
+        }
+        
+        function setSessionAuth(on){
+            try {
+                if (on) sessionStorage.setItem('tarifsAuth','1');
+                else sessionStorage.removeItem('tarifsAuth');
+            } catch(e) {}
+        }
+        
+        function requestAuth(){
+            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
+            const pwd = prompt('Entrez le mot de passe pour éditer les tarifs :');
+            if (pwd === ADMIN_PASSWORD){
+                isAuthorized = true;
+                setSessionAuth(true);
+                return true;
+            }
+            alert('Mot de passe incorrect');
+            return false;
+        }
+        
+        function loadTarifs(){
+            const defaultTarifs = [
+                'Consultation: 0€ - 30€',
+                'Reconstruction aréolaire: Sur devis',
+                'Cicatrices/vergetures: Sur devis'
+            ];
+            try {
+                const raw = localStorage.getItem(TARIFS_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        return parsed.length === 0 ? defaultTarifs : parsed;
+                    }
+                }
+            } catch(e) {}
+            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(defaultTarifs)); } catch(e) {}
+            return defaultTarifs;
+        }
+        
+        function saveTarifs(tarifs){
+            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
+        }
+        
+        let tarifs = loadTarifs();
+        
+        function renderTarifs(){
+            tarifsItems.innerHTML = '';
+            tarifs.forEach((tarif, index) => {
+                const li = document.createElement('li');
+                li.textContent = tarif;
+                
+                if (editMode) {
+                    const controls = document.createElement('div');
+                    controls.style.display = 'flex';
+                    controls.style.gap = '8px';
+                    controls.style.marginTop = '4px';
+                    
+                    const editButton = document.createElement('button');
+                    editButton.className = 'btn btn-secondary';
+                    editButton.type = 'button';
+                    editButton.textContent = 'Modifier';
+                    editButton.style.fontSize = '0.8rem';
+                    editButton.style.padding = '4px 8px';
+                    editButton.addEventListener('click', () => editTarif(index));
+                    
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-secondary';
+                    deleteButton.type = 'button';
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.style.fontSize = '0.8rem';
+                    deleteButton.style.padding = '4px 8px';
+                    deleteButton.addEventListener('click', () => deleteTarif(index));
+                    
+                    controls.appendChild(editButton);
+                    controls.appendChild(deleteButton);
+                    li.appendChild(controls);
+                }
+                
+                tarifsItems.appendChild(li);
+            });
+        }
+        
+        function setEditMode(on){
+            editMode = !!on;
+            addBtn.style.display = on ? '' : 'none';
+            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les tarifs';
+            renderTarifs();
+        }
+        
+        function editTarif(index){
+            if (!requestAuth()) return;
+            const newTarif = prompt('Nouveau tarif :', tarifs[index]) || tarifs[index];
+            tarifs[index] = newTarif;
+            saveTarifs(tarifs);
+            renderTarifs();
+        }
+        
+        function deleteTarif(index){
+            if (!requestAuth()) return;
+            if (!confirm('Supprimer ce tarif ?')) return;
+            tarifs.splice(index, 1);
+            saveTarifs(tarifs);
+            renderTarifs();
+        }
+        
+        function addNewTarif(){
+            if (!requestAuth()) return;
+            const newTarif = prompt('Nouveau tarif (ex: "Tatouage simple: 50€") :');
+            if (newTarif && newTarif.trim()) {
+                tarifs.push(newTarif.trim());
+                saveTarifs(tarifs);
+                renderTarifs();
+            }
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            if (!editMode) {
+                if (!requestAuth()) return;
+            }
+            setEditMode(!editMode);
+        });
+        
+        addBtn.addEventListener('click', addNewTarif);
+        
+        // Protection des actions
+        const _editTarif = editTarif;
+        const _deleteTarif = deleteTarif;
+        editTarif = function(index){ if (!requestAuth()) return; _editTarif(index); };
+        deleteTarif = function(index){ if (!requestAuth()) return; _deleteTarif(index); };
+        
+        renderTarifs();
+    })();
+    
+    // Fonction pour gérer les menus de contact
+    function toggleContactMenu(artist) {
+        const menu = document.getElementById(artist + '-contact-menu');
+        const allMenus = document.querySelectorAll('.contact-menu');
+        
+        // Fermer tous les autres menus
+        allMenus.forEach(m => {
+            if (m.id !== artist + '-contact-menu') {
+                m.style.display = 'none';
+            }
+        });
+        
+        // Toggle le menu actuel
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+    
+    // Fermer les menus quand on clique ailleurs
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.contact-dropdown')) {
+            const allMenus = document.querySelectorAll('.contact-menu');
+            allMenus.forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+    });
+    </script>
+</body>
+</html>

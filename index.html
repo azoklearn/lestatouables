@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les Tatouables - Salon de tatouage</title>
     <meta name="description" content="Les Tatouables – Salon de tatouage à Toul. Présentations, tarifs LDermo, flash disponibles et contacts.">
-    <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -228,20 +227,8 @@
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="#accueil" class="nav-link">Retour à la page d’accueil</a></li>
-                <li>
-                    <a href="#ldermo-presentation" class="nav-link">LDermo</a>
-                    <ul class="nav-submenu">
-                        <li><a href="#ldermo-presentation" class="nav-link">Présentation</a></li>
-                        <li><a href="#ldermo-tarifs" class="nav-link">Tarification</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#sinkolor-presentation" class="nav-link">Sinkolor</a>
-                    <ul class="nav-submenu">
-                        <li><a href="#sinkolor-presentation" class="nav-link">Présentation</a></li>
-                        <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
-                    </ul>
-                </li>
+                <li><a href="ldermo.html" class="nav-link">LDermo</a></li>
+                <li><a href="sinkolor.html" class="nav-link">Sinkolor</a></li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
@@ -258,16 +245,6 @@
                 <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 20px auto;">
             </div>
             <img src="images/logoo-removebg-preview.png" alt="Les Tatouables - Logo" style="max-width: 1200px; height: auto; display: block; margin-bottom: -160px;">
-            <div class="hero-address">
-                <h3></h3>
-                <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul</p>
-                <p class="hero-distance">(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
-            </div>
-            <div class="hero-phone">
-                <a href="tel:0602120638" class="phone-link">
-                    <i class="fas fa-phone"></i> 0602120638
-                </a>
-            </div>
         </div>
     </section>
 
@@ -281,299 +258,22 @@
                     <div class="artist-info">
                         <h3>S'inkolor</h3>
                         <p>Spécialisé dans le domaine du manga, de la pop culture et de l’univers Disney, Sinkolor saura répondre à toutes vos demandes de projet grâce à son œil expert.</p>
-                        <p><a class="btn btn-secondary" href="#sinkolor-presentation">Voir la présentation</a></p>
+                        <p><a class="btn btn-secondary" href="sinkolor.html">Voir la présentation</a></p>
                     </div>
                 </article>
                 <article class="artist-card">
                     <div class="artist-info">
                         <h3>LDermo</h3>
                         <p>Spécialisée dans le tatouage reconstructif, LDermo saura vous guider, comprendre et satisfaire vos attentes grâce à son professionnalisme, sa douceur et son empathie.</p>
-                        <p><a class="btn btn-secondary" href="#ldermo-presentation">Voir la présentation</a></p>
+                        <p><a class="btn btn-secondary" href="ldermo.html">Voir la présentation</a></p>
                     </div>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- LDermo Présentation -->
-    <section id="ldermo-presentation" class="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="images/ldermo.jpeg" alt="LDermo - Dermopigmentation" class="about-photo">
-                </div>
-                <div class="about-text">
-                    <h2>LDermo</h2>
-                    <p>Riche de plusieurs mois de formation sous le tutorat d’Anna Dermo, numéro 1 en France du tatouage réparateur et créatrice de la méthode Skin correct, Ldermo a pu recevoir les meilleurs outils et conseils visant à garantir des résultats époustouflants à sa clientèle.</p>
-                    <p>Que votre projet concerne des vergetures, une cicatrice, une peau brûlée ou greffée ou encore une reconstruction de l’aréole mammaire, Ldermo prendra le temps, lors d’une première consultation, de définir avec vous la méthode la plus adaptée à vos besoins pour que votre séance de tatouage et son résultat soient à la hauteur de vos attentes.</p>
-                    <p>Grâce à sa douceur, son empathie, sa bienveillance et ses explications, LDermo saura répondre à toutes vos questions et vous rassurer afin de chasser toute anxiété avant votre séance.</p>
-                    <div class="contact-buttons" style="margin-top:1rem;">
-                        <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
-                            <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('ldermo')">
-                                <i class="fas fa-envelope"></i> Contact
-                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
-                            </button>
-                            <div id="ldermo-contact-menu" class="contact-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
-                                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="contact-menu-item">
-                                    <i class="fab fa-facebook"></i> Facebook
-                                </a>
-                                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="contact-menu-item">
-                                    <i class="fab fa-instagram"></i> Instagram
-                                </a>
-                                <a href="tel:0602120638" class="contact-menu-item">
-                                    <i class="fas fa-phone"></i> Appeler
-                                </a>
-                            </div>
-                        </div>
-                        <a href="#ldermo-tarifs" class="btn btn-secondary" style="display:inline-block;">Tarification</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LDermo Tarification -->
-    <section id="ldermo-tarifs" class="ldermo">
-        <div class="container">
-            <h2 class="section-title">Tarification</h2>
-        
-            
-            <div class="tarifs-controls" id="tarifsControls" style="display:flex; justify-content:flex-end; margin-bottom: 2rem;">
-                <button id="toggleEditTarifs" class="btn btn-secondary" type="button">Gérer les tarifs</button>
-                <button id="addTarif" class="btn btn-primary" type="button" style="display:none;">Ajouter un tarif</button>
-            </div>
-            
-            <div class="ldermo-grid">
-                <div class="ldermo-text">
-                    <div id="tarifsList">
-                        <ul id="tarifsItems">
-                            <li>Consultation: 0€ - 30€</li>
-                            <li>Reconstruction aréolaire: Sur devis</li>
-                            <li>Cicatrices/vergetures: Sur devis</li>
-                        </ul>
-                    </div>
-                    <a href="#contact" class="btn btn-primary" style="margin-top:1rem;">Contact</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sinkolor Présentation -->
-    <section id="sinkolor-presentation"class="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>Sinkolor</h2>
-                    <p>Passionné par l’art du tatouage et spécialisé dans les univers Manga, Disney et Pop culture, Sinkolor sera en capacité de répondre à toutes vos demandes!</p>
-                    <p>Son aptitude à utiliser de nombreuses techniques de tatouage et dans sa volonté de rendre ses œuvres toujours plus exceptionnelles, Sinkolor est en mesure de travailler avec un grand choix de couleurs et avec un large panel d’aiguilles qui vous permettra d’obtenir des tatouages aux tracés des plus fins au plus épais.</p>
-                    <p>Très à l’écoute du client, professionnel et délicat, Sinkolor saura se montrer des plus réactif pour que votre projet soit à la hauteur de vos exigences et pour que votre séance se passe dans les meilleures conditions.</p>
-                    <p>Que votre tatouage soit en noir et blanc, en couleurs, fin, épais, dans ses spécialités ou non, Sinkolor saura vous satisfaire à tous les coups!</p>
-                    <div class="contact-buttons" style="margin-top:1rem;">
-                        <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
-                            <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('sinkolor')">
-                                <i class="fas fa-envelope"></i> Contact
-                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
-                            </button>
-                            <div id="sinkolor-contact-menu" class="contact-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
-                                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="contact-menu-item">
-                                    <i class="fab fa-facebook"></i> Facebook
-                                </a>
-                                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="contact-menu-item">
-                                    <i class="fab fa-instagram"></i> Instagram
-                                </a>
-                                <a href="tel:0602120638" class="contact-menu-item">
-                                    <i class="fas fa-phone"></i> Appeler
-                                </a>
-                            </div>
-                        </div>
-                        <a href="flash.html" class="btn btn-secondary" style="display:inline-block;">Flash disponibles</a>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <img src="images/sinkolor.jpeg" alt="S'inkolor - Artiste Tatoueur" class="about-photo">
-                </div>
-            </div>
-        </div>
-    </section>
 
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <h2 class="section-title">Portfolio</h2>
-            <p class="section-subtitle">Découvrez les créations de S'inkolor et LDermo</p>
-            
-            <!-- S'inkolor -->
-            <div id="portfolio-sinkolor" class="portfolio-section">
-                <h3 class="section-subtitle" style="margin-top:1rem">S'inkolor</h3>
-                <div class="portfolio-grid">
-                    
-
-                    <!-- Ajouts S'inkolor images 5 à 17 -->
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image5.jpeg" alt="Tatouage S'inkolor 5" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image6.jpeg" alt="Tatouage S'inkolor 6" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image7.jpeg" alt="Tatouage S'inkolor 7" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image8.jpeg" alt="Tatouage S'inkolor 8" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image9.jpeg" alt="Tatouage S'inkolor 9" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image10.jpeg" alt="Tatouage S'inkolor 10" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image12.jpeg" alt="Tatouage S'inkolor 12" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image13.jpeg" alt="Tatouage S'inkolor 13" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image14.jpeg" alt="Tatouage S'inkolor 14" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image15.jpeg" alt="Tatouage S'inkolor 15" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image16.jpeg" alt="Tatouage S'inkolor 16" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="all">
-                        <div class="portfolio-image">
-                            <img src="images/image17.jpeg" alt="Tatouage S'inkolor 17" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>S'inkolor</h3>
-                            <p>Création</p>
-                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
-                        </div>
-                    </div>
-                </div>
-
-                
-            </div>
-
-            <!-- LDermo -->
-            <div id="portfolio-ldermo" class="portfolio-section">
-                <h3 class="section-subtitle" style="margin-top:2rem">LDermo</h3>
-                <div class="portfolio-grid">
-                    <div class="portfolio-item" data-category="dermo">
-                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
-                            <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Avant</span>
-                        </div>
-                        <div class="portfolio-image">
-                            <img src="images/image19.jpeg" alt="Avant - Reconstruction mammaire" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>Avant</h3>
-                            <p>Reconstruction mammaire</p>
-                            <a href="#contact" class="portfolio-link"><i class="fas fa-envelope"></i> Demander infos</a>
-                        </div>
-                    </div>
-                    <div class="portfolio-item" data-category="dermo">
-                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
-                            <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Après</span>
-                        </div>
-                        <div class="portfolio-image">
-                            <img src="images/image20.jpeg" alt="Après - Reconstruction mammaire" loading="lazy">
-                        </div>
-                        <div class="portfolio-overlay">
-                            <h3>Après</h3>
-                            <p>Reconstruction mammaire</p>
-                            <a href="#contact" class="portfolio-link"><i class="fas fa-envelope"></i> Demander infos</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-cta">
-                    <p>Pour une prise en charge, contactez-nous</p>
-                    <a href="#contact" class="btn btn-primary">Prendre contact</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Services Section -->
     <section id="services" class="services">
@@ -626,29 +326,11 @@
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Instagram</h3>
-                            <p><a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank">@sinkolor.tattoo</a><br>🤝🏻 Sponsor @hand_ink_</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="contact-details">
                             <h3>Adresse du salon</h3>
                             <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul<br>(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Disponibilité</h3>
-                            <p>📆 Agenda Décembre/Janvier ouvert<br>⏳ Réponse dans les 24h</p>
                         </div>
                     </div>
                 </div>
@@ -700,183 +382,5 @@
 
 
     <script src="script.js"></script>
-    <script>
-    // Système de gestion des tarifs
-    (function(){
-        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const TARIFS_STORAGE_KEY = 'tarifsData.v1';
-        const tarifsItems = document.getElementById('tarifsItems');
-        const toggleBtn = document.getElementById('toggleEditTarifs');
-        const addBtn = document.getElementById('addTarif');
-        
-        let editMode = false;
-        let isAuthorized = false;
-        
-        function hasSessionAuth(){
-            try { return sessionStorage.getItem('tarifsAuth') === '1'; } catch(e) { return false; }
-        }
-        
-        function setSessionAuth(on){
-            try {
-                if (on) sessionStorage.setItem('tarifsAuth','1');
-                else sessionStorage.removeItem('tarifsAuth');
-            } catch(e) {}
-        }
-        
-        function requestAuth(){
-            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
-            const pwd = prompt('Entrez le mot de passe pour éditer les tarifs :');
-            if (pwd === ADMIN_PASSWORD){
-                isAuthorized = true;
-                setSessionAuth(true);
-                return true;
-            }
-            alert('Mot de passe incorrect');
-            return false;
-        }
-        
-        function loadTarifs(){
-            const defaultTarifs = [
-                'Consultation: 0€ - 30€',
-                'Reconstruction aréolaire: Sur devis',
-                'Cicatrices/vergetures: Sur devis'
-            ];
-            try {
-                const raw = localStorage.getItem(TARIFS_STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        return parsed.length === 0 ? defaultTarifs : parsed;
-                    }
-                }
-            } catch(e) {}
-            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(defaultTarifs)); } catch(e) {}
-            return defaultTarifs;
-        }
-        
-        function saveTarifs(tarifs){
-            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
-        }
-        
-        let tarifs = loadTarifs();
-        
-        function renderTarifs(){
-            tarifsItems.innerHTML = '';
-            tarifs.forEach((tarif, index) => {
-                const li = document.createElement('li');
-                li.textContent = tarif;
-                
-                if (editMode) {
-                    const controls = document.createElement('div');
-                    controls.style.display = 'flex';
-                    controls.style.gap = '8px';
-                    controls.style.marginTop = '4px';
-                    
-                    const editButton = document.createElement('button');
-                    editButton.className = 'btn btn-secondary';
-                    editButton.type = 'button';
-                    editButton.textContent = 'Modifier';
-                    editButton.style.fontSize = '0.8rem';
-                    editButton.style.padding = '4px 8px';
-                    editButton.addEventListener('click', () => editTarif(index));
-                    
-                    const deleteButton = document.createElement('button');
-                    deleteButton.className = 'btn btn-secondary';
-                    deleteButton.type = 'button';
-                    deleteButton.textContent = 'Supprimer';
-                    deleteButton.style.fontSize = '0.8rem';
-                    deleteButton.style.padding = '4px 8px';
-                    deleteButton.addEventListener('click', () => deleteTarif(index));
-                    
-                    controls.appendChild(editButton);
-                    controls.appendChild(deleteButton);
-                    li.appendChild(controls);
-                }
-                
-                tarifsItems.appendChild(li);
-            });
-        }
-        
-        function setEditMode(on){
-            editMode = !!on;
-            addBtn.style.display = on ? '' : 'none';
-            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les tarifs';
-            renderTarifs();
-        }
-        
-        function editTarif(index){
-            if (!requestAuth()) return;
-            const newTarif = prompt('Nouveau tarif :', tarifs[index]) || tarifs[index];
-            tarifs[index] = newTarif;
-            saveTarifs(tarifs);
-            renderTarifs();
-        }
-        
-        function deleteTarif(index){
-            if (!requestAuth()) return;
-            if (!confirm('Supprimer ce tarif ?')) return;
-            tarifs.splice(index, 1);
-            saveTarifs(tarifs);
-            renderTarifs();
-        }
-        
-        function addNewTarif(){
-            if (!requestAuth()) return;
-            const newTarif = prompt('Nouveau tarif (ex: "Tatouage simple: 50€") :');
-            if (newTarif && newTarif.trim()) {
-                tarifs.push(newTarif.trim());
-                saveTarifs(tarifs);
-                renderTarifs();
-            }
-        }
-        
-        toggleBtn.addEventListener('click', () => {
-            if (!editMode) {
-                if (!requestAuth()) return;
-            }
-            setEditMode(!editMode);
-        });
-        
-        addBtn.addEventListener('click', addNewTarif);
-        
-        // Protection des actions
-        const _editTarif = editTarif;
-        const _deleteTarif = deleteTarif;
-        editTarif = function(index){ if (!requestAuth()) return; _editTarif(index); };
-        deleteTarif = function(index){ if (!requestAuth()) return; _deleteTarif(index); };
-        
-        renderTarifs();
-    })();
-    
-    // Fonction pour gérer les menus de contact
-    function toggleContactMenu(artist) {
-        const menu = document.getElementById(artist + '-contact-menu');
-        const allMenus = document.querySelectorAll('.contact-menu');
-        
-        // Fermer tous les autres menus
-        allMenus.forEach(m => {
-            if (m.id !== artist + '-contact-menu') {
-                m.style.display = 'none';
-            }
-        });
-        
-        // Toggle le menu actuel
-        if (menu.style.display === 'none' || menu.style.display === '') {
-            menu.style.display = 'block';
-        } else {
-            menu.style.display = 'none';
-        }
-    }
-    
-    // Fermer les menus quand on clique ailleurs
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.contact-dropdown')) {
-            const allMenus = document.querySelectorAll('.contact-menu');
-            allMenus.forEach(menu => {
-                menu.style.display = 'none';
-            });
-        }
-    });
-    </script>
 </body>
 </html>

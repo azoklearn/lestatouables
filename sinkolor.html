@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinkolor - Les Tatouables</title>
+    <meta name="description" content="Sinkolor - Artiste tatoueur spécialisé dans le manga, Disney et pop culture. Créations artistiques uniques.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Amélioration de la lisibilité des titres et libellés du portfolio */
+        #portfolio .section-subtitle {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #f5f5f5;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        #portfolio .portfolio-overlay h3 {
+            font-size: 1.5rem;
+            line-height: 1.2;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.65);
+        }
+        #portfolio .portfolio-overlay p {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        #portfolio .portfolio-link {
+            font-size: 0.98rem;
+            font-weight: 700;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+        }
+        
+        /* Styles pour les menus de contact */
+        .contact-menu-item {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        .contact-menu-item:hover {
+            background-color: #f5f5f5;
+            color: #2c3e50;
+        }
+        .contact-menu-item:last-child {
+            border-bottom: none;
+        }
+        .contact-menu-item i {
+            margin-right: 8px;
+            width: 16px;
+        }
+        
+        /* Responsive pour mobile */
+        @media (max-width: 768px) {
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-dropdown {
+                margin-bottom: 10px;
+                margin-right: 0 !important;
+            }
+            
+            .contact-menu {
+                position: relative !important;
+                display: none;
+                margin-top: 10px;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+            
+            .contact-menu-item {
+                background: #2c3e50;
+                color: white;
+                margin: 5px 0;
+                border-radius: 4px;
+                text-align: center;
+            }
+            
+            /* Images des créations plus petites sur mobile */
+            .portfolio-image img {
+                max-width: 120px !important;
+                height: auto !important;
+            }
+            
+            .portfolio-item {
+                margin-bottom: 10px !important;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+        }
+        
+        /* Styles pour les titres de la section hero */
+        .hero h1 {
+            color: #ffffff !important;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            font-weight: 700;
+        }
+        .hero p {
+            color: #ffffff !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+            font-weight: 500;
+        }
+        
+        /* Personnalisation de la barre de défilement */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2c3e50;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #34495e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container" style="position:relative;">
+            <div class="nav-left">
+                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="nav-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="nav-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="tel:0602120638" class="nav-link" aria-label="Téléphone"><i class="fas fa-phone"></i></a>
+            </div>
+            <div class="nav-center">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Les Tatouables - Logo" style="height: 40px; width: auto; margin-top: -5px;">
+                </a>
+            </div>
+            <ul id="menu" class="nav-menu">
+                <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
+                <li><a href="ldermo.html" class="nav-link">LDermo</a></li>
+                <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero">
+        <div class="hero-info">
+            <div class="hero-logo-right">
+                <img src="images/logo.png" alt="Les Tatouables - Logo" style="max-width: 150px; height: auto; display: block; margin: 0 auto 20px auto;">
+            </div>
+            <h1 style="text-align: center; color: #2c3e50; font-size: 3rem; margin-bottom: 2rem;">Sinkolor</h1>
+            <p style="text-align: center; color: #2c3e50; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Artiste tatoueur spécialisé dans le manga, Disney et pop culture</p>
+        </div>
+    </section>
+
+    <!-- Sinkolor Présentation -->
+    <section id="sinkolor-presentation" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Sinkolor</h2>
+                    <p>Passionné par l'art du tatouage et spécialisé dans les univers Manga, Disney et Pop culture, Sinkolor sera en capacité de répondre à toutes vos demandes!</p>
+                    <p>Son aptitude à utiliser de nombreuses techniques de tatouage et dans sa volonté de rendre ses œuvres toujours plus exceptionnelles, Sinkolor est en mesure de travailler avec un grand choix de couleurs et avec un large panel d'aiguilles qui vous permettra d'obtenir des tatouages aux tracés des plus fins au plus épais.</p>
+                    <p>Très à l'écoute du client, professionnel et délicat, Sinkolor saura se montrer des plus réactif pour que votre projet soit à la hauteur de vos exigences et pour que votre séance se passe dans les meilleures conditions.</p>
+                    <p>Que votre tatouage soit en noir et blanc, en couleurs, fin, épais, dans ses spécialités ou non, Sinkolor saura vous satisfaire à tous les coups!</p>
+                    <div class="contact-buttons" style="margin-top:1rem;">
+                        <div class="contact-dropdown" style="position: relative; display: inline-block; margin-right:0.5rem;">
+                            <button class="btn btn-primary contact-toggle" onclick="toggleContactMenu('sinkolor')">
+                                <i class="fas fa-envelope"></i> Contact
+                                <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                            </button>
+                            <div id="sinkolor-contact-menu" class="contact-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
+                                <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </a>
+                                <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="contact-menu-item">
+                                    <i class="fab fa-instagram"></i> Instagram
+                                </a>
+                                <a href="tel:0602120638" class="contact-menu-item">
+                                    <i class="fas fa-phone"></i> Appeler
+                                </a>
+                            </div>
+                        </div>
+                        <a href="flash.html" class="btn btn-secondary" style="display:inline-block;">Flash disponibles</a>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="images/sinkolor.jpeg" alt="S'inkolor - Artiste Tatoueur" class="about-photo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title">Créations</h2>
+            <p class="section-subtitle">Découvrez les œuvres de Sinkolor</p>
+            
+            <!-- S'inkolor -->
+            <div id="portfolio-sinkolor" class="portfolio-section">
+                <div class="portfolio-grid">
+                    <!-- Ajouts S'inkolor images 5 à 17 -->
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image5.jpeg" alt="Tatouage S'inkolor 5" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image6.jpeg" alt="Tatouage S'inkolor 6" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image7.jpeg" alt="Tatouage S'inkolor 7" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image8.jpeg" alt="Tatouage S'inkolor 8" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image9.jpeg" alt="Tatouage S'inkolor 9" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image10.jpeg" alt="Tatouage S'inkolor 10" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image12.jpeg" alt="Tatouage S'inkolor 12" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image13.jpeg" alt="Tatouage S'inkolor 13" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image14.jpeg" alt="Tatouage S'inkolor 14" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image15.jpeg" alt="Tatouage S'inkolor 15" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image16.jpeg" alt="Tatouage S'inkolor 16" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item" data-category="all">
+                        <div class="portfolio-image">
+                            <img src="images/image17.jpeg" alt="Tatouage S'inkolor 17" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3>S'inkolor</h3>
+                            <p>Création</p>
+                            <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="portfolio-link"><i class="fab fa-instagram"></i> Voir sur Instagram</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <p class="section-subtitle">Parlons de votre projet</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Téléphone</h3>
+                            <p><a href="tel:0602120638">0602120638</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Adresse du salon</h3>
+                            <p>9Av. 1ère Armée Françaises 44-45<br>54200 Toul<br>(à 20 min à pied de la gare et 10 minutes à pied de la gare routière)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Demander un devis</h3>
+                    <form id="contactForm" method="POST" action="https://formsubmit.co/lestatouables@gmail.com">
+                        <input type="hidden" name="_subject" value="Nouvelle demande de rendez-vous - Sinkolor">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Votre email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Décrivez votre projet de tatouage" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Les Tatouables</h3>
+                    <p>Salon de Tatoueurs Professionnels</p>
+                </div>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/sinkolor.tattoo/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/p/Sinkolortattoo-61557216517025/" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Les Tatouables . Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // Fonction pour gérer les menus de contact
+    function toggleContactMenu(artist) {
+        const menu = document.getElementById(artist + '-contact-menu');
+        const allMenus = document.querySelectorAll('.contact-menu');
+        
+        // Fermer tous les autres menus
+        allMenus.forEach(m => {
+            if (m.id !== artist + '-contact-menu') {
+                m.style.display = 'none';
+            }
+        });
+        
+        // Toggle le menu actuel
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+    
+    // Fermer les menus quand on clique ailleurs
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.contact-dropdown')) {
+            const allMenus = document.querySelectorAll('.contact-menu');
+            allMenus.forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+    });
+    </script>
+</body>
+</html>
