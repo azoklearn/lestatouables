@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinkolor - Les Tatouables</title>
     <meta name="description" content="Sinkolor - Artiste tatoueur spécialisé dans le manga, Disney et pop culture. Créations artistiques uniques.">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -292,7 +295,7 @@
             background: #2c3e50;
         }
         
-        /* Lightbox styles */
+        /* Lightbox styles améliorés - Version 2.0 - Images plus grandes */
         .lightbox {
             display: none;
             position: fixed;
@@ -301,39 +304,96 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0,0,0,0.95);
             cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .lightbox.show {
+            opacity: 1;
         }
         
         .lightbox-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 98% !important;
-            max-height: 98% !important;
-            width: 98% !important;
-            height: 98% !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) scale(0.9) !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            transition: transform 0.3s ease-in-out !important;
+            cursor: default !important;
+        }
+        
+        .lightbox.show .lightbox-content {
+            transform: translate(-50%, -50%) scale(1.3) !important;
         }
         
         .lightbox img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
+            width: 100% !important;
+            height: auto !important;
+            max-width: 150vw !important;
+            max-height: 150vh !important;
+            border-radius: 12px !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important;
+            transition: transform 0.3s ease-in-out !important;
+        }
+        
+        .lightbox img:hover {
+            transform: scale(1.1) !important;
         }
         
         .lightbox-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 25px;
+            right: 35px;
             color: white;
-            font-size: 40px;
+            font-size: 45px;
             font-weight: bold;
             cursor: pointer;
+            z-index: 10000;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
         
         .lightbox-close:hover {
-            color: #ccc;
+            color: #ff4757;
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.1);
+        }
+        
+        /* Animation d'entrée pour les images */
+        .lightbox-content img {
+            animation: lightboxZoomIn 0.4s ease-out;
+        }
+        
+        @keyframes lightboxZoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Effet de zoom au survol */
+        .lightbox img.zoomed {
+            transform: scale(1.8) !important;
+            cursor: grab !important;
+        }
+        
+        .lightbox img.zoomed:active {
+            cursor: grabbing !important;
         }
     </style>
 </head>
@@ -414,15 +474,19 @@
                 <button id="addCreation" class="btn btn-secondary" type="button" style="display:none; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); transition: all 0.3s ease;">
                     <i class="fas fa-plus" style="margin-right: 8px;"></i>Ajouter une création
                 </button>
+                <!-- Bouton de test pour la lightbox -->
+                <button onclick="openLightbox('images/image9.jpeg', 'Test Lightbox')" class="btn btn-primary" type="button" style="background: linear-gradient(135deg, #e74c3c, #c0392b); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-image" style="margin-right: 8px;"></i>Test Lightbox
+                </button>
             </div>
             
             <!-- S'inkolor -->
             <div id="portfolio-sinkolor" class="portfolio-section">
                 <div class="portfolio-grid" id="portfolioGrid">
-                    <!-- Ajouts S'inkolor images 9 à 17 -->
+                    <!-- Images avec event listeners directs -->
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image9.jpeg" alt="Tatouage S'inkolor 9" loading="lazy">
+                            <img src="images/image9.jpeg" alt="Tatouage S'inkolor 9" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image9.jpeg', 'Tatouage S\'inkolor 9')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -432,7 +496,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image15.jpeg" alt="Tatouage S'inkolor 15" loading="lazy">
+                            <img src="images/image15.jpeg" alt="Tatouage S'inkolor 15" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image15.jpeg', 'Tatouage S\'inkolor 15')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -442,7 +506,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image16.jpeg" alt="Tatouage S'inkolor 16" loading="lazy">
+                            <img src="images/image16.jpeg" alt="Tatouage S'inkolor 16" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image16.jpeg', 'Tatouage S\'inkolor 16')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -452,7 +516,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image10.jpeg" alt="Tatouage S'inkolor 10" loading="lazy">
+                            <img src="images/image10.jpeg" alt="Tatouage S'inkolor 10" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image10.jpeg', 'Tatouage S\'inkolor 10')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -462,7 +526,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image12.jpeg" alt="Tatouage S'inkolor 12" loading="lazy">
+                            <img src="images/image12.jpeg" alt="Tatouage S'inkolor 12" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image12.jpeg', 'Tatouage S\'inkolor 12')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -472,7 +536,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image13.jpeg" alt="Tatouage S'inkolor 13" loading="lazy">
+                            <img src="images/image13.jpeg" alt="Tatouage S'inkolor 13" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image13.jpeg', 'Tatouage S\'inkolor 13')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -482,7 +546,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image14.jpeg" alt="Tatouage S'inkolor 14" loading="lazy">
+                            <img src="images/image14.jpeg" alt="Tatouage S'inkolor 14" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image14.jpeg', 'Tatouage S\'inkolor 14')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -492,7 +556,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image17.jpeg" alt="Tatouage S'inkolor 17" loading="lazy">
+                            <img src="images/image17.jpeg" alt="Tatouage S'inkolor 17" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image17.jpeg', 'Tatouage S\'inkolor 17')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -578,203 +642,119 @@
         </div>
     </footer>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <div class="lightbox-content">
-            <img id="lightbox-img" src="" alt="">
-        </div>
-    </div>
+    <!-- Lightbox sera créée dynamiquement par JavaScript -->
 
-    <script src="script.js"></script>
     <script>
-    // Vider le localStorage pour forcer le rechargement des images
-    if (typeof(Storage) !== "undefined") {
-        localStorage.removeItem('sinkolorCreations.v1');
-    }
-    
-    // Système de gestion des créations
-    (function(){
-        const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const CREATIONS_STORAGE_KEY = 'sinkolorCreations.v1';
-        const portfolioGrid = document.getElementById('portfolioGrid');
-        const toggleBtn = document.getElementById('toggleEditPortfolio');
-        const addBtn = document.getElementById('addCreation');
+    // Script de navigation et fonctionnalités de base (remplace script.js)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Navigation mobile
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
         
-        let editMode = false;
-        let isAuthorized = false;
-        
-        function hasSessionAuth(){
-            try { return sessionStorage.getItem('portfolioAuth') === '1'; } catch(e) { return false; }
-        }
-        
-        function setSessionAuth(on){
-            try {
-                if (on) sessionStorage.setItem('portfolioAuth','1');
-                else sessionStorage.removeItem('portfolioAuth');
-            } catch(e) {}
-        }
-        
-        function requestAuth(){
-            if (isAuthorized || hasSessionAuth()) { isAuthorized = true; return true; }
-            const pwd = prompt('Entrez le mot de passe pour éditer les créations :');
-            if (pwd === ADMIN_PASSWORD){
-                isAuthorized = true;
-                setSessionAuth(true);
-                return true;
-            }
-            alert('Mot de passe incorrect');
-            return false;
-        }
-        
-        function loadCreations(){
-            const defaultCreations = [
-                { src: 'images/image9.jpeg', alt: 'Tatouage S\'inkolor 9' },
-                { src: 'images/image10.jpeg', alt: 'Tatouage S\'inkolor 10' },
-                { src: 'images/image12.jpeg', alt: 'Tatouage S\'inkolor 12' },
-                { src: 'images/image13.jpeg', alt: 'Tatouage S\'inkolor 13' },
-                { src: 'images/image14.jpeg', alt: 'Tatouage S\'inkolor 14' },
-                { src: 'images/image15.jpeg', alt: 'Tatouage S\'inkolor 15' },
-                { src: 'images/image16.jpeg', alt: 'Tatouage S\'inkolor 16' },
-                { src: 'images/image17.jpeg', alt: 'Tatouage S\'inkolor 17' }
-            ];
-            // Toujours utiliser les nouvelles images, ignorer le localStorage
-            return defaultCreations;
-        }
-        
-        function saveCreations(creations){
-            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
-        }
-        
-        let creations = loadCreations();
-        
-        function renderCreations(){
-            portfolioGrid.innerHTML = '';
-            creations.forEach((creation, index) => {
-                const div = document.createElement('div');
-                div.className = 'portfolio-item';
-                div.setAttribute('data-category', 'all');
-                div.style.marginBottom = '8px';
-                
-                const portfolioImage = document.createElement('div');
-                portfolioImage.className = 'portfolio-image';
-                portfolioImage.style.marginBottom = '0';
-                
-                const img = document.createElement('img');
-                img.src = creation.src;
-                img.alt = creation.alt;
-                img.loading = 'lazy';
-                img.style.cursor = 'pointer';
-                img.addEventListener('click', () => openLightbox(creation.src, creation.alt));
-                
-                portfolioImage.appendChild(img);
-                
-                div.appendChild(portfolioImage);
-                
-                if (editMode) {
-                    const controls = document.createElement('div');
-                    controls.style.cssText = 'position: absolute; top: 5px; right: 5px; display: flex; gap: 5px; z-index: 10;';
-                    
-                    const editButton = document.createElement('button');
-                    editButton.className = 'btn btn-secondary';
-                    editButton.type = 'button';
-                    editButton.textContent = 'Modifier';
-                    editButton.style.fontSize = '0.7rem';
-                    editButton.style.padding = '2px 6px';
-                    editButton.addEventListener('click', () => editCreation(index));
-                    
-                    const deleteButton = document.createElement('button');
-                    deleteButton.className = 'btn btn-secondary';
-                    deleteButton.type = 'button';
-                    deleteButton.textContent = 'Supprimer';
-                    deleteButton.style.fontSize = '0.7rem';
-                    deleteButton.style.padding = '2px 6px';
-                    deleteButton.addEventListener('click', () => deleteCreation(index));
-                    
-                    controls.appendChild(editButton);
-                    controls.appendChild(deleteButton);
-                    div.style.position = 'relative';
-                    div.appendChild(controls);
-                }
-                
-                portfolioGrid.appendChild(div);
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
             });
         }
         
-        function setEditMode(on){
-            editMode = !!on;
-            addBtn.style.display = on ? '' : 'none';
-            toggleBtn.textContent = on ? 'Terminer' : 'Gérer les créations';
-            renderCreations();
+        // Scroll navbar
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.style.background = 'rgba(15, 15, 15, 0.95)';
+                    navbar.style.backdropFilter = 'blur(10px)';
+                } else {
+                    navbar.style.background = 'rgba(15, 15, 15, 0.95)';
+                    navbar.style.boxShadow = 'none';
+                }
+            });
         }
         
-        function editCreation(index){
-            if (!requestAuth()) return;
-            const newSrc = prompt('Nouvelle URL de l\'image :', creations[index].src) || creations[index].src;
-            const newAlt = prompt('Nouvelle description :', creations[index].alt) || creations[index].alt;
-            creations[index] = { src: newSrc, alt: newAlt };
-            saveCreations(creations);
-            renderCreations();
+        // Formulaire de contact (seulement s'il existe)
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Logique du formulaire ici si nécessaire
+                console.log('Formulaire soumis');
+            });
         }
-        
-        function deleteCreation(index){
-            if (!requestAuth()) return;
-            if (!confirm('Supprimer cette création ?')) return;
-            creations.splice(index, 1);
-            saveCreations(creations);
-            renderCreations();
-        }
-        
-        function addNewCreation(){
-            if (!requestAuth()) return;
-            const newSrc = prompt('URL de la nouvelle image :');
-            const newAlt = prompt('Description de la création :');
-            if (newSrc && newSrc.trim() && newAlt && newAlt.trim()) {
-                creations.push({ src: newSrc.trim(), alt: newAlt.trim() });
-                saveCreations(creations);
-                renderCreations();
-            }
-        }
-        
-        toggleBtn.addEventListener('click', () => {
-            if (!editMode) {
-                if (!requestAuth()) return;
-            }
-            setEditMode(!editMode);
-        });
-        
-        addBtn.addEventListener('click', addNewCreation);
-        
-        renderCreations();
-    })();
+    });
+    </script>
+    <script>
+    // Version ultra-simple de la lightbox
+    console.log('Script chargé - version simple');
     
-    // Fonctions pour la lightbox
+    // Fonction globale simple
     function openLightbox(src, alt) {
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxContent = document.querySelector('.lightbox-content');
-        lightboxImg.src = src;
-        lightboxImg.alt = alt;
+        console.log('openLightbox appelée!', src);
+        
+        // Créer la lightbox si elle n'existe pas
+        let lightbox = document.getElementById('lightbox');
+        if (!lightbox) {
+            lightbox = document.createElement('div');
+            lightbox.id = 'lightbox';
+            lightbox.style.cssText = `
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.95);
+                z-index: 9999;
+                cursor: pointer;
+            `;
+            
+            lightbox.innerHTML = `
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 95%; max-height: 95%;">
+                    <img src="${src}" alt="${alt}" style="max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+                </div>
+                <div style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; background: rgba(0,0,0,0.5); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">×</div>
+            `;
+            
+            document.body.appendChild(lightbox);
+            
+            // Fermer au clic sur le fond ou le X
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox || e.target.textContent === '×') {
+                    lightbox.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Fermer avec Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.style.display === 'block') {
+                    lightbox.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        } else {
+            // Mettre à jour l'image existante
+            const img = lightbox.querySelector('img');
+            if (img) {
+                img.src = src;
+                img.alt = alt;
+            }
+        }
+        
+        // Afficher la lightbox
         lightbox.style.display = 'block';
-        lightboxContent.style.maxWidth = '80%';
-        lightboxContent.style.maxHeight = '80%';
         document.body.style.overflow = 'hidden';
+        
+        console.log('Lightbox affichée!');
     }
     
     function closeLightbox() {
         const lightbox = document.getElementById('lightbox');
-        lightbox.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-    
-    // Event listeners pour la lightbox
-    document.getElementById('lightbox').addEventListener('click', closeLightbox);
-    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
+        if (lightbox) {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
-    });
+    }
     
     // Fonction pour gérer les menus de contact
     function toggleContactMenu(artist) {
@@ -805,6 +785,9 @@
             });
         }
     });
+    
+    // Test de la fonction au chargement
+    console.log('Fonction openLightbox disponible:', typeof openLightbox);
     </script>
 </body>
 </html>
