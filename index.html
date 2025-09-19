@@ -204,7 +204,7 @@
             /* Styles pour les sous-menus sur mobile */
             .nav-submenu {
                 position: static !important;
-                display: none !important;
+                display: none;
                 background: #1a1a1a !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
@@ -218,7 +218,6 @@
                 z-index: 999 !important;
             }
             
-            .nav-menu li:hover .nav-submenu,
             .nav-menu li.active .nav-submenu {
                 display: block !important;
             }
@@ -573,21 +572,24 @@
                     if (window.innerWidth <= 768) {
                         e.preventDefault();
                         
-                        // Fermer tous les autres sous-menus
+                        // Fermer tous les autres sous-menus et retirer la classe active
                         menuItems.forEach(otherItem => {
                             if (otherItem !== item) {
                                 const otherSubmenu = otherItem.querySelector('.nav-submenu');
                                 if (otherSubmenu) {
                                     otherSubmenu.style.display = 'none';
                                 }
+                                otherItem.classList.remove('active');
                             }
                         });
                         
                         // Toggle le sous-menu actuel
                         if (submenu.style.display === 'none' || submenu.style.display === '') {
                             submenu.style.display = 'block';
+                            item.classList.add('active');
                         } else {
                             submenu.style.display = 'none';
+                            item.classList.remove('active');
                         }
                     }
                 });
@@ -601,6 +603,7 @@
                     const submenu = item.querySelector('.nav-submenu');
                     if (submenu) {
                         submenu.style.display = 'none';
+                        item.classList.remove('active');
                     }
                 });
             }
