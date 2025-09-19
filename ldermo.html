@@ -94,6 +94,8 @@
                 border: none !important;
                 outline: none !important;
                 border-radius: 0 !important;
+                display: block !important;
+                margin: 0 auto !important;
             }
             
             .portfolio .portfolio-item {
@@ -118,6 +120,10 @@
                 border: none !important;
                 border-radius: 0 !important;
                 overflow: visible !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                width: 100% !important;
             }
             
             /* Forcer la suppression des bordures sur tous les éléments portfolio */
@@ -148,6 +154,17 @@
                 gap: 8px !important;
                 row-gap: 8px !important;
                 display: grid !important;
+                justify-items: center !important;
+                align-items: center !important;
+            }
+            
+            .portfolio-item {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                width: 100% !important;
             }
             
             /* Styles pour les sous-menus sur mobile */
@@ -419,7 +436,7 @@
             <div id="portfolio-ldermo" class="portfolio-section">
                 <div class="portfolio-grid" id="portfolioGrid">
                     <div class="portfolio-item" data-category="dermo">
-                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
+                        <div style="text-align:center; font-weight:600; margin-bottom:20px;">
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Avant</span>
                         </div>
                         <div class="portfolio-image">
@@ -432,7 +449,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item" data-category="dermo">
-                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
+                        <div style="text-align:center; font-weight:600; margin-bottom:20px;">
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Après</span>
                         </div>
                         <div class="portfolio-image">
@@ -604,7 +621,7 @@
                 
                 if (creation.type) {
                     const labelDiv = document.createElement('div');
-                    labelDiv.style.cssText = 'text-align:center; font-weight:600; margin-bottom:8px;';
+                    labelDiv.style.cssText = 'text-align:center; font-weight:600; margin-bottom:20px;';
                     
                     const span = document.createElement('span');
                     span.style.cssText = 'display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;';

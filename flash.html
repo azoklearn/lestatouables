@@ -339,15 +339,30 @@
             transform: translate(-50%, -50%);
             max-width: 95%;
             max-height: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
         
         .lightbox img {
             width: 100%;
             height: auto;
-            max-width: 100vw;
-            max-height: 100vh;
+            max-width: 200vw;
+            max-height: 200vh;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox img:hover {
+            transform: scale(1.2);
+        }
+        
+        .lightbox img.zoomed {
+            transform: scale(1.8) !important;
+            cursor: zoom-out !important;
         }
         
         .lightbox-close {
@@ -765,12 +780,13 @@
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); cursor: pointer;">
         <span class="lightbox-close" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
-        <div class="lightbox-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 85%; max-height: 85%;">
-            <img id="lightbox-img" src="" alt="" style="width: 100%; height: auto; max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <div class="lightbox-content" style="transform: translate(-50%, -50%) scale(1.4);">
+            <img id="lightbox-img" src="" alt="">
         </div>
     </div>
 
     <script>
+    
     // Fonctions pour la lightbox avec images plus grandes
     function openLightbox(src, alt) {
         const lightbox = document.getElementById('lightbox');
@@ -780,13 +796,8 @@
         lightboxImg.src = src;
         lightboxImg.alt = alt;
         
-        // Forcer la taille plus grande
-        lightboxContent.style.maxWidth = '85%';
-        lightboxContent.style.maxHeight = '85%';
-        lightboxImg.style.maxWidth = '100vw';
-        lightboxImg.style.maxHeight = '100vh';
-        lightboxImg.style.width = 'auto';
-        lightboxImg.style.height = 'auto';
+        // Appliquer le zoom
+        lightboxContent.style.transform = 'translate(-50%, -50%) scale(1.4)';
         
         lightbox.style.display = 'block';
         document.body.style.overflow = 'hidden';
