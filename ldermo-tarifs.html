@@ -138,6 +138,62 @@
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
+            
+            /* Styles pour les sous-menus sur mobile */
+            .nav-submenu {
+                position: static !important;
+                display: none !important;
+                background: #1a1a1a !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                margin-top: 5px !important;
+                min-width: auto !important;
+                width: 100% !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                left: auto !important;
+                top: auto !important;
+                z-index: 999 !important;
+            }
+            
+            .nav-menu li:hover .nav-submenu,
+            .nav-menu li.active .nav-submenu {
+                display: block !important;
+            }
+            
+            .nav-submenu .nav-link {
+                display: block !important;
+                padding: 10px 15px !important;
+                font-size: 13px !important;
+                border-bottom: 1px solid #333333 !important;
+                color: #ffffff !important;
+                text-decoration: none !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                background: transparent !important;
+            }
+            
+            .nav-submenu .nav-link:last-child {
+                border-bottom: none !important;
+            }
+            
+            .nav-submenu li {
+                display: block !important;
+                width: 100% !important;
+            }
+            
+            .contact-menu-item {
+                background: #1a1a1a;
+                color: white;
+                margin: 5px 0;
+                border-radius: 4px;
+                text-align: center;
+            }
+            
+            /* S'assurer que le menu hamburger permet l'affichage des sous-menus */
+            .nav-menu {
+                overflow: visible !important;
+            }
         }
     </style>
 </head>
