@@ -543,7 +543,7 @@
 
         async function loadData(){
             try {
-                const response = await fetch('/api/flash/get');
+                const response = await fetch('/api/flash');
                 const result = await response.json();
                 
                 if (result.success) {

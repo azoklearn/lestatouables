@@ -368,7 +368,7 @@
         
         async function loadTarifs(){
             try {
-                const response = await fetch('/api/tarifs/get');
+                const response = await fetch('/api/tarifs');
                 const result = await response.json();
                 
                 if (result.success) {
