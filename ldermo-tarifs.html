@@ -368,7 +368,7 @@
         
         async function loadTarifs(){
             try {
-                const response = await fetch('/api/tarifs');
+                const response = await fetch('https://lestatouables.vercel.app/api/tarifs');
                 const result = await response.json();
                 
                 if (result.success) {
@@ -414,7 +414,7 @@
         
         async function saveTarifs(tarifs){
             try {
-                const response = await fetch('/api/tarifs/update', {
+                const response = await fetch('https://lestatouables.vercel.app/api/tarifs/update', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

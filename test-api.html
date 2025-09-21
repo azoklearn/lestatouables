@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API - Les Tatouables</title>
+</head>
+<body>
+    <h1>Test des endpoints API</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testEndpoints() {
+            const results = document.getElementById('results');
+            
+            // Test des endpoints
+            const endpoints = [
+                { name: 'Flash GET', url: 'https://lestatouables.vercel.app/api/flash' },
+                { name: 'Sinkolor GET', url: 'https://lestatouables.vercel.app/api/sinkolor' },
+                { name: 'Tarifs GET', url: 'https://lestatouables.vercel.app/api/tarifs' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url);
+                    const data = await response.json();
+                    
+                    results.innerHTML += `
+                        <div style="margin: 10px 0; padding: 10px; border: 1px solid #ccc;">
+                            <h3>${endpoint.name}</h3>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Response:</strong> ${JSON.stringify(data, null, 2)}</p>
+                        </div>
+                    `;
+                } catch (error) {
+                    results.innerHTML += `
+                        <div style="margin: 10px 0; padding: 10px; border: 1px solid red; background: #ffe6e6;">
+                            <h3>${endpoint.name} - ERREUR</h3>
+                            <p><strong>Error:</strong> ${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Lancer les tests au chargement de la page
+        testEndpoints();
+    </script>
+</body>
+</html>
