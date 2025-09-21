@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "src": "images/image19.jpeg",
+    "alt": "Avant - Reconstruction mammaire",
+    "type": "avant"
+  },
+  {
+    "id": "2",
+    "src": "images/image20.jpeg", 
+    "alt": "Après - Reconstruction mammaire",
+    "type": "après"
+  }
+]
