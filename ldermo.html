@@ -621,29 +621,92 @@
             return false;
         }
         
-        function loadCreations(){
-            const defaultCreations = [
-                { src: 'images/image19.jpeg', alt: 'Avant - Reconstruction mammaire', type: 'avant' },
-                { src: 'images/image20.jpeg', alt: 'Après - Reconstruction mammaire', type: 'après' }
-            ];
+        async function loadCreations(){
             try {
-                const raw = localStorage.getItem(CREATIONS_STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        return parsed.length === 0 ? defaultCreations : parsed;
-                    }
+                const response = await fetch('/api/ldermo/get');
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.data;
+                } else {
+                    console.error('Erreur lors du chargement des créations LDermo:', result.error);
+                    return getDefaultCreations();
                 }
-            } catch(e) {}
-            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(defaultCreations)); } catch(e) {}
-            return defaultCreations;
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                return getDefaultCreations();
+            }
         }
         
-        function saveCreations(creations){
-            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
+        function getDefaultCreations(){
+            return [
+                { id: '1', src: 'images/image19.jpeg', alt: 'Avant - Reconstruction mammaire', type: 'avant' },
+                { id: '2', src: 'images/image20.jpeg', alt: 'Après - Reconstruction mammaire', type: 'après' }
+            ];
         }
         
-        let creations = loadCreations();
+        async function saveCreations(creations){
+            try {
+                const response = await fetch('/api/ldermo/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ creations })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Créations LDermo sauvegardées avec succès:', result.message);
+                    showNotification('Créations sauvegardées avec succès !', 'success');
+                } else {
+                    console.error('Erreur lors de la sauvegarde:', result.error);
+                    showNotification('Erreur lors de la sauvegarde', 'error');
+                }
+            } catch (error) {
+                console.error('Erreur réseau lors de la sauvegarde:', error);
+                showNotification('Erreur réseau lors de la sauvegarde', 'error');
+                // Fallback sur localStorage en cas d'erreur
+                try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                ${type === 'success' ? 'background: #27ae60;' : ''}
+                ${type === 'error' ? 'background: #e74c3c;' : ''}
+                ${type === 'info' ? 'background: #3498db;' : ''}
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        let creations = [];
+        
+        // Charger les créations au démarrage
+        loadCreations().then(data => {
+            creations = data;
+            renderCreations();
+        });
         
         function renderCreations(){
             portfolioGrid.innerHTML = '';
@@ -741,7 +804,9 @@
             const newAlt = prompt('Description de la création :');
             const newType = prompt('Type (avant/après ou laisser vide) :', '');
             if (newSrc && newSrc.trim() && newAlt && newAlt.trim()) {
-                creations.push({ src: newSrc.trim(), alt: newAlt.trim(), type: newType.trim() });
+                const newId = Date.now().toString();
+                const newCreation = { id: newId, src: newSrc.trim(), alt: newAlt.trim(), type: newType.trim() };
+                creations.push(newCreation);
                 saveCreations(creations);
                 renderCreations();
             }
@@ -756,7 +821,7 @@
         
         addBtn.addEventListener('click', addNewCreation);
         
-        renderCreations();
+        // renderCreations() est maintenant appelé dans loadCreations().then()
     })();
     
     // Lightbox simple et fonctionnelle pour les créations LDermo

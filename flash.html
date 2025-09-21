@@ -541,33 +541,84 @@
             return false;
         }
 
-        function loadData(){
-            const seed = [
-                { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
-                { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
-                { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
-            ];
+        async function loadData(){
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        if (parsed.length === 0) {
-                            // Seed defaults if empty, so users always see something sans "Éditer"
-                            localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
-                            return seed;
-                        }
-                        return parsed;
-                    }
+                const response = await fetch('/api/flash/get');
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.data;
+                } else {
+                    console.error('Erreur lors du chargement des flash:', result.error);
+                    return getDefaultFlashData();
                 }
-            } catch(e) {}
-            // No valid data in storage: seed with defaults
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(seed)); } catch(e) {}
-            return seed;
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                return getDefaultFlashData();
+            }
+        }
+        
+        function getDefaultFlashData(){
+            return [
+                { id: '1', src: 'images/flash1.jpeg', caption: 'Flash 1' },
+                { id: '2', src: 'images/flash2.jpeg', caption: 'Flash 2' },
+                { id: '3', src: 'images/flash3.jpeg', caption: 'Flash 3' }
+            ];
         }
 
-        function saveData(data){
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        async function saveData(data){
+            try {
+                const response = await fetch('/api/flash/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ flash: data })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Flash sauvegardés avec succès:', result.message);
+                    showNotification('Flash sauvegardés avec succès !', 'success');
+                } else {
+                    console.error('Erreur lors de la sauvegarde:', result.error);
+                    showNotification('Erreur lors de la sauvegarde', 'error');
+                }
+            } catch (error) {
+                console.error('Erreur réseau lors de la sauvegarde:', error);
+                showNotification('Erreur réseau lors de la sauvegarde', 'error');
+                // Fallback sur localStorage en cas d'erreur
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                ${type === 'success' ? 'background: #27ae60;' : ''}
+                ${type === 'error' ? 'background: #e74c3c;' : ''}
+                ${type === 'info' ? 'background: #3498db;' : ''}
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
 
         function cryptoRandomId(){
@@ -579,8 +630,7 @@
             return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
         }
 
-        allFlashData = loadData();
-        filteredData = [...allFlashData];
+        // allFlashData et filteredData sont maintenant chargés dans loadData().then()
 
         function filterData(searchTerm) {
             if (!searchTerm.trim()) {
@@ -772,7 +822,12 @@
         // Expose for inline handlers si besoin (protégées)
         window.__flashAdmin = { addItem: openModal, editItem, deleteItem };
 
-        render();
+        // Charger les données au démarrage
+        loadData().then(data => {
+            allFlashData = data;
+            filteredData = [...allFlashData];
+            render();
+        });
     })();
     </script>
 

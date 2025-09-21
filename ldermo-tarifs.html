@@ -366,45 +366,114 @@
             return false;
         }
         
-        function loadTarifs(){
-            const defaultTarifs = [
+        async function loadTarifs(){
+            try {
+                const response = await fetch('/api/tarifs/get');
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.data;
+                } else {
+                    console.error('Erreur lors du chargement des tarifs:', result.error);
+                    return getDefaultTarifs();
+                }
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                return getDefaultTarifs();
+            }
+        }
+        
+        function getDefaultTarifs(){
+            return [
                 { 
                     id: '1',
-                    title: 'Consultation',
-                    description: 'Première consultation pour évaluer votre projet et définir la méthode adaptée',
-                    price: '0€ - 30€'
+                    service: 'Reconstruction de l\'aréole mammaire',
+                    prix: 'À partir de 200€',
+                    description: 'Tatouage réparateur pour reconstruction de l\'aréole après chirurgie mammaire'
                 },
                 { 
                     id: '2',
-                    title: 'Reconstruction aréolaire',
-                    description: 'Reconstruction complète de l\'aréole mammaire après chirurgie',
-                    price: 'Sur devis'
+                    service: 'Camouflage de cicatrices',
+                    prix: 'À partir de 150€',
+                    description: 'Tatouage réparateur pour atténuer les cicatrices visibles'
                 },
                 { 
                     id: '3',
-                    title: 'Cicatrices et vergetures',
-                    description: 'Camouflage et amélioration de l\'apparence des cicatrices et vergetures',
-                    price: 'Sur devis'
+                    service: 'Camouflage de vergetures',
+                    prix: 'À partir de 180€',
+                    description: 'Tatouage réparateur pour atténuer les vergetures'
+                },
+                { 
+                    id: '4',
+                    service: 'Peau brûlée ou greffée',
+                    prix: 'Sur devis',
+                    description: 'Tatouage réparateur spécialisé pour peau brûlée ou greffée'
                 }
             ];
+        }
+        
+        async function saveTarifs(tarifs){
             try {
-                const raw = localStorage.getItem(TARIFS_STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        return parsed.length === 0 ? defaultTarifs : parsed;
-                    }
+                const response = await fetch('/api/tarifs/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ tarifs })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Tarifs sauvegardés avec succès:', result.message);
+                    showNotification('Tarifs sauvegardés avec succès !', 'success');
+                } else {
+                    console.error('Erreur lors de la sauvegarde:', result.error);
+                    showNotification('Erreur lors de la sauvegarde', 'error');
                 }
-            } catch(e) {}
-            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(defaultTarifs)); } catch(e) {}
-            return defaultTarifs;
+            } catch (error) {
+                console.error('Erreur réseau lors de la sauvegarde:', error);
+                showNotification('Erreur réseau lors de la sauvegarde', 'error');
+                // Fallback sur localStorage en cas d'erreur
+                try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
+            }
         }
         
-        function saveTarifs(tarifs){
-            try { localStorage.setItem(TARIFS_STORAGE_KEY, JSON.stringify(tarifs)); } catch(e) {}
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                ${type === 'success' ? 'background: #27ae60;' : ''}
+                ${type === 'error' ? 'background: #e74c3c;' : ''}
+                ${type === 'info' ? 'background: #3498db;' : ''}
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
         
-        let tarifs = loadTarifs();
+        let tarifs = [];
+        
+        // Charger les tarifs au démarrage
+        loadTarifs().then(data => {
+            tarifs = data;
+            renderTarifs();
+        });
         
         function renderTarifs(){
             tarifsGrid.innerHTML = '';
@@ -419,14 +488,14 @@
                 div.className = 'tarif-item';
                 
                 const title = document.createElement('h3');
-                title.textContent = tarif.title;
+                title.textContent = tarif.service;
                 
                 const description = document.createElement('p');
                 description.textContent = tarif.description;
                 
                 const price = document.createElement('div');
                 price.className = 'tarif-price';
-                price.textContent = tarif.price;
+                price.textContent = tarif.prix;
                 
                 const cta = document.createElement('a');
                 cta.className = 'tarif-cta';
@@ -477,10 +546,10 @@
         
         function editTarif(index){
             if (!requestAuth()) return;
-            const newTitle = prompt('Nouveau titre :', tarifs[index].title) || tarifs[index].title;
+            const newService = prompt('Nouveau service :', tarifs[index].service) || tarifs[index].service;
             const newDescription = prompt('Nouvelle description :', tarifs[index].description) || tarifs[index].description;
-            const newPrice = prompt('Nouveau prix :', tarifs[index].price) || tarifs[index].price;
-            tarifs[index] = { ...tarifs[index], title: newTitle, description: newDescription, price: newPrice };
+            const newPrix = prompt('Nouveau prix :', tarifs[index].prix) || tarifs[index].prix;
+            tarifs[index] = { ...tarifs[index], service: newService, description: newDescription, prix: newPrix };
             saveTarifs(tarifs);
             renderTarifs();
         }
@@ -495,16 +564,16 @@
         
         function addNewTarif(){
             if (!requestAuth()) return;
-            const newTitle = prompt('Titre du nouveau tarif :');
+            const newService = prompt('Service du nouveau tarif :');
             const newDescription = prompt('Description :');
-            const newPrice = prompt('Prix :');
-            if (newTitle && newTitle.trim() && newDescription && newDescription.trim() && newPrice && newPrice.trim()) {
+            const newPrix = prompt('Prix :');
+            if (newService && newService.trim() && newDescription && newDescription.trim() && newPrix && newPrix.trim()) {
                 const newId = Date.now().toString();
                 tarifs.push({ 
                     id: newId, 
-                    title: newTitle.trim(), 
+                    service: newService.trim(), 
                     description: newDescription.trim(), 
-                    price: newPrice.trim() 
+                    prix: newPrix.trim() 
                 });
                 saveTarifs(tarifs);
                 renderTarifs();
@@ -520,7 +589,7 @@
         
         addBtn.addEventListener('click', addNewTarif);
         
-        renderTarifs();
+        // renderTarifs() est maintenant appelé dans loadTarifs().then()
     })();
     </script>
 </body>
