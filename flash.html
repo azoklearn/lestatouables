@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="config.js"></script>
     <style>
         /* Styles spécifiques pour la page flash */
         .flash-page-header {
@@ -486,7 +487,12 @@
     (function(){
         // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const API_URL = '/api/flash?v=' + Math.random();
+        
+        // Configuration JSONBin.io
+        const JSONBIN_API_KEY = window.JSONBIN_CONFIG?.API_KEY || 'YOUR_API_KEY';
+        const JSONBIN_BIN_ID = window.JSONBIN_CONFIG?.BIN_ID || 'YOUR_BIN_ID';
+        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+        
         const grid = document.getElementById('flashGrid');
         const emptyEl = document.getElementById('flashEmpty');
         const searchInput = document.getElementById('flashSearch');
@@ -530,36 +536,44 @@
             return false;
         }
 
-        // Fonctions API
+        // Fonctions API JSONBin.io
         async function loadData(){
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(JSONBIN_URL, {
                     method: 'GET',
-                    cache: 'no-cache',
                     headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
+                        'X-Master-Key': JSONBIN_API_KEY,
+                        'Content-Type': 'application/json'
                     }
                 });
                 if (response.ok) {
-                    const data = await response.json();
-                    return data;
+                    const result = await response.json();
+                    return result.record || [];
                 } else {
                     console.error('Erreur lors du chargement des données');
-                    return [];
+                    return getDefaultData();
                 }
             } catch (error) {
                 console.error('Erreur réseau:', error);
-                return [];
+                return getDefaultData();
             }
+        }
+
+        function getDefaultData() {
+            return [
+                { id: '1', src: 'images/flash1.jpeg', caption: 'Flash 1' },
+                { id: '2', src: 'images/flash2.jpeg', caption: 'Flash 2' },
+                { id: '3', src: 'images/flash3.jpeg', caption: 'Flash 3' }
+            ];
         }
 
         async function saveData(data){
             try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
+                const response = await fetch(JSONBIN_URL, {
+                    method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY,
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
@@ -572,14 +586,11 @@
 
         async function updateData(id, data){
             try {
-                const response = await fetch(API_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({id, ...data})
-                });
-                return response.ok;
+                const itemIndex = allFlashData.findIndex(item => item.id === id);
+                if (itemIndex === -1) return false;
+                
+                allFlashData[itemIndex] = { id, ...data };
+                return await saveData(allFlashData);
             } catch (error) {
                 console.error('Erreur lors de la mise à jour:', error);
                 return false;
@@ -588,14 +599,8 @@
 
         async function deleteData(id){
             try {
-                const response = await fetch(API_URL, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({id})
-                });
-                return response.ok;
+                allFlashData = allFlashData.filter(item => item.id !== id);
+                return await saveData(allFlashData);
             } catch (error) {
                 console.error('Erreur lors de la suppression:', error);
                 return false;
@@ -759,17 +764,22 @@
                     const baseName = (file.name || '').split('\\').pop().split('/').pop();
                     const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
                     
-                    const success = await saveData({
+                    // Ajouter à la liste locale
+                    const newId = Date.now().toString();
+                    allFlashData.unshift({
+                        id: newId,
                         src: src,
                         caption: nameNoExt || 'Flash'
                     });
                     
+                    // Sauvegarder sur JSONBin
+                    const success = await saveData(allFlashData);
+                    
                     if (success) {
-                        // Recharger les données depuis le serveur
-                        const newData = await loadData();
-                        allFlashData = newData;
                         filterData(searchInput.value);
                     } else {
+                        // Annuler l'ajout local si la sauvegarde échoue
+                        allFlashData = allFlashData.filter(item => item.id !== newId);
                         alert('Erreur lors de l\'ajout du flash');
                     }
                 }
