@@ -1,43 +1,19 @@
 // API endpoint pour récupérer les créations Sinkolor
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_ANON_KEY
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Variables d\'environnement Supabase manquantes')
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey)
-
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Méthode non autorisée' })
   }
 
-  try {
-    const { data, error } = await supabase
-      .from('sinkolor_creations')
-      .select('*')
-      .order('created_at', { ascending: false })
+  // Données de test temporaires
+  const testData = [
+    { id: '1', src: 'images/image9.jpeg', alt: 'Tatouage S\'inkolor 9' },
+    { id: '2', src: 'images/image10.jpeg', alt: 'Tatouage S\'inkolor 10' },
+    { id: '3', src: 'images/image12.jpeg', alt: 'Tatouage S\'inkolor 12' }
+  ];
 
-    if (error) {
-      console.error('Erreur Supabase:', error)
-      return res.status(500).json({ 
-        success: false, 
-        error: 'Erreur lors de la récupération des créations' 
-      })
-    }
-
-    return res.status(200).json({ 
-      success: true, 
-      data: data || [] 
-    })
-  } catch (error) {
-    console.error('Erreur serveur:', error)
-    return res.status(500).json({ 
-      success: false, 
-      error: 'Erreur interne du serveur' 
-    })
-  }
+  return res.status(200).json({ 
+    success: true, 
+    data: testData,
+    message: 'Endpoint sinkolor fonctionne !'
+  });
 }
