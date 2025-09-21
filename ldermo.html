@@ -87,13 +87,24 @@
                 text-align: center;
             }
             
-            /* Images des créations plus petites sur mobile */
+            /* Images des créations centrées et uniformes sur mobile */
+            .portfolio .portfolio-image {
+                width: 120px !important;
+                height: 120px !important;
+                overflow: hidden !important;
+                border-radius: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
             .portfolio .portfolio-image img {
-                max-width: 120px !important;
-                height: auto !important;
+                width: 120px !important;
+                height: 120px !important;
+                object-fit: cover !important;
                 border: none !important;
                 outline: none !important;
-                border-radius: 0 !important;
+                border-radius: 8px !important;
             }
             
             .portfolio .portfolio-item {
@@ -102,12 +113,20 @@
                 box-shadow: none !important;
                 background: transparent !important;
                 border-radius: 0 !important;
+                text-align: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 150px !important;
             }
             
-            /* Forcer l'espacement réduit sur tous les éléments portfolio */
+            /* Centrer la grille et forcer l'espacement réduit sur tous les éléments portfolio */
             .portfolio .portfolio-grid {
                 gap: 8px !important;
                 row-gap: 8px !important;
+                justify-content: center !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
             }
             
             .portfolio .portfolio-item * {
@@ -144,10 +163,13 @@
             }
             
             .portfolio-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 8px !important;
-                row-gap: 8px !important;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+                gap: 20px !important;
+                row-gap: 20px !important;
                 display: grid !important;
+                justify-items: center !important;
+                max-width: 800px !important;
+                margin: 0 auto !important;
             }
             
             /* Styles pour les sous-menus sur mobile */
@@ -219,10 +241,15 @@
             font-weight: 500;
         }
         
-        /* Forcer l'espacement réduit globalement */
+        /* Centrer les éléments portfolio sur desktop */
         .portfolio .portfolio-item {
             margin: 0 !important;
             padding: 0 !important;
+            text-align: center !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            max-width: 250px !important;
         }
         
         .portfolio .portfolio-image {
@@ -292,7 +319,7 @@
             background: #2c3e50;
         }
         
-        /* Lightbox styles */
+        /* Lightbox simple pour les créations LDermo */
         .lightbox {
             display: none;
             position: fixed;
@@ -301,8 +328,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            cursor: pointer;
+            background-color: rgba(0,0,0,0.95);
         }
         
         .lightbox-content {
@@ -310,30 +336,57 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            max-width: 98% !important;
-            max-height: 98% !important;
-            width: 98% !important;
-            height: 98% !important;
+            max-width: 95%;
+            max-height: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .lightbox img {
-            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
             height: auto;
             border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        /* Optimisation mobile */
+        @media (max-width: 768px) {
+            .lightbox-content {
+                max-width: 98%;
+                max-height: 98%;
+                padding: 20px;
+            }
+            
+            .lightbox img {
+                max-width: calc(100vw - 40px);
+                max-height: calc(100vh - 40px);
+                min-width: 280px;
+            }
         }
         
         .lightbox-close {
             position: absolute;
             top: 20px;
-            right: 30px;
+            right: 20px;
             color: white;
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
+            z-index: 10000;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .lightbox-close:hover {
-            color: #ccc;
+            background: rgba(0,0,0,0.8);
         }
     </style>
 </head>
@@ -350,9 +403,7 @@
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
-                <li><a href="sinkolor.html" class="nav-link">Sinkolor</a></li>
                 <li><a href="ldermo-tarifs.html" class="nav-link">Tarification</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
@@ -423,7 +474,7 @@
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Avant</span>
                         </div>
                         <div class="portfolio-image">
-                            <img src="images/image19.jpeg" alt="Avant - Reconstruction mammaire" loading="lazy">
+                            <img src="images/image19.jpeg" alt="Avant - Reconstruction mammaire" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image19.jpeg', 'Avant - Reconstruction mammaire')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>Avant</h3>
@@ -436,7 +487,7 @@
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Après</span>
                         </div>
                         <div class="portfolio-image">
-                            <img src="images/image20.jpeg" alt="Après - Reconstruction mammaire" loading="lazy">
+                            <img src="images/image20.jpeg" alt="Après - Reconstruction mammaire" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image20.jpeg', 'Après - Reconstruction mammaire')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>Après</h3>
@@ -708,32 +759,59 @@
         renderCreations();
     })();
     
-    // Fonctions pour la lightbox
-    function openLightbox(src, alt) {
+    // Lightbox simple et fonctionnelle pour les créations LDermo
+    window.openLightbox = function(src, alt) {
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxContent = document.querySelector('.lightbox-content');
+        
+        if (!lightbox || !lightboxImg) return;
+        
         lightboxImg.src = src;
         lightboxImg.alt = alt;
         lightbox.style.display = 'block';
-        lightboxContent.style.maxWidth = '80%';
-        lightboxContent.style.maxHeight = '80%';
         document.body.style.overflow = 'hidden';
     }
     
-    function closeLightbox() {
+    window.closeLightbox = function() {
         const lightbox = document.getElementById('lightbox');
+        if (!lightbox) return;
+        
         lightbox.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
     
-    // Event listeners pour la lightbox
-    document.getElementById('lightbox').addEventListener('click', closeLightbox);
-    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
+    // Configuration des événements au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxContent = document.querySelector('.lightbox-content');
+        const lightboxClose = document.querySelector('.lightbox-close');
+        
+        if (!lightbox || !lightboxImg || !lightboxContent) return;
+        
+        // Empêcher la fermeture quand on clique sur l'image ou le contenu
+        lightboxImg.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        lightboxContent.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Fermer seulement avec la croix
+        if (lightboxClose) {
+            lightboxClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeLightbox();
+            });
         }
+        
+        // Fermer avec Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.style.display === 'block') {
+                closeLightbox();
+            }
+        });
     });
     
     // Fonction pour gérer les menus de contact

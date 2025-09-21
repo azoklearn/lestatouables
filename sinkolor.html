@@ -90,10 +90,11 @@
                 text-align: center;
             }
             
-            /* Images des créations plus petites sur mobile */
+            /* Images des créations avec taille uniforme sur mobile */
             .portfolio .portfolio-image img {
-                max-width: 100px !important;
-                height: auto !important;
+                width: 100px !important;
+                height: 100px !important;
+                object-fit: cover !important;
                 border: none !important;
                 outline: none !important;
                 border-radius: 0 !important;
@@ -268,16 +269,18 @@
             padding: 0 !important;
         }
         
-        /* Forcer les images à prendre tout l'espace */
+        /* Forcer les images à avoir une taille uniforme */
         .portfolio .portfolio-image {
-            height: auto !important;
-            min-height: 0 !important;
+            height: 200px !important;
+            min-height: 200px !important;
+            overflow: hidden !important;
         }
         
         .portfolio .portfolio-image img {
             display: block !important;
             width: 100% !important;
-            height: auto !important;
+            height: 100% !important;
+            object-fit: cover !important;
         }
         
         /* Personnalisation de la barre de défilement */
@@ -295,7 +298,7 @@
             background: #2c3e50;
         }
         
-        /* Lightbox styles améliorés - Version 2.0 - Images plus grandes */
+        /* Lightbox simple pour les créations Sinkolor */
         .lightbox {
             display: none;
             position: fixed;
@@ -305,13 +308,6 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.95);
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        
-        .lightbox.show {
-            opacity: 1;
         }
         
         .lightbox-content {
@@ -321,70 +317,201 @@
             transform: translate(-50%, -50%);
             max-width: 95%;
             max-height: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .lightbox img {
-            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
             height: auto;
-            max-width: 100vw;
-            max-height: 100vh;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
-        .lightbox img:hover {
-            transform: scale(1.05);
+        /* Optimisation mobile */
+        @media (max-width: 768px) {
+            .lightbox-content {
+                max-width: 98%;
+                max-height: 98%;
+                padding: 20px;
+            }
+            
+            .lightbox img {
+                max-width: calc(100vw - 40px);
+                max-height: calc(100vh - 40px);
+                min-width: 280px;
+            }
         }
         
         .lightbox-close {
             position: absolute;
-            top: 25px;
-            right: 35px;
+            top: 20px;
+            right: 20px;
             color: white;
-            font-size: 45px;
+            font-size: 40px;
             font-weight: bold;
             cursor: pointer;
             z-index: 10000;
             background: rgba(0,0,0,0.5);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
         }
         
         .lightbox-close:hover {
-            color: #ff4757;
             background: rgba(0,0,0,0.8);
-            transform: scale(1.1);
+        }
+
+        /* Styles pour la modal d'ajout de création */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
         }
         
-        /* Animation d'entrée pour les images */
-        .lightbox-content img {
-            animation: lightboxZoomIn 0.4s ease-out;
+        .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.15s ease;
         }
         
-        @keyframes lightboxZoomIn {
-            from {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .modal.is-open .modal-backdrop {
+            opacity: 1;
         }
         
-        /* Effet de zoom au survol */
-        .lightbox img.zoomed {
-            transform: scale(1.8) !important;
-            cursor: grab !important;
+        .modal-dialog {
+            position: relative;
+            max-width: 500px;
+            margin: 10vh auto;
+            background: #2d2d2d;
+            border: 1px solid #333;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.15s ease, opacity 0.15s ease;
         }
         
-        .lightbox img.zoomed:active {
-            cursor: grabbing !important;
+        .modal.is-open .modal-dialog {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.25rem;
+        }
+        
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.25rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid #333;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+        
+        /* Dropzone styles */
+        .dropzone {
+            border: 2px dashed #555;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            background: #1a1a1a;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        
+        .dropzone:hover,
+        .dropzone.dragover {
+            border-color: #ffffff;
+            background: #222;
+        }
+        
+        .dropzone-content {
+            color: #b8b8b8;
+        }
+        
+        .dropzone-content i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        
+        .browse-link {
+            color: #ffffff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .image-preview {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -401,9 +528,7 @@
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
-                <li><a href="ldermo.html" class="nav-link">LDermo</a></li>
                 <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
@@ -630,10 +755,43 @@
     </footer>
 
     <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); cursor: pointer;">
-        <span class="lightbox-close" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
-        <div class="lightbox-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 95%; max-height: 95%;">
-            <img id="lightbox-img" src="" alt="" style="width: 100%; height: auto; max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div id="lightbox" class="lightbox" style="display: none;">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Modal d'ajout de création -->
+    <div id="addCreationModal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Ajouter une création</h3>
+                <button id="modalClose" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Description de la création :</label>
+                    <input type="text" id="creationDescription" placeholder="Ex: Tatouage manga personnalisé" required>
+                </div>
+                <div class="dropzone" id="imageDropzone">
+                    <div class="dropzone-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Glissez-déposez une image ici</p>
+                        <p>ou <span class="browse-link">cliquez pour choisir</span></p>
+                        <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                <div id="imagePreview" class="image-preview" style="display: none;">
+                    <img id="previewImg" src="" alt="Aperçu">
+                    <button type="button" id="removePreview" class="btn btn-secondary">Supprimer</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBtn" class="btn btn-secondary">Annuler</button>
+                <button id="addBtn" class="btn btn-primary">Ajouter</button>
+            </div>
         </div>
     </div>
 
@@ -711,25 +869,99 @@
             return false;
         }
         
-        function loadCreations(){
-            const defaultCreations = [
-                { src: 'images/image9.jpeg', alt: 'Tatouage S\'inkolor 9' },
-                { src: 'images/image10.jpeg', alt: 'Tatouage S\'inkolor 10' },
-                { src: 'images/image12.jpeg', alt: 'Tatouage S\'inkolor 12' },
-                { src: 'images/image13.jpeg', alt: 'Tatouage S\'inkolor 13' },
-                { src: 'images/image14.jpeg', alt: 'Tatouage S\'inkolor 14' },
-                { src: 'images/image15.jpeg', alt: 'Tatouage S\'inkolor 15' },
-                { src: 'images/image16.jpeg', alt: 'Tatouage S\'inkolor 16' },
-                { src: 'images/image17.jpeg', alt: 'Tatouage S\'inkolor 17' }
+        async function loadCreations(){
+            try {
+                const response = await fetch('/api/sinkolor/get');
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.data;
+                } else {
+                    console.error('Erreur lors du chargement des créations:', result.error);
+                    return getDefaultCreations();
+                }
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                return getDefaultCreations();
+            }
+        }
+        
+        function getDefaultCreations(){
+            return [
+                { id: '1', src: 'images/image9.jpeg', alt: 'Tatouage S\'inkolor 9' },
+                { id: '2', src: 'images/image10.jpeg', alt: 'Tatouage S\'inkolor 10' },
+                { id: '3', src: 'images/image12.jpeg', alt: 'Tatouage S\'inkolor 12' },
+                { id: '4', src: 'images/image13.jpeg', alt: 'Tatouage S\'inkolor 13' },
+                { id: '5', src: 'images/image14.jpeg', alt: 'Tatouage S\'inkolor 14' },
+                { id: '6', src: 'images/image15.jpeg', alt: 'Tatouage S\'inkolor 15' },
+                { id: '7', src: 'images/image16.jpeg', alt: 'Tatouage S\'inkolor 16' },
+                { id: '8', src: 'images/image17.jpeg', alt: 'Tatouage S\'inkolor 17' }
             ];
-            return defaultCreations;
         }
         
-        function saveCreations(creations){
-            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
+        async function saveCreations(creations){
+            try {
+                const response = await fetch('/api/sinkolor/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ creations })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Créations sauvegardées avec succès:', result.message);
+                    // Afficher une notification de succès
+                    showNotification('Créations sauvegardées avec succès !', 'success');
+                } else {
+                    console.error('Erreur lors de la sauvegarde:', result.error);
+                    showNotification('Erreur lors de la sauvegarde', 'error');
+                }
+            } catch (error) {
+                console.error('Erreur réseau lors de la sauvegarde:', error);
+                showNotification('Erreur réseau lors de la sauvegarde', 'error');
+                // Fallback sur localStorage en cas d'erreur
+                try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(creations)); } catch(e) {}
+            }
         }
         
-        let creations = loadCreations();
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                ${type === 'success' ? 'background: #27ae60;' : ''}
+                ${type === 'error' ? 'background: #e74c3c;' : ''}
+                ${type === 'info' ? 'background: #3498db;' : ''}
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        let creations = [];
+        
+        // Charger les créations au démarrage
+        loadCreations().then(data => {
+            creations = data;
+            renderCreations();
+        });
         
         function renderCreations(){
             portfolioGrid.innerHTML = '';
@@ -808,15 +1040,55 @@
             renderCreations();
         }
         
-        function addNewCreation(){
+        function openAddCreationModal(){
             if (!requestAuth()) return;
-            const newSrc = prompt('URL de la nouvelle image :');
-            const newAlt = prompt('Description de la création :');
-            if (newSrc && newSrc.trim() && newAlt && newAlt.trim()) {
-                creations.push({ src: newSrc.trim(), alt: newAlt.trim() });
-                saveCreations(creations);
-                renderCreations();
+            
+            const modal = document.getElementById('addCreationModal');
+            const descriptionInput = document.getElementById('creationDescription');
+            const dropzone = document.getElementById('imageDropzone');
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            
+            // Réinitialiser le formulaire
+            descriptionInput.value = '';
+            preview.style.display = 'none';
+            dropzone.style.display = 'block';
+            
+            // Afficher la modal
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('is-open'), 10);
+        }
+        
+        function closeAddCreationModal(){
+            const modal = document.getElementById('addCreationModal');
+            modal.classList.remove('is-open');
+            setTimeout(() => modal.style.display = 'none', 150);
+        }
+        
+        function addNewCreation(){
+            const descriptionInput = document.getElementById('creationDescription');
+            const previewImg = document.getElementById('previewImg');
+            
+            const description = descriptionInput.value.trim();
+            const imageSrc = previewImg.src;
+            
+            if (!description) {
+                alert('Veuillez saisir une description');
+                return;
             }
+            
+            if (!imageSrc || imageSrc === '') {
+                alert('Veuillez sélectionner une image');
+                return;
+            }
+            
+            // Ajouter la création
+            creations.push({ src: imageSrc, alt: description });
+            saveCreations(creations);
+            renderCreations();
+            
+            // Fermer la modal
+            closeAddCreationModal();
         }
         
         toggleBtn.addEventListener('click', () => {
@@ -826,52 +1098,64 @@
             setEditMode(!editMode);
         });
         
-        addBtn.addEventListener('click', addNewCreation);
+        addBtn.addEventListener('click', openAddCreationModal);
         
-        renderCreations();
+        // renderCreations() est maintenant appelé dans loadCreations().then()
     })();
     
-    // Fonctions pour la lightbox avec zoom - Accessible globalement
+    // Lightbox simple et fonctionnelle pour les créations Sinkolor
     window.openLightbox = function(src, alt) {
-        console.log('openLightbox appelée avec:', src);
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxContent = document.querySelector('.lightbox-content');
         
-        if (!lightbox || !lightboxImg || !lightboxContent) {
-            console.error('Éléments lightbox non trouvés!');
-            return;
-        }
+        if (!lightbox || !lightboxImg) return;
         
         lightboxImg.src = src;
         lightboxImg.alt = alt;
         lightbox.style.display = 'block';
-        
-        // Images plus grandes pour zoom - Forcer avec !important
-        lightboxContent.style.setProperty('max-width', '95%', 'important');
-        lightboxContent.style.setProperty('max-height', '95%', 'important');
-        lightboxImg.style.setProperty('max-width', '100vw', 'important');
-        lightboxImg.style.setProperty('max-height', '100vh', 'important');
-        lightboxImg.style.setProperty('width', 'auto', 'important');
-        lightboxImg.style.setProperty('height', 'auto', 'important');
-        
         document.body.style.overflow = 'hidden';
-        console.log('Lightbox ouverte avec zoom!');
     }
     
     window.closeLightbox = function() {
         const lightbox = document.getElementById('lightbox');
+        if (!lightbox) return;
+        
         lightbox.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
     
-    // Event listeners pour la lightbox
-    document.getElementById('lightbox').addEventListener('click', closeLightbox);
-    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
+    // Configuration des événements au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxContent = document.querySelector('.lightbox-content');
+        const lightboxClose = document.querySelector('.lightbox-close');
+        
+        if (!lightbox || !lightboxImg || !lightboxContent) return;
+        
+        // Empêcher la fermeture quand on clique sur l'image ou le contenu
+        lightboxImg.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        lightboxContent.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Fermer seulement avec la croix
+        if (lightboxClose) {
+            lightboxClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeLightbox();
+            });
         }
+        
+        // Fermer avec Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.style.display === 'block') {
+                closeLightbox();
+            }
+        });
     });
     
     // Fonction pour gérer les menus de contact
@@ -902,6 +1186,117 @@
                 menu.style.display = 'none';
             });
         }
+    });
+    
+    // Gestion de la modal d'ajout de création avec drag & drop
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('addCreationModal');
+        const modalClose = document.getElementById('modalClose');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const addBtn = document.getElementById('addBtn');
+        const dropzone = document.getElementById('imageDropzone');
+        const fileInput = document.getElementById('imageFileInput');
+        const preview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const removePreview = document.getElementById('removePreview');
+        
+        if (!modal) return;
+        
+        // Fermer la modal
+        function closeModal() {
+            modal.classList.remove('is-open');
+            setTimeout(() => modal.style.display = 'none', 150);
+        }
+        
+        // Gestion des événements de fermeture
+        modalClose.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+        
+        // Gestion du drag & drop
+        dropzone.addEventListener('click', () => fileInput.click());
+        
+        dropzone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+        
+        dropzone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+        });
+        
+        dropzone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        // Traitement du fichier
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Veuillez sélectionner un fichier image');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.style.display = 'block';
+                dropzone.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Supprimer l'aperçu
+        removePreview.addEventListener('click', function() {
+            preview.style.display = 'none';
+            dropzone.style.display = 'block';
+            previewImg.src = '';
+            fileInput.value = '';
+        });
+        
+        // Ajouter la création
+        addBtn.addEventListener('click', function() {
+            const descriptionInput = document.getElementById('creationDescription');
+            const description = descriptionInput.value.trim();
+            const imageSrc = previewImg.src;
+            
+            if (!description) {
+                alert('Veuillez saisir une description');
+                return;
+            }
+            
+            if (!imageSrc || imageSrc === '') {
+                alert('Veuillez sélectionner une image');
+                return;
+            }
+            
+            // Ajouter la création avec un ID unique
+            const newId = Date.now().toString();
+            const newCreation = { id: newId, src: imageSrc, alt: description };
+            
+            // Ajouter à la liste des créations
+            creations.push(newCreation);
+            
+            // Sauvegarder via l'API
+            saveCreations(creations);
+            
+            // Fermer la modal
+            closeModal();
+        });
     });
     </script>
 </body>
