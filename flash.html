@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash - Les Tatouables</title>
     <meta name="description" content="Découvrez nos tatouages flash disponibles chez Les Tatouables - Salon de tatouage à Toul">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="ETag" content="0">
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="config.js?v=3"></script>
     <style>
         /* Styles spécifiques pour la page flash */
         .flash-page-header {
@@ -339,33 +336,18 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(2.2);
+            transform: translate(-50%, -50%);
             max-width: 95%;
             max-height: 95%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
         }
         
         .lightbox img {
             width: 100%;
             height: auto;
-            max-width: 200vw;
-            max-height: 200vh;
+            max-width: 100vw;
+            max-height: 100vh;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            cursor: zoom-in;
-            transition: transform 0.3s ease;
-        }
-        
-        .lightbox img:hover {
-            transform: scale(1.2);
-        }
-        
-        .lightbox img.zoomed {
-            transform: scale(1.8) !important;
-            cursor: zoom-out !important;
         }
         
         .lightbox-close {
@@ -396,7 +378,20 @@
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
-                <li><a href="sinkolor.html#sinkolor-presentation" class="nav-link">Présentation Sinkolor</a></li>
+                <li>
+                    <a href="index.html#ldermo-presentation" class="nav-link">LDermo</a>
+                    <ul class="nav-submenu">
+                        <li><a href="index.html#ldermo-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="index.html#ldermo-tarifs" class="nav-link">Tarification</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="index.html#sinkolor-presentation" class="nav-link">Sinkolor</a>
+                    <ul class="nav-submenu">
+                        <li><a href="index.html#sinkolor-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
@@ -434,7 +429,7 @@
     </section>
 
     <!-- Modal: Ajouter des flashs -->
-    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true" tabindex="-1">
+    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true">
         <div class="modal-backdrop"></div>
         <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
             <div class="modal-header">
@@ -488,12 +483,7 @@
     (function(){
         // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        
-        // Configuration JSONBin.io
-        const JSONBIN_API_KEY = window.JSONBIN_CONFIG?.API_KEY || 'YOUR_API_KEY';
-        const JSONBIN_BIN_ID = window.JSONBIN_CONFIG?.BIN_ID || 'YOUR_BIN_ID';
-        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-        
+        const STORAGE_KEY = 'flashData.v1';
         const grid = document.getElementById('flashGrid');
         const emptyEl = document.getElementById('flashEmpty');
         const searchInput = document.getElementById('flashSearch');
@@ -537,108 +527,33 @@
             return false;
         }
 
-        // Fonctions API JSONBin.io
-        async function loadData(){
-            console.log('🔍 Tentative de chargement depuis:', JSONBIN_URL);
-            console.log('🔑 API Key configurée:', JSONBIN_API_KEY !== 'YOUR_API_KEY');
-            
-            // Si pas de configuration JSONBin, utiliser localStorage ou données par défaut
-            if (JSONBIN_API_KEY === 'YOUR_API_KEY' || JSONBIN_BIN_ID === 'YOUR_BIN_ID') {
-                console.log('⚠️ JSONBin non configuré, vérification du localStorage');
-                try {
-                    const localData = localStorage.getItem('flashData');
-                    if (localData) {
-                        const parsed = JSON.parse(localData);
-                        console.log('💾 Données chargées depuis localStorage:', parsed);
+        function loadData(){
+            const seed = [
+                { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
+                { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
+                { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
+            ];
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        if (parsed.length === 0) {
+                            // Seed defaults if empty, so users always see something sans "Éditer"
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+                            return seed;
+                        }
                         return parsed;
                     }
-                } catch (error) {
-                    console.error('Erreur lecture localStorage:', error);
                 }
-                console.log('📋 Utilisation des données par défaut');
-                return getDefaultData();
-            }
-            
-            try {
-                const response = await fetch(JSONBIN_URL, {
-                    method: 'GET',
-                    headers: {
-                        'X-Master-Key': JSONBIN_API_KEY,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log('✅ Données chargées depuis JSONBin:', result);
-                    return result.record || [];
-                } else {
-                    console.error('❌ Erreur JSONBin:', response.status);
-                    return getDefaultData();
-                }
-            } catch (error) {
-                console.error('❌ Erreur réseau JSONBin:', error);
-                return getDefaultData();
-            }
+            } catch(e) {}
+            // No valid data in storage: seed with defaults
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(seed)); } catch(e) {}
+            return seed;
         }
 
-        function getDefaultData() {
-            return [
-                { id: '1', src: 'images/flash1.jpeg', caption: 'Flash 1' },
-                { id: '2', src: 'images/flash2.jpeg', caption: 'Flash 2' },
-                { id: '3', src: 'images/flash3.jpeg', caption: 'Flash 3' }
-            ];
-        }
-
-        async function saveData(data){
-            // Si JSONBin n'est pas configuré, sauvegarder en local
-            if (JSONBIN_API_KEY === 'YOUR_API_KEY' || JSONBIN_BIN_ID === 'YOUR_BIN_ID') {
-                console.log('💾 Sauvegarde locale (JSONBin non configuré)');
-                try {
-                    localStorage.setItem('flashData', JSON.stringify(data));
-                    return true;
-                } catch (error) {
-                    console.error('Erreur sauvegarde locale:', error);
-                    return false;
-                }
-            }
-            
-            try {
-                const response = await fetch(JSONBIN_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'X-Master-Key': JSONBIN_API_KEY,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                return response.ok;
-            } catch (error) {
-                console.error('Erreur lors de la sauvegarde:', error);
-                return false;
-            }
-        }
-
-        async function updateData(id, data){
-            try {
-                const itemIndex = allFlashData.findIndex(item => item.id === id);
-                if (itemIndex === -1) return false;
-                
-                allFlashData[itemIndex] = { id, ...data };
-                return await saveData(allFlashData);
-            } catch (error) {
-                console.error('Erreur lors de la mise à jour:', error);
-                return false;
-            }
-        }
-
-        async function deleteData(id){
-            try {
-                allFlashData = allFlashData.filter(item => item.id !== id);
-                return await saveData(allFlashData);
-            } catch (error) {
-                console.error('Erreur lors de la suppression:', error);
-                return false;
-            }
+        function saveData(data){
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
         }
 
         function cryptoRandomId(){
@@ -650,20 +565,8 @@
             return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
         }
 
-        // Charger les données au démarrage
-        console.log('🚀 Démarrage du système de gestion des flashs');
-        loadData().then(data => {
-            console.log('📊 Données chargées:', data);
-            allFlashData = data;
-            filteredData = [...allFlashData];
-            render();
-        }).catch(error => {
-            console.error('💥 Erreur lors du chargement:', error);
-            // Utiliser les données par défaut en cas d'erreur
-            allFlashData = getDefaultData();
-            filteredData = [...allFlashData];
-            render();
-        });
+        allFlashData = loadData();
+        filteredData = [...allFlashData];
 
         function filterData(searchTerm) {
             if (!searchTerm.trim()) {
@@ -744,7 +647,6 @@
         function openModal(){
             modal.style.display = '';
             modal.setAttribute('aria-hidden', 'false');
-            modal.removeAttribute('tabindex');
             document.body.style.overflow = 'hidden';
             setTimeout(() => modal.classList.add('is-open'));
         }
@@ -752,82 +654,52 @@
         function closeModal(){
             modal.classList.remove('is-open');
             modal.setAttribute('aria-hidden', 'true');
-            modal.setAttribute('tabindex', '-1');
             document.body.style.overflow = '';
             // small timeout to allow transition if any
             setTimeout(() => { modal.style.display = 'none'; }, 150);
         }
 
-        async function editItem(id){
+        function editItem(id){
             const idx = allFlashData.findIndex(x => x.id === id);
             if (idx === -1) return;
             const current = allFlashData[idx];
             const newCaption = prompt('Nouvelle légende :', current.caption || '') || (current.caption || '');
-            
-            const success = await updateData(id, { 
-                src: current.src, 
-                caption: newCaption 
-            });
-            
-            if (success) {
-                allFlashData[idx] = { ...current, caption: newCaption };
-                filterData(searchInput.value);
-            } else {
-                alert('Erreur lors de la mise à jour');
-            }
+            allFlashData[idx] = { ...current, caption: newCaption };
+            saveData(allFlashData);
+            filterData(searchInput.value);
         }
 
-        async function deleteItem(id){
+        function deleteItem(id){
             if (!confirm('Supprimer ce flash ?')) return;
-            
-            const success = await deleteData(id);
-            
-            if (success) {
-                allFlashData = allFlashData.filter(x => x.id !== id);
-                filterData(searchInput.value);
-            } else {
-                alert('Erreur lors de la suppression');
-            }
+            allFlashData = allFlashData.filter(x => x.id !== id);
+            saveData(allFlashData);
+            filterData(searchInput.value);
         }
 
-        async function handleFiles(files){
+        function handleFiles(files){
             const fileArray = Array.from(files || []);
             if (!fileArray.length) return;
-            
-            for (const file of fileArray) {
-                if (!file.type || !file.type.startsWith('image/')) continue;
-                
+            let addedCount = 0;
+            let processed = 0;
+            fileArray.forEach(file => {
+                if (!file.type || !file.type.startsWith('image/')) { processed++; return; }
                 const reader = new FileReader();
-                const src = await new Promise((resolve, reject) => {
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-                
-                if (src) {
-                    const baseName = (file.name || '').split('\\').pop().split('/').pop();
-                    const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
-                    
-                    // Ajouter à la liste locale
-                    const newId = Date.now().toString();
-                    allFlashData.unshift({
-                        id: newId,
-                        src: src,
-                        caption: nameNoExt || 'Flash'
-                    });
-                    
-                    // Sauvegarder sur JSONBin
-                    const success = await saveData(allFlashData);
-                    
-                    if (success) {
-                        filterData(searchInput.value);
-                    } else {
-                        // Annuler l'ajout local si la sauvegarde échoue
-                        allFlashData = allFlashData.filter(item => item.id !== newId);
-                        alert('Erreur lors de l\'ajout du flash');
+                reader.onload = () => {
+                    const src = String(reader.result || '');
+                    if (src) {
+                        const baseName = (file.name || '').split('\\').pop().split('/').pop();
+                        const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
+                        allFlashData.unshift({ id: cryptoRandomId(), src, caption: nameNoExt || 'Flash' });
+                        addedCount++;
                     }
-                }
-            }
+                    processed++;
+                    if (processed === fileArray.length){
+                        if (addedCount){ saveData(allFlashData); filterData(searchInput.value); }
+                    }
+                };
+                reader.onerror = () => { processed++; if (processed === fileArray.length){ if (addedCount){ saveData(allFlashData); filterData(searchInput.value); } } };
+                reader.readAsDataURL(file);
+            });
         }
 
         // Event listeners
@@ -885,19 +757,20 @@
 
         // Expose for inline handlers si besoin (protégées)
         window.__flashAdmin = { addItem: openModal, editItem, deleteItem };
+
+        render();
     })();
     </script>
 
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); cursor: pointer;">
         <span class="lightbox-close" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
-        <div class="lightbox-content" style="transform: translate(-50%, -50%) scale(2.2);">
-            <img id="lightbox-img" src="" alt="">
+        <div class="lightbox-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 85%; max-height: 85%;">
+            <img id="lightbox-img" src="" alt="" style="width: 100%; height: auto; max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         </div>
     </div>
 
     <script>
-    
     // Fonctions pour la lightbox avec images plus grandes
     function openLightbox(src, alt) {
         const lightbox = document.getElementById('lightbox');
@@ -907,8 +780,13 @@
         lightboxImg.src = src;
         lightboxImg.alt = alt;
         
-        // Appliquer le zoom maximum
-        lightboxContent.style.transform = 'translate(-50%, -50%) scale(2.2)';
+        // Forcer la taille plus grande
+        lightboxContent.style.maxWidth = '85%';
+        lightboxContent.style.maxHeight = '85%';
+        lightboxImg.style.maxWidth = '100vw';
+        lightboxImg.style.maxHeight = '100vh';
+        lightboxImg.style.width = 'auto';
+        lightboxImg.style.height = 'auto';
         
         lightbox.style.display = 'block';
         document.body.style.overflow = 'hidden';

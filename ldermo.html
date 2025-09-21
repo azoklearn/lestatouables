@@ -87,18 +87,13 @@
                 text-align: center;
             }
             
-            /* Images des créations plus grandes sur mobile */
-            .portfolio .portfolio-image img,
-            .portfolio-item img,
-            .portfolio-image img {
-                max-width: 200px !important;
-                width: 200px !important;
+            /* Images des créations plus petites sur mobile */
+            .portfolio .portfolio-image img {
+                max-width: 120px !important;
                 height: auto !important;
                 border: none !important;
                 outline: none !important;
                 border-radius: 0 !important;
-                display: block !important;
-                margin: 0 auto !important;
             }
             
             .portfolio .portfolio-item {
@@ -123,10 +118,6 @@
                 border: none !important;
                 border-radius: 0 !important;
                 overflow: visible !important;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                width: 100% !important;
             }
             
             /* Forcer la suppression des bordures sur tous les éléments portfolio */
@@ -157,17 +148,6 @@
                 gap: 8px !important;
                 row-gap: 8px !important;
                 display: grid !important;
-                justify-items: center !important;
-                align-items: center !important;
-            }
-            
-            .portfolio-item {
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                text-align: center !important;
-                width: 100% !important;
             }
             
             /* Styles pour les sous-menus sur mobile */
@@ -224,16 +204,6 @@
             /* S'assurer que le menu hamburger permet l'affichage des sous-menus */
             .nav-menu {
                 overflow: visible !important;
-            }
-            
-            /* Forcer la taille des images sur mobile - règle très spécifique */
-            #portfolio .portfolio-grid .portfolio-item .portfolio-image img {
-                width: 200px !important;
-                max-width: 200px !important;
-                min-width: 200px !important;
-                height: auto !important;
-                display: block !important;
-                margin: 0 auto !important;
             }
         }
         
@@ -303,8 +273,7 @@
         
         .portfolio .portfolio-image img {
             display: block !important;
-            width: 200px !important;
-            max-width: 200px !important;
+            width: 100% !important;
             height: auto !important;
         }
         
@@ -337,22 +306,20 @@
         }
         
         .lightbox-content {
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) scale(1.4) !important;
-            max-width: 90% !important;
-            max-height: 90% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 98% !important;
+            max-height: 98% !important;
+            width: 98% !important;
+            height: 98% !important;
         }
         
         .lightbox img {
-            width: 100% !important;
-            height: auto !important;
-            border-radius: 8px !important;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
         }
         
         .lightbox-close {
@@ -363,22 +330,10 @@
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            background: rgba(0,0,0,0.5);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
         .lightbox-close:hover {
             color: #ccc;
-        }
-        
-        /* Forcer le zoom de la lightbox */
-        #lightbox .lightbox-content {
-            transform: translate(-50%, -50%) scale(1.4) !important;
         }
     </style>
 </head>
@@ -395,7 +350,9 @@
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
+                <li><a href="sinkolor.html" class="nav-link">Sinkolor</a></li>
                 <li><a href="ldermo-tarifs.html" class="nav-link">Tarification</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
@@ -462,11 +419,11 @@
             <div id="portfolio-ldermo" class="portfolio-section">
                 <div class="portfolio-grid" id="portfolioGrid">
                     <div class="portfolio-item" data-category="dermo">
-                        <div style="text-align:center; font-weight:600; margin-bottom:20px;">
+                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Avant</span>
                         </div>
                         <div class="portfolio-image">
-                            <img src="images/image19.jpeg" alt="Avant - Reconstruction mammaire" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image19.jpeg', 'Avant - Reconstruction mammaire')">
+                            <img src="images/image19.jpeg" alt="Avant - Reconstruction mammaire" loading="lazy">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>Avant</h3>
@@ -475,11 +432,11 @@
                         </div>
                     </div>
                     <div class="portfolio-item" data-category="dermo">
-                        <div style="text-align:center; font-weight:600; margin-bottom:20px;">
+                        <div style="text-align:center; font-weight:600; margin-bottom:8px;">
                             <span style="display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;">Après</span>
                         </div>
                         <div class="portfolio-image">
-                            <img src="images/image20.jpeg" alt="Après - Reconstruction mammaire" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image20.jpeg', 'Après - Reconstruction mammaire')">
+                            <img src="images/image20.jpeg" alt="Après - Reconstruction mammaire" loading="lazy">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>Après</h3>
@@ -569,7 +526,13 @@
         </div>
     </footer>
 
-    <!-- Lightbox sera créée dynamiquement par JavaScript -->
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>
@@ -641,7 +604,7 @@
                 
                 if (creation.type) {
                     const labelDiv = document.createElement('div');
-                    labelDiv.style.cssText = 'text-align:center; font-weight:600; margin-bottom:20px;';
+                    labelDiv.style.cssText = 'text-align:center; font-weight:600; margin-bottom:8px;';
                     
                     const span = document.createElement('span');
                     span.style.cssText = 'display:inline-block; padding:6px 10px; background:#f2f2f2; border-radius:999px; color:#333; font-size:0.95rem;';
@@ -745,85 +708,33 @@
         renderCreations();
     })();
     
-    // Fonctions pour la lightbox - Version simplifiée comme Sinkolor (globale)
-    window.openLightbox = function(src, alt) {
-        console.log('openLightbox appelée!', src, alt);
-        
-        // Créer la lightbox si elle n'existe pas
-        let lightbox = document.getElementById('lightbox');
-        if (!lightbox) {
-            lightbox = document.createElement('div');
-            lightbox.id = 'lightbox';
-            lightbox.style.cssText = `
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.95);
-                z-index: 9999;
-                cursor: pointer;
-            `;
-            
-            lightbox.innerHTML = `
-                <div id="lightbox-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(2.2); max-width: 95%; max-height: 95%;">
-                    <img src="${src}" alt="${alt}" style="max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
-                </div>
-                <div style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; background: rgba(0,0,0,0.5); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">×</div>
-            `;
-            
-            document.body.appendChild(lightbox);
-            
-            // Fermer au clic sur le fond ou le X
-            lightbox.addEventListener('click', function(e) {
-                if (e.target === lightbox || e.target.textContent === '×') {
-                    lightbox.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Fermer avec Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && lightbox.style.display === 'block') {
-                    lightbox.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            });
-        } else {
-            // Mettre à jour l'image existante
-            const img = lightbox.querySelector('img');
-            if (img) {
-                img.src = src;
-                img.alt = alt;
-            }
-        }
-        
-        // Afficher la lightbox
+    // Fonctions pour la lightbox
+    function openLightbox(src, alt) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxContent = document.querySelector('.lightbox-content');
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
         lightbox.style.display = 'block';
+        lightboxContent.style.maxWidth = '80%';
+        lightboxContent.style.maxHeight = '80%';
         document.body.style.overflow = 'hidden';
-        
-        // Forcer le zoom après affichage
-        setTimeout(() => {
-            const content = document.getElementById('lightbox-content');
-            if (content) {
-                content.style.setProperty('transform', 'translate(-50%, -50%) scale(2.2)', 'important');
-                content.style.setProperty('max-width', '95%', 'important');
-                content.style.setProperty('max-height', '95%', 'important');
-                console.log('Zoom ajusté appliqué!');
-            }
-        }, 50);
-        
-        console.log('Lightbox affichée avec zoom!');
     }
     
     function closeLightbox() {
         const lightbox = document.getElementById('lightbox');
-        if (lightbox) {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
+    
+    // Event listeners pour la lightbox
+    document.getElementById('lightbox').addEventListener('click', closeLightbox);
+    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
     
     // Fonction pour gérer les menus de contact
     function toggleContactMenu(artist) {

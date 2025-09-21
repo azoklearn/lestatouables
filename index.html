@@ -204,7 +204,7 @@
             /* Styles pour les sous-menus sur mobile */
             .nav-submenu {
                 position: static !important;
-                display: none;
+                display: none !important;
                 background: #1a1a1a !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
@@ -218,6 +218,7 @@
                 z-index: 999 !important;
             }
             
+            .nav-menu li:hover .nav-submenu,
             .nav-menu li.active .nav-submenu {
                 display: block !important;
             }
@@ -379,14 +380,14 @@
                 <li>
                     <a href="ldermo.html#ldermo-presentation" class="nav-link">LDermo</a>
                     <ul class="nav-submenu">
-                        <li><a href="ldermo.html#ldermo-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="ldermo.html#ldermo-presentation" class="nav-link">À propos</a></li>
                         <li><a href="ldermo-tarifs.html" class="nav-link">Tarification</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="sinkolor.html#sinkolor-presentation" class="nav-link">Sinkolor</a>
                     <ul class="nav-submenu">
-                        <li><a href="sinkolor.html#sinkolor-presentation" class="nav-link">Présentation</a></li>
+                        <li><a href="sinkolor.html#sinkolor-presentation" class="nav-link">À propos</a></li>
                         <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
                     </ul>
                 </li>
@@ -572,24 +573,21 @@
                     if (window.innerWidth <= 768) {
                         e.preventDefault();
                         
-                        // Fermer tous les autres sous-menus et retirer la classe active
+                        // Fermer tous les autres sous-menus
                         menuItems.forEach(otherItem => {
                             if (otherItem !== item) {
                                 const otherSubmenu = otherItem.querySelector('.nav-submenu');
                                 if (otherSubmenu) {
                                     otherSubmenu.style.display = 'none';
                                 }
-                                otherItem.classList.remove('active');
                             }
                         });
                         
                         // Toggle le sous-menu actuel
                         if (submenu.style.display === 'none' || submenu.style.display === '') {
                             submenu.style.display = 'block';
-                            item.classList.add('active');
                         } else {
                             submenu.style.display = 'none';
-                            item.classList.remove('active');
                         }
                     }
                 });
@@ -603,7 +601,6 @@
                     const submenu = item.querySelector('.nav-submenu');
                     if (submenu) {
                         submenu.style.display = 'none';
-                        item.classList.remove('active');
                     }
                 });
             }

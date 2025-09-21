@@ -295,7 +295,7 @@
             background: #2c3e50;
         }
         
-        /* Lightbox styles simplifiés */
+        /* Lightbox styles améliorés - Version 2.0 - Images plus grandes */
         .lightbox {
             display: none;
             position: fixed;
@@ -306,6 +306,12 @@
             height: 100%;
             background-color: rgba(0,0,0,0.95);
             cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .lightbox.show {
+            opacity: 1;
         }
         
         .lightbox-content {
@@ -313,25 +319,32 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 95%;
+            max-height: 95%;
         }
         
         .lightbox img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-width: 100vw;
+            max-height: 100vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .lightbox img:hover {
+            transform: scale(1.05);
         }
         
         .lightbox-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 25px;
+            right: 35px;
             color: white;
-            font-size: 40px;
+            font-size: 45px;
             font-weight: bold;
             cursor: pointer;
+            z-index: 10000;
             background: rgba(0,0,0,0.5);
             border-radius: 50%;
             width: 60px;
@@ -339,6 +352,39 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
+            color: #ff4757;
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.1);
+        }
+        
+        /* Animation d'entrée pour les images */
+        .lightbox-content img {
+            animation: lightboxZoomIn 0.4s ease-out;
+        }
+        
+        @keyframes lightboxZoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Effet de zoom au survol */
+        .lightbox img.zoomed {
+            transform: scale(1.8) !important;
+            cursor: grab !important;
+        }
+        
+        .lightbox img.zoomed:active {
+            cursor: grabbing !important;
         }
     </style>
 </head>
@@ -355,7 +401,9 @@
             </div>
             <ul id="menu" class="nav-menu">
                 <li><a href="index.html" class="nav-link">Retour à la page d'accueil</a></li>
+                <li><a href="ldermo.html" class="nav-link">LDermo</a></li>
                 <li><a href="flash.html" class="nav-link">Flash disponibles</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="menu">
                 <span class="bar"></span>
@@ -422,10 +470,10 @@
             <!-- S'inkolor -->
             <div id="portfolio-sinkolor" class="portfolio-section">
                 <div class="portfolio-grid" id="portfolioGrid">
-                    <!-- Images avec event listeners directs -->
+                    <!-- Images avec onclick direct pour test -->
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image9.jpeg" alt="Tatouage S'inkolor 9" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image9.jpeg', 'Tatouage S\'inkolor 9')">
+                            <img src="images/image9.jpeg" alt="Tatouage S'inkolor 9" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image9.jpeg', 'Tatouage S\'inkolor 9')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -435,7 +483,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image15.jpeg" alt="Tatouage S'inkolor 15" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image15.jpeg', 'Tatouage S\'inkolor 15')">
+                            <img src="images/image15.jpeg" alt="Tatouage S'inkolor 15" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image15.jpeg', 'Tatouage S\'inkolor 15')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -445,7 +493,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image16.jpeg" alt="Tatouage S'inkolor 16" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image16.jpeg', 'Tatouage S\'inkolor 16')">
+                            <img src="images/image16.jpeg" alt="Tatouage S'inkolor 16" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image16.jpeg', 'Tatouage S\'inkolor 16')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -455,7 +503,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image10.jpeg" alt="Tatouage S'inkolor 10" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image10.jpeg', 'Tatouage S\'inkolor 10')">
+                            <img src="images/image10.jpeg" alt="Tatouage S'inkolor 10" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image10.jpeg', 'Tatouage S\'inkolor 10')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -465,7 +513,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image12.jpeg" alt="Tatouage S'inkolor 12" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image12.jpeg', 'Tatouage S\'inkolor 12')">
+                            <img src="images/image12.jpeg" alt="Tatouage S'inkolor 12" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image12.jpeg', 'Tatouage S\'inkolor 12')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -475,7 +523,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image13.jpeg" alt="Tatouage S'inkolor 13" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image13.jpeg', 'Tatouage S\'inkolor 13')">
+                            <img src="images/image13.jpeg" alt="Tatouage S'inkolor 13" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image13.jpeg', 'Tatouage S\'inkolor 13')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -485,7 +533,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image14.jpeg" alt="Tatouage S'inkolor 14" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image14.jpeg', 'Tatouage S\'inkolor 14')">
+                            <img src="images/image14.jpeg" alt="Tatouage S'inkolor 14" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image14.jpeg', 'Tatouage S\'inkolor 14')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -495,7 +543,7 @@
                     </div>
                     <div class="portfolio-item" data-category="all">
                         <div class="portfolio-image">
-                            <img src="images/image17.jpeg" alt="Tatouage S'inkolor 17" loading="lazy" style="cursor: pointer; border: 2px solid red;" onclick="openLightbox('images/image17.jpeg', 'Tatouage S\'inkolor 17')">
+                            <img src="images/image17.jpeg" alt="Tatouage S'inkolor 17" loading="lazy" style="cursor: pointer;" onclick="openLightbox('images/image17.jpeg', 'Tatouage S\'inkolor 17')">
                         </div>
                         <div class="portfolio-overlay">
                             <h3>S'inkolor</h3>
@@ -581,7 +629,13 @@
         </div>
     </footer>
 
-    <!-- Lightbox sera créée dynamiquement par JavaScript -->
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); cursor: pointer;">
+        <span class="lightbox-close" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <div class="lightbox-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 95%; max-height: 95%;">
+            <img id="lightbox-img" src="" alt="" style="width: 100%; height: auto; max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        </div>
+    </div>
 
     <script>
     // Script de navigation et fonctionnalités de base (remplace script.js)
@@ -594,15 +648,6 @@
             hamburger.addEventListener('click', function() {
                 hamburger.classList.toggle('active');
                 navMenu.classList.toggle('active');
-            });
-            
-            // Fermer le menu quand on clique sur un lien (un seul clic suffit)
-            const navLinks = navMenu.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    hamburger.classList.remove('active');
-                    navMenu.classList.remove('active');
-                });
             });
         }
         
@@ -632,116 +677,7 @@
     });
     </script>
     <script>
-    // Version ultra-simple de la lightbox
-    console.log('Script chargé - version simple');
-    
-    
-    // Fonction globale simple
-    function openLightbox(src, alt) {
-        console.log('openLightbox appelée!', src);
-        
-        // Créer la lightbox si elle n'existe pas
-        let lightbox = document.getElementById('lightbox');
-        if (!lightbox) {
-            lightbox = document.createElement('div');
-            lightbox.id = 'lightbox';
-            lightbox.style.cssText = `
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.95);
-                z-index: 9999;
-                cursor: pointer;
-            `;
-            
-            lightbox.innerHTML = `
-                <div class="lightbox-content" style="transform: translate(-50%, -50%) scale(1.05);">
-                    <img src="${src}" alt="${alt}">
-                </div>
-                <div class="lightbox-close">×</div>
-            `;
-            
-            document.body.appendChild(lightbox);
-            
-            // Fermer au clic sur le fond ou le X
-            lightbox.addEventListener('click', function(e) {
-                if (e.target === lightbox || e.target.textContent === '×') {
-                    lightbox.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Fermer avec Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && lightbox.style.display === 'block') {
-                    lightbox.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            });
-        } else {
-            // Mettre à jour l'image existante
-            const img = lightbox.querySelector('img');
-            const container = lightbox.querySelector('.lightbox-content');
-            if (img) {
-                img.src = src;
-                img.alt = alt;
-                // Appliquer le zoom
-                container.style.transform = 'translate(-50%, -50%) scale(1.05)';
-            }
-        }
-        
-        // Afficher la lightbox
-        lightbox.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-        
-        console.log('Lightbox affichée!');
-    }
-    
-    function closeLightbox() {
-        const lightbox = document.getElementById('lightbox');
-        if (lightbox) {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    }
-    
-    // Fonction pour gérer les menus de contact
-    function toggleContactMenu(artist) {
-        const menu = document.getElementById(artist + '-contact-menu');
-        const allMenus = document.querySelectorAll('.contact-menu');
-        
-        // Fermer tous les autres menus
-        allMenus.forEach(m => {
-            if (m.id !== artist + '-contact-menu') {
-                m.style.display = 'none';
-            }
-        });
-        
-        // Toggle le menu actuel
-        if (menu.style.display === 'none' || menu.style.display === '') {
-            menu.style.display = 'block';
-        } else {
-            menu.style.display = 'none';
-        }
-    }
-    
-    // Fermer les menus quand on clique ailleurs
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.contact-dropdown')) {
-            const allMenus = document.querySelectorAll('.contact-menu');
-            allMenus.forEach(menu => {
-                menu.style.display = 'none';
-            });
-        }
-    });
-    
-    // Test de la fonction au chargement
-    console.log('Fonction openLightbox disponible:', typeof openLightbox);
-    
-    // Système de gestion des créations Sinkolor
+    // Système de gestion des créations
     (function(){
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
         const CREATIONS_STORAGE_KEY = 'sinkolorCreations.v1';
@@ -753,13 +689,13 @@
         let isAuthorized = false;
         
         function hasSessionAuth(){
-            try { return sessionStorage.getItem('sinkolorPortfolioAuth') === '1'; } catch(e) { return false; }
+            try { return sessionStorage.getItem('portfolioAuth') === '1'; } catch(e) { return false; }
         }
         
         function setSessionAuth(on){
             try {
-                if (on) sessionStorage.setItem('sinkolorPortfolioAuth','1');
-                else sessionStorage.removeItem('sinkolorPortfolioAuth');
+                if (on) sessionStorage.setItem('portfolioAuth','1');
+                else sessionStorage.removeItem('portfolioAuth');
             } catch(e) {}
         }
         
@@ -778,24 +714,14 @@
         function loadCreations(){
             const defaultCreations = [
                 { src: 'images/image9.jpeg', alt: 'Tatouage S\'inkolor 9' },
-                { src: 'images/image15.jpeg', alt: 'Tatouage S\'inkolor 15' },
-                { src: 'images/image16.jpeg', alt: 'Tatouage S\'inkolor 16' },
                 { src: 'images/image10.jpeg', alt: 'Tatouage S\'inkolor 10' },
                 { src: 'images/image12.jpeg', alt: 'Tatouage S\'inkolor 12' },
                 { src: 'images/image13.jpeg', alt: 'Tatouage S\'inkolor 13' },
                 { src: 'images/image14.jpeg', alt: 'Tatouage S\'inkolor 14' },
+                { src: 'images/image15.jpeg', alt: 'Tatouage S\'inkolor 15' },
+                { src: 'images/image16.jpeg', alt: 'Tatouage S\'inkolor 16' },
                 { src: 'images/image17.jpeg', alt: 'Tatouage S\'inkolor 17' }
             ];
-            try {
-                const raw = localStorage.getItem(CREATIONS_STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        return parsed.length === 0 ? defaultCreations : parsed;
-                    }
-                }
-            } catch(e) {}
-            try { localStorage.setItem(CREATIONS_STORAGE_KEY, JSON.stringify(defaultCreations)); } catch(e) {}
             return defaultCreations;
         }
         
@@ -825,6 +751,7 @@
                 img.addEventListener('click', () => openLightbox(creation.src, creation.alt));
                 
                 portfolioImage.appendChild(img);
+                
                 div.appendChild(portfolioImage);
                 
                 if (editMode) {
@@ -883,121 +810,13 @@
         
         function addNewCreation(){
             if (!requestAuth()) return;
-            openImageUploadModal();
-        }
-        
-        function openImageUploadModal(){
-            // Créer le modal
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.8);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: #2d2d2d; padding: 2rem; border-radius: 10px; max-width: 500px; width: 90%;">
-                    <h3 style="color: white; margin-bottom: 1rem;">Ajouter des créations</h3>
-                    <div id="dropzone" style="border: 2px dashed #555; padding: 2rem; text-align: center; color: #b8b8b8; cursor: pointer; border-radius: 8px; margin-bottom: 1rem;">
-                        Glissez-déposez des images ici, ou cliquez pour choisir
-                    </div>
-                    <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
-                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                        <button id="cancelBtn" style="padding: 8px 16px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;">Annuler</button>
-                        <button id="doneBtn" style="padding: 8px 16px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">Terminer</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            const dropzone = modal.querySelector('#dropzone');
-            const fileInput = modal.querySelector('#fileInput');
-            const cancelBtn = modal.querySelector('#cancelBtn');
-            const doneBtn = modal.querySelector('#doneBtn');
-            
-            let selectedFiles = [];
-            
-            // Gestion du glisser-déposer
-            dropzone.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-            
-            // Événements de glisser-déposer
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropzone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropzone.style.borderColor = '#ffffff';
-                    dropzone.style.backgroundColor = '#333';
-                });
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropzone.style.borderColor = '#555';
-                    dropzone.style.backgroundColor = 'transparent';
-                });
-            });
-            
-            dropzone.addEventListener('drop', (e) => {
-                const files = e.dataTransfer.files;
-                handleFiles(files);
-            });
-            
-            function handleFiles(files) {
-                const fileArray = Array.from(files);
-                const imageFiles = fileArray.filter(file => file.type.startsWith('image/'));
-                
-                if (imageFiles.length === 0) {
-                    alert('Veuillez sélectionner des fichiers image valides.');
-                    return;
-                }
-                
-                selectedFiles = imageFiles;
-                dropzone.textContent = `${imageFiles.length} fichier(s) sélectionné(s)`;
-                dropzone.style.borderColor = '#27ae60';
+            const newSrc = prompt('URL de la nouvelle image :');
+            const newAlt = prompt('Description de la création :');
+            if (newSrc && newSrc.trim() && newAlt && newAlt.trim()) {
+                creations.push({ src: newSrc.trim(), alt: newAlt.trim() });
+                saveCreations(creations);
+                renderCreations();
             }
-            
-            // Traitement des fichiers
-            function processFiles() {
-                if (selectedFiles.length === 0) {
-                    alert('Veuillez sélectionner au moins une image.');
-                    return;
-                }
-                
-                let processed = 0;
-                selectedFiles.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const baseName = file.name.split('.')[0];
-                        creations.push({ 
-                            src: e.target.result, 
-                            alt: baseName || 'Nouvelle création' 
-                        });
-                        processed++;
-                        
-                        if (processed === selectedFiles.length) {
-                            saveCreations(creations);
-                            renderCreations();
-                            modal.remove();
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-            
-            // Boutons
-            cancelBtn.addEventListener('click', () => modal.remove());
-            doneBtn.addEventListener('click', processFiles);
         }
         
         toggleBtn.addEventListener('click', () => {
@@ -1011,6 +830,79 @@
         
         renderCreations();
     })();
+    
+    // Fonctions pour la lightbox avec zoom - Accessible globalement
+    window.openLightbox = function(src, alt) {
+        console.log('openLightbox appelée avec:', src);
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxContent = document.querySelector('.lightbox-content');
+        
+        if (!lightbox || !lightboxImg || !lightboxContent) {
+            console.error('Éléments lightbox non trouvés!');
+            return;
+        }
+        
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
+        lightbox.style.display = 'block';
+        
+        // Images plus grandes pour zoom - Forcer avec !important
+        lightboxContent.style.setProperty('max-width', '95%', 'important');
+        lightboxContent.style.setProperty('max-height', '95%', 'important');
+        lightboxImg.style.setProperty('max-width', '100vw', 'important');
+        lightboxImg.style.setProperty('max-height', '100vh', 'important');
+        lightboxImg.style.setProperty('width', 'auto', 'important');
+        lightboxImg.style.setProperty('height', 'auto', 'important');
+        
+        document.body.style.overflow = 'hidden';
+        console.log('Lightbox ouverte avec zoom!');
+    }
+    
+    window.closeLightbox = function() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Event listeners pour la lightbox
+    document.getElementById('lightbox').addEventListener('click', closeLightbox);
+    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
+    
+    // Fonction pour gérer les menus de contact
+    function toggleContactMenu(artist) {
+        const menu = document.getElementById(artist + '-contact-menu');
+        const allMenus = document.querySelectorAll('.contact-menu');
+        
+        // Fermer tous les autres menus
+        allMenus.forEach(m => {
+            if (m.id !== artist + '-contact-menu') {
+                m.style.display = 'none';
+            }
+        });
+        
+        // Toggle le menu actuel
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+    
+    // Fermer les menus quand on clique ailleurs
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.contact-dropdown')) {
+            const allMenus = document.querySelectorAll('.contact-menu');
+            allMenus.forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+    });
     </script>
 </body>
 </html>
