@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash - Les Tatouables</title>
     <meta name="description" content="Découvrez nos tatouages flash disponibles chez Les Tatouables - Salon de tatouage à Toul">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="ETag" content="0">
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="config.js"></script>
+    <script src="config.js?v=2"></script>
     <style>
         /* Styles spécifiques pour la page flash */
         .flash-page-header {
@@ -538,6 +539,15 @@
 
         // Fonctions API JSONBin.io
         async function loadData(){
+            console.log('🔍 Tentative de chargement depuis:', JSONBIN_URL);
+            console.log('🔑 API Key configurée:', JSONBIN_API_KEY !== 'YOUR_API_KEY');
+            
+            // Si pas de configuration JSONBin, utiliser les données par défaut
+            if (JSONBIN_API_KEY === 'YOUR_API_KEY' || JSONBIN_BIN_ID === 'YOUR_BIN_ID') {
+                console.log('⚠️ JSONBin non configuré, utilisation des données par défaut');
+                return getDefaultData();
+            }
+            
             try {
                 const response = await fetch(JSONBIN_URL, {
                     method: 'GET',
@@ -548,13 +558,14 @@
                 });
                 if (response.ok) {
                     const result = await response.json();
+                    console.log('✅ Données chargées depuis JSONBin:', result);
                     return result.record || [];
                 } else {
-                    console.error('Erreur lors du chargement des données');
+                    console.error('❌ Erreur JSONBin:', response.status);
                     return getDefaultData();
                 }
             } catch (error) {
-                console.error('Erreur réseau:', error);
+                console.error('❌ Erreur réseau JSONBin:', error);
                 return getDefaultData();
             }
         }
