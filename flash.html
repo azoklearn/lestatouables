@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="config.js?v=2"></script>
+    <script src="config.js?v=3"></script>
     <style>
         /* Styles spécifiques pour la page flash */
         .flash-page-header {
@@ -628,8 +628,16 @@
         }
 
         // Charger les données au démarrage
+        console.log('🚀 Démarrage du système de gestion des flashs');
         loadData().then(data => {
+            console.log('📊 Données chargées:', data);
             allFlashData = data;
+            filteredData = [...allFlashData];
+            render();
+        }).catch(error => {
+            console.error('💥 Erreur lors du chargement:', error);
+            // Utiliser les données par défaut en cas d'erreur
+            allFlashData = getDefaultData();
             filteredData = [...allFlashData];
             render();
         });
