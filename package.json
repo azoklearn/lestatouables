@@ -4,15 +4,10 @@
   "description": "Site web pour Les Tatouables - Salon de tatouage",
   "main": "index.html",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'Build completed'",
-    "start": "vercel dev"
+    "build": "echo 'Build completed'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.38.0"
-  },
-  "devDependencies": {
-    "vercel": "^32.0.0"
   },
   "keywords": [
     "tatouage",
