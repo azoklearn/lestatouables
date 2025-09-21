@@ -542,9 +542,20 @@
             console.log('🔍 Tentative de chargement depuis:', JSONBIN_URL);
             console.log('🔑 API Key configurée:', JSONBIN_API_KEY !== 'YOUR_API_KEY');
             
-            // Si pas de configuration JSONBin, utiliser les données par défaut
+            // Si pas de configuration JSONBin, utiliser localStorage ou données par défaut
             if (JSONBIN_API_KEY === 'YOUR_API_KEY' || JSONBIN_BIN_ID === 'YOUR_BIN_ID') {
-                console.log('⚠️ JSONBin non configuré, utilisation des données par défaut');
+                console.log('⚠️ JSONBin non configuré, vérification du localStorage');
+                try {
+                    const localData = localStorage.getItem('flashData');
+                    if (localData) {
+                        const parsed = JSON.parse(localData);
+                        console.log('💾 Données chargées depuis localStorage:', parsed);
+                        return parsed;
+                    }
+                } catch (error) {
+                    console.error('Erreur lecture localStorage:', error);
+                }
+                console.log('📋 Utilisation des données par défaut');
                 return getDefaultData();
             }
             
@@ -579,6 +590,18 @@
         }
 
         async function saveData(data){
+            // Si JSONBin n'est pas configuré, sauvegarder en local
+            if (JSONBIN_API_KEY === 'YOUR_API_KEY' || JSONBIN_BIN_ID === 'YOUR_BIN_ID') {
+                console.log('💾 Sauvegarde locale (JSONBin non configuré)');
+                try {
+                    localStorage.setItem('flashData', JSON.stringify(data));
+                    return true;
+                } catch (error) {
+                    console.error('Erreur sauvegarde locale:', error);
+                    return false;
+                }
+            }
+            
             try {
                 const response = await fetch(JSONBIN_URL, {
                     method: 'PUT',

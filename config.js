@@ -2,8 +2,8 @@
 // Remplacez ces valeurs par vos propres clés
 
 window.JSONBIN_CONFIG = {
-    API_KEY: 'YOUR_API_KEY_HERE',  // Votre clé API JSONBin
-    BIN_ID: 'YOUR_BIN_ID_HERE'     // Votre ID de bin JSONBin
+    API_KEY: '$2a$10$nNAxlAtD1eA80oFSHd4ZgubS2sTxaOtRchgZ07RgNPz8V1Kxm2hA2',
+    BIN_ID: '68cfdfafae596e708ff5fcc8'
 };
 
 // Instructions :
