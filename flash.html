@@ -485,7 +485,7 @@
     (function(){
         // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const STORAGE_KEY = 'flashData.v1';
+        const API_URL = 'api/flash.php';
         const grid = document.getElementById('flashGrid');
         const emptyEl = document.getElementById('flashEmpty');
         const searchInput = document.getElementById('flashSearch');
@@ -529,33 +529,69 @@
             return false;
         }
 
-        function loadData(){
-            const seed = [
-                { id: cryptoRandomId(), src: 'images/flash1.jpeg', caption: 'Flash 1' },
-                { id: cryptoRandomId(), src: 'images/flash2.jpeg', caption: 'Flash 2' },
-                { id: cryptoRandomId(), src: 'images/flash3.jpeg', caption: 'Flash 3' }
-            ];
+        // Fonctions API
+        async function loadData(){
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed)) {
-                        if (parsed.length === 0) {
-                            // Seed defaults if empty, so users always see something sans "Éditer"
-                            localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
-                            return seed;
-                        }
-                        return parsed;
-                    }
+                const response = await fetch(API_URL);
+                if (response.ok) {
+                    const data = await response.json();
+                    return data;
+                } else {
+                    console.error('Erreur lors du chargement des données');
+                    return [];
                 }
-            } catch(e) {}
-            // No valid data in storage: seed with defaults
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(seed)); } catch(e) {}
-            return seed;
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                return [];
+            }
         }
 
-        function saveData(data){
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+        async function saveData(data){
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                return response.ok;
+            } catch (error) {
+                console.error('Erreur lors de la sauvegarde:', error);
+                return false;
+            }
+        }
+
+        async function updateData(id, data){
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({id, ...data})
+                });
+                return response.ok;
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour:', error);
+                return false;
+            }
+        }
+
+        async function deleteData(id){
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({id})
+                });
+                return response.ok;
+            } catch (error) {
+                console.error('Erreur lors de la suppression:', error);
+                return false;
+            }
         }
 
         function cryptoRandomId(){
@@ -567,8 +603,12 @@
             return 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
         }
 
-        allFlashData = loadData();
-        filteredData = [...allFlashData];
+        // Charger les données au démarrage
+        loadData().then(data => {
+            allFlashData = data;
+            filteredData = [...allFlashData];
+            render();
+        });
 
         function filterData(searchTerm) {
             if (!searchTerm.trim()) {
@@ -661,47 +701,71 @@
             setTimeout(() => { modal.style.display = 'none'; }, 150);
         }
 
-        function editItem(id){
+        async function editItem(id){
             const idx = allFlashData.findIndex(x => x.id === id);
             if (idx === -1) return;
             const current = allFlashData[idx];
             const newCaption = prompt('Nouvelle légende :', current.caption || '') || (current.caption || '');
-            allFlashData[idx] = { ...current, caption: newCaption };
-            saveData(allFlashData);
-            filterData(searchInput.value);
+            
+            const success = await updateData(id, { 
+                src: current.src, 
+                caption: newCaption 
+            });
+            
+            if (success) {
+                allFlashData[idx] = { ...current, caption: newCaption };
+                filterData(searchInput.value);
+            } else {
+                alert('Erreur lors de la mise à jour');
+            }
         }
 
-        function deleteItem(id){
+        async function deleteItem(id){
             if (!confirm('Supprimer ce flash ?')) return;
-            allFlashData = allFlashData.filter(x => x.id !== id);
-            saveData(allFlashData);
-            filterData(searchInput.value);
+            
+            const success = await deleteData(id);
+            
+            if (success) {
+                allFlashData = allFlashData.filter(x => x.id !== id);
+                filterData(searchInput.value);
+            } else {
+                alert('Erreur lors de la suppression');
+            }
         }
 
-        function handleFiles(files){
+        async function handleFiles(files){
             const fileArray = Array.from(files || []);
             if (!fileArray.length) return;
-            let addedCount = 0;
-            let processed = 0;
-            fileArray.forEach(file => {
-                if (!file.type || !file.type.startsWith('image/')) { processed++; return; }
+            
+            for (const file of fileArray) {
+                if (!file.type || !file.type.startsWith('image/')) continue;
+                
                 const reader = new FileReader();
-                reader.onload = () => {
-                    const src = String(reader.result || '');
-                    if (src) {
-                        const baseName = (file.name || '').split('\\').pop().split('/').pop();
-                        const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
-                        allFlashData.unshift({ id: cryptoRandomId(), src, caption: nameNoExt || 'Flash' });
-                        addedCount++;
+                const src = await new Promise((resolve, reject) => {
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+                
+                if (src) {
+                    const baseName = (file.name || '').split('\\').pop().split('/').pop();
+                    const nameNoExt = baseName.includes('.') ? baseName.substring(0, baseName.lastIndexOf('.')) : baseName;
+                    
+                    const success = await saveData({
+                        src: src,
+                        caption: nameNoExt || 'Flash'
+                    });
+                    
+                    if (success) {
+                        // Recharger les données depuis le serveur
+                        const newData = await loadData();
+                        allFlashData = newData;
+                        filterData(searchInput.value);
+                    } else {
+                        alert('Erreur lors de l\'ajout du flash');
                     }
-                    processed++;
-                    if (processed === fileArray.length){
-                        if (addedCount){ saveData(allFlashData); filterData(searchInput.value); }
-                    }
-                };
-                reader.onerror = () => { processed++; if (processed === fileArray.length){ if (addedCount){ saveData(allFlashData); filterData(searchInput.value); } } };
-                reader.readAsDataURL(file);
-            });
+                }
+            }
         }
 
         // Event listeners
@@ -759,8 +823,6 @@
 
         // Expose for inline handlers si besoin (protégées)
         window.__flashAdmin = { addItem: openModal, editItem, deleteItem };
-
-        render();
     })();
     </script>
 

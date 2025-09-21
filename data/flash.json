@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "src": "images/flash1.jpeg",
+    "caption": "Flash 1"
+  },
+  {
+    "id": "2", 
+    "src": "images/flash2.jpeg",
+    "caption": "Flash 2"
+  },
+  {
+    "id": "3",
+    "src": "images/flash3.jpeg", 
+    "caption": "Flash 3"
+  }
+]
