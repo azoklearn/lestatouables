@@ -434,7 +434,7 @@
     </section>
 
     <!-- Modal: Ajouter des flashs -->
-    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true">
+    <div id="flashModal" class="modal" style="display:none;" aria-hidden="true" tabindex="-1">
         <div class="modal-backdrop"></div>
         <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="flashModalTitle">
             <div class="modal-header">
@@ -721,6 +721,7 @@
         function openModal(){
             modal.style.display = '';
             modal.setAttribute('aria-hidden', 'false');
+            modal.removeAttribute('tabindex');
             document.body.style.overflow = 'hidden';
             setTimeout(() => modal.classList.add('is-open'));
         }
@@ -728,6 +729,7 @@
         function closeModal(){
             modal.classList.remove('is-open');
             modal.setAttribute('aria-hidden', 'true');
+            modal.setAttribute('tabindex', '-1');
             document.body.style.overflow = '';
             // small timeout to allow transition if any
             setTimeout(() => { modal.style.display = 'none'; }, 150);
