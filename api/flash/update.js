@@ -7,50 +7,6 @@ const supabaseKey = process.env.SUPABASE_ANON_KEY
 console.log('SUPABASE_URL:', supabaseUrl ? 'Present' : 'Missing')
 console.log('SUPABASE_ANON_KEY:', supabaseKey ? 'Present' : 'Missing')
 
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Variables d\'environnement Supabase manquantes')
-  // Mode test si les variables manquent
-  export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Methode non autorisee' })
-    }
-
-    try {
-      const { flash, adminKey } = req.body
-
-      if (!flash || !Array.isArray(flash)) {
-        return res.status(400).json({
-          success: false,
-          error: 'Donnees de flash invalides'
-        })
-      }
-
-      if (adminKey !== '03KinepolisdDiva23!') {
-        return res.status(401).json({
-          success: false,
-          error: 'Cle d\'administration invalide'
-        })
-      }
-
-      console.log('Flash recus (mode test):', flash)
-
-      return res.status(200).json({
-        success: true,
-        message: 'Flash sauvegardes avec succes (mode test)',
-        data: flash
-      })
-    } catch (error) {
-      console.error('Erreur serveur:', error)
-      return res.status(500).json({
-        success: false,
-        error: 'Erreur interne du serveur'
-      })
-    }
-  }
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey)
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Methode non autorisee' })
@@ -74,6 +30,18 @@ export default async function handler(req, res) {
       })
     }
 
+    // Si les variables Supabase manquent, utiliser le mode test
+    if (!supabaseUrl || !supabaseKey) {
+      console.log('Variables Supabase manquantes - mode test')
+      return res.status(200).json({
+        success: true,
+        message: 'Flash sauvegardes avec succes (mode test)',
+        data: flash
+      })
+    }
+
+    // Connexion a Supabase
+    const supabase = createClient(supabaseUrl, supabaseKey)
     console.log('Tentative de connexion Supabase...')
 
     // Supprimer toutes les images flash existantes
