@@ -1,20 +1,7 @@
 {
   "name": "sinkolor-tattoo-website",
   "version": "1.0.0",
-  "description": "Site web pour Les Tatouables - Salon de tatouage",
-  "main": "index.html",
-  "scripts": {
-    "build": "echo 'Build completed'"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.38.0"
-  },
-  "keywords": [
-    "tatouage",
-    "salon",
-    "website",
-    "supabase"
-  ],
-  "author": "Les Tatouables",
-  "license": "MIT"
+  "engines": {
+    "node": "18.x"
+  }
 }
