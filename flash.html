@@ -485,7 +485,7 @@
     (function(){
         // Mot de passe (côté client). Pour plus de sécurité, préférer un backend.
         const ADMIN_PASSWORD = '03KinepolisdDiva23!';
-        const API_URL = '/api/flash';
+        const API_URL = '/api/flash?v=' + Date.now();
         const grid = document.getElementById('flashGrid');
         const emptyEl = document.getElementById('flashEmpty');
         const searchInput = document.getElementById('flashSearch');
