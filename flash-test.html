@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Test - Les Tatouables</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        .flash-item { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px; }
+        .btn { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #0056b3; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Flash - Version JSONBin</h1>
+        <p>Cette page teste la nouvelle version sans PHP.</p>
+        
+        <div id="status">Chargement...</div>
+        <div id="flashList"></div>
+        
+        <button class="btn" onclick="testLoad()">Tester le chargement</button>
+        <button class="btn" onclick="testAdd()">Tester l'ajout</button>
+    </div>
+
+    <script>
+        // Configuration JSONBin.io
+        const JSONBIN_API_KEY = 'YOUR_API_KEY';
+        const JSONBIN_BIN_ID = 'YOUR_BIN_ID';
+        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+        
+        let flashData = [];
+        
+        function updateStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.innerHTML = `<span class="${isError ? 'error' : 'success'}">${message}</span>`;
+        }
+        
+        function renderFlash() {
+            const list = document.getElementById('flashList');
+            list.innerHTML = '';
+            
+            if (flashData.length === 0) {
+                list.innerHTML = '<p>Aucun flash disponible</p>';
+                return;
+            }
+            
+            flashData.forEach(flash => {
+                const div = document.createElement('div');
+                div.className = 'flash-item';
+                div.innerHTML = `
+                    <h3>${flash.caption}</h3>
+                    <p>ID: ${flash.id}</p>
+                    <p>Source: ${flash.src.substring(0, 50)}...</p>
+                `;
+                list.appendChild(div);
+            });
+        }
+        
+        async function testLoad() {
+            updateStatus('Test du chargement...');
+            
+            try {
+                console.log('🔍 Test de chargement depuis:', JSONBIN_URL);
+                
+                // Si pas de configuration JSONBin, utiliser les données par défaut
+                if (JSONBIN_API_KEY === 'YOUR_API_KEY' || JSONBIN_BIN_ID === 'YOUR_BIN_ID') {
+                    console.log('⚠️ JSONBin non configuré, utilisation des données par défaut');
+                    flashData = [
+                        { id: '1', src: 'images/flash1.jpeg', caption: 'Flash 1' },
+                        { id: '2', src: 'images/flash2.jpeg', caption: 'Flash 2' },
+                        { id: '3', src: 'images/flash3.jpeg', caption: 'Flash 3' }
+                    ];
+                    updateStatus('✅ Données par défaut chargées (JSONBin non configuré)');
+                    renderFlash();
+                    return;
+                }
+                
+                const response = await fetch(JSONBIN_URL, {
+                    method: 'GET',
+                    headers: {
+                        'X-Master-Key': JSONBIN_API_KEY,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    flashData = result.record || [];
+                    updateStatus('✅ Données chargées depuis JSONBin');
+                    console.log('✅ Données chargées:', result);
+                } else {
+                    updateStatus('❌ Erreur JSONBin: ' + response.status, true);
+                    console.error('❌ Erreur JSONBin:', response.status);
+                }
+            } catch (error) {
+                updateStatus('❌ Erreur réseau: ' + error.message, true);
+                console.error('❌ Erreur réseau:', error);
+            }
+            
+            renderFlash();
+        }
+        
+        async function testAdd() {
+            updateStatus('Test de l\'ajout...');
+            
+            const newFlash = {
+                id: Date.now().toString(),
+                src: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...', // Image de test
+                caption: 'Test Flash ' + new Date().toLocaleTimeString()
+            };
+            
+            flashData.unshift(newFlash);
+            updateStatus('✅ Flash ajouté localement');
+            renderFlash();
+        }
+        
+        // Charger au démarrage
+        window.addEventListener('load', testLoad);
+    </script>
+</body>
+</html>
