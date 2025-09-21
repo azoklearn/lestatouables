@@ -419,7 +419,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ tarifs })
+                    body: JSON.stringify({ 
+                        tarifs,
+                        adminKey: '03KinepolisdDiva23!'
+                    })
                 });
                 
                 const result = await response.json();

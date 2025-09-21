@@ -573,7 +573,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ flash: data })
+                    body: JSON.stringify({ 
+                        flash: data,
+                        adminKey: '03KinepolisdDiva23!'
+                    })
                 });
                 
                 const result = await response.json();

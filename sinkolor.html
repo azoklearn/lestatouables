@@ -906,7 +906,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ creations })
+                    body: JSON.stringify({ 
+                        creations,
+                        adminKey: '03KinepolisdDiva23!'
+                    })
                 });
                 
                 const result = await response.json();
